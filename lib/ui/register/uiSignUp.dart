@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:front/ui/register/uiregister_babysiter.dart';
 
 import 'components/filds_signup.dart';
 import 'components/login.dart';
 import 'components/sign_up_top_image.dart';
 
-final _userController = TextEditingController();
+final _nameController = TextEditingController();
 final _passwordController = TextEditingController();
-
+final _lastnameController = TextEditingController();
 final _phonecontroller = TextEditingController();
 final _addresscontroller = TextEditingController();
 final _emailController = TextEditingController();
 final _conpasswordcontroller = TextEditingController();
+int selectedRole = -1;
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -68,11 +70,11 @@ class SignUp extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  NameTextField(controller: _userController),
+                  NameTextField(controller: _nameController),
                   SizedBox(
                     height: 20,
                   ),
-                  LastNameTextField(controller: _userController),
+                  LastNameTextField(controller: _lastnameController),
                   SizedBox(
                     height: 20,
                   ),
@@ -103,7 +105,11 @@ class SignUp extends StatelessWidget {
                     height: 5,
                   ),
                   Center(
-                    child: RoleSelector(),
+                    child: RoleSelector(
+                      onRoleSelected: (int role) {
+                        selectedRole = role;
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 30,
@@ -124,10 +130,7 @@ class SignUp extends StatelessWidget {
                       ],
                     ),
                     child: Center(
-                      child: Text(
-                        "Registrarse",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: RegisterButton(),
                     ),
                   )),
                   SizedBox(
@@ -144,6 +147,64 @@ class SignUp extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+void registerButtonFunction(BuildContext context) {
+  if (_nameController.text.isNotEmpty &&
+      _lastnameController.text.isNotEmpty &&
+      _passwordController.text.isNotEmpty &&
+      _phonecontroller.text.isNotEmpty &&
+      _addresscontroller.text.isNotEmpty &&
+      _emailController.text.isNotEmpty &&
+      _conpasswordcontroller.text.isNotEmpty &&
+      selectedRole != -1) {
+    if (selectedRole == 1) {
+      // Navigating to RegisterB() if user selected the 'Niñer@' role
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => RegisterB()));
+    } else {
+      // Navigating to HomeT() if user selected the 'Tutor' role
+      //Navigator.push(context, MaterialPageRoute(builder: (context) => HomeT()));
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content:
+              Text('Por favor, llena todos los campos y selecciona un rol')),
+    );
+  }
+}
+
+class RegisterButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        registerButtonFunction(context);
+      },
+      child: Container(
+        height: 50,
+        margin: EdgeInsets.symmetric(horizontal: 60),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: HexColor("#9695ff"),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(196, 135, 198, .3),
+              blurRadius: 20,
+              offset: Offset(0, 10),
+            )
+          ],
+        ),
+        child: Center(
+          child: Text(
+            "Registrarse",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );

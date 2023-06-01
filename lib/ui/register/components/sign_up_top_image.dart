@@ -16,7 +16,7 @@ class SignUpScreenTopImage extends StatelessWidget {
             Expanded(
                 flex: 8,
                 child: Image.asset(
-                  "assets/sup.png",
+                  "assets/intro/cc2.png",
                   height: 300,
                 )),
             const Spacer(),

@@ -425,6 +425,11 @@ class _CityDropdownState extends State<CityDropdown> {
 }
 
 class RoleSelector extends StatefulWidget {
+  final ValueChanged<int> onRoleSelected;
+
+  // Haz que el parámetro onRoleSelected sea requerido.
+  RoleSelector({required this.onRoleSelected});
+
   @override
   _RoleSelectorState createState() => _RoleSelectorState();
 }
@@ -486,6 +491,10 @@ class _RoleSelectorState extends State<RoleSelector> {
                 }
               }
             });
+            if (widget.onRoleSelected != null) {
+              widget.onRoleSelected(
+                  newIndex); // llama a la función de devolución de llamada
+            }
           },
           isSelected: _isSelected,
         ),
@@ -493,6 +502,8 @@ class _RoleSelectorState extends State<RoleSelector> {
     );
   }
 }
+
+int selectedRole = -1; // -1 indica que el usuario no ha seleccionado nada aún
 
 BoxDecoration _decoration = BoxDecoration(
   borderRadius: BorderRadius.circular(20),
