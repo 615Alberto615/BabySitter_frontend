@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/ui/register/uiregister_babysiter.dart';
 
+import '../tutor/home_tutor.dart';
 import 'components/filds_signup.dart';
 import 'components/login.dart';
 import 'components/sign_up_top_image.dart';
@@ -168,7 +169,7 @@ void registerButtonFunction(BuildContext context) {
           context, MaterialPageRoute(builder: (context) => RegisterB()));
     } else {
       // Navigating to HomeT() if user selected the 'Tutor' role
-      //Navigator.push(context, MaterialPageRoute(builder: (context) => HomeT()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeT()));
     }
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
