@@ -1,68 +1,102 @@
 import 'package:flutter/material.dart';
 
 import 'component/Bottom_Tutor.dart';
+import 'component/ColoresTutor.dart';
+
+import 'component/icons.dart';
 
 class HomeT extends StatefulWidget {
   const HomeT({Key? key}) : super(key: key);
-  @override
-  _HomeTState createState() => _HomeTState();
+  _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
 }
 
-class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
-  void tabClick(int index) {
-    // Implementa aquí lo que quieras que suceda cuando se haga clic en una pestaña
+class _FitnessAppHomeScreenState extends State<HomeT>
+    with TickerProviderStateMixin {
+  AnimationController? animationController;
+
+  List<TabIconData> tabIconsList = TabIconData.tabIconsList;
+
+  Widget tabBody = Container(
+    color: ColoresTutor.background,
+  );
+
+  @override
+  void initState() {
+    tabIconsList.forEach((TabIconData tab) {
+      tab.isSelected = false;
+    });
+    tabIconsList[0].isSelected = true;
+
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 600), vsync: this);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF2A9D8F),
+      color: ColoresTutor.background,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).padding.top,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Text(
-                "Servicios Pendientes",
-                style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            BottomBarView(
-              changeIndex: tabClick,
-              addClick: () {
-                // Implementa aquí lo que quieras que suceda cuando se haga clic en el botón de agregar
-              },
-            ),
-          ],
+        body: FutureBuilder<bool>(
+          future: getData(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (!snapshot.hasData) {
+              return const SizedBox();
+            } else {
+              return Stack(
+                children: <Widget>[
+                  tabBody,
+                  bottomBar(),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
   }
-}
 
-class TabIconData {
-  final String imagePath;
-  final String selectedImagePath;
-  final int index;
-  bool isSelected;
-  final AnimationController? animationController;
+  Future<bool> getData() async {
+    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
+    return true;
+  }
 
-  TabIconData({
-    required this.imagePath,
-    required this.selectedImagePath,
-    required this.index,
-    this.isSelected = false,
-    this.animationController,
-  });
+  Widget bottomBar() {
+    return Column(
+      children: <Widget>[
+        const Expanded(
+          child: SizedBox(),
+        ),
+        BottomBarView(
+          tabIconsList: tabIconsList,
+          addClick: () {},
+          changeIndex: (int index) {
+            if (index == 0 || index == 2) {
+              animationController?.reverse().then<dynamic>((data) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            } else if (index == 1 || index == 3) {
+              animationController?.reverse().then<dynamic>((data) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            }
+          },
+        ),
+      ],
+    );
+  }
 }

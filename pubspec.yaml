@@ -67,6 +67,7 @@ flutter:
   assets:
    - assets/
    - assets/intro/
+   - assets/bottom_bar/
 
 
   # To add assets to your application, add an assets section, like this:
