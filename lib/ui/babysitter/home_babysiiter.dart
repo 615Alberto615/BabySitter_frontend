@@ -1,122 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:front/ui/babysitter/component/Bottom_bs.dart';
 
-class HomeB extends StatelessWidget {
-  const HomeB({super.key});
+import '../tutor/component/ColoresTutor.dart';
+import '../tutor/component/icons.dart';
+
+class HomeB extends StatefulWidget {
+  const HomeB({Key? key}) : super(key: key);
+  _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
+}
+
+class _FitnessAppHomeScreenState extends State<HomeB>
+    with TickerProviderStateMixin {
+  AnimationController? animationController;
+
+  List<TabIconData> tabIconsList = TabIconData.tabIconsList;
+
+  Widget tabBody = Container(
+    color: ColoresTutor.background,
+  );
+
+  @override
+  void initState() {
+    tabIconsList.forEach((TabIconData tab) {
+      tab.isSelected = false;
+    });
+    tabIconsList[0].isSelected = true;
+
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 600), vsync: this);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              height: 400,
-              child: Stack(
+    return Container(
+      color: ColoresTutor.background,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: FutureBuilder<bool>(
+          future: getData(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (!snapshot.hasData) {
+              return const SizedBox();
+            } else {
+              return Stack(
                 children: <Widget>[
-                  Positioned(
-                    top: -40,
-                    height: 400,
-                    width: width,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/f1v.png'),
-                              fit: BoxFit.fill)),
-                    ),
-                  ),
-                  Positioned(
-                    height: 400,
-                    width: width + 20,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/f2a.png'),
-                              fit: BoxFit.fill)),
-                    ),
-                  )
+                  tabBody,
+                  bottomBar(),
                 ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      child: Text(
-                    "Iniciar sesión",
-                    style: TextStyle(
-                        color: Color.fromRGBO(49, 39, 79, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30),
-                  )),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                      child: Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 60),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: HexColor("#9695ff"),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(196, 135, 198, .3),
-                          blurRadius: 20,
-                          offset: Offset(0, 10),
-                        )
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Iniciar sesión",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(child: Center()),
-                ],
-              ),
-            )
-          ],
+              );
+            }
+          },
         ),
       ),
     );
   }
-}
 
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF" + hexColor;
-    }
-    return int.parse(hexColor, radix: 16);
+  Future<bool> getData() async {
+    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
+    return true;
   }
 
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+  Widget bottomBar() {
+    return Column(
+      children: <Widget>[
+        const Expanded(
+          child: SizedBox(),
+        ),
+        BottomBarViewV2(
+          tabIconsList: tabIconsList,
+          addClick: () {},
+          changeIndex: (int index) {
+            if (index == 0 || index == 2) {
+              animationController?.reverse().then<dynamic>((data) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            } else if (index == 1 || index == 3) {
+              animationController?.reverse().then<dynamic>((data) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            }
+          },
+        ),
+      ],
+    );
+  }
 }
-
-
-
-//ECF2FF
-//#FFFACD
-//#A2D5F2
-//#FFB6C1
-
-//2
-//#89CFF0
-
