@@ -4,16 +4,16 @@ import 'component/Bottom_Tutor.dart';
 import 'component/ColoresTutor.dart';
 
 import 'component/icons.dart';
-import 'family_tutor.dart';
 import 'history_tutor.dart';
+import 'home_tutor.dart';
 import 'opciones_tutor.dart';
 
-class HomeT extends StatefulWidget {
-  const HomeT({Key? key}) : super(key: key);
-  _HomeTState createState() => _HomeTState();
+class familyT extends StatefulWidget {
+  const familyT({Key? key}) : super(key: key);
+  _familyTState createState() => _familyTState();
 }
 
-class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
+class _familyTState extends State<familyT> with TickerProviderStateMixin {
   AnimationController? animationController;
 
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
@@ -59,7 +59,7 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                           Container(
                             margin: EdgeInsets.only(top: 20, bottom: 20),
                             child: Text(
-                              'Lista de Reservas',
+                              'Familia',
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,

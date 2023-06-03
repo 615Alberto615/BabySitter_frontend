@@ -51,6 +51,9 @@ dev_dependencies:
   font_awesome_flutter: ^10.1.0
   intl: ^0.17.0
   animations: ^2.0.3  
+  provider: ^6.0.1
+  flutter_bloc: ^8.1.1
+  equatable: ^2.0.3
     
 
 # For information on the generic Dart part of this file, see the
