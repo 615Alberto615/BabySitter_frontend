@@ -45,6 +45,55 @@ class CustomButton extends StatelessWidget {
   }
 }
 
+class CustomButton2 extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final IconData icon;
+  final Color buttonColor;
+  final Color textColor;
+
+  CustomButton2({
+    required this.onPressed,
+    required this.text,
+    required this.icon,
+    this.buttonColor = Colors.purpleAccent, // Por defecto será blanco
+    this.textColor = Colors.black, // Aquí eliminamos 'const'
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      decoration: _decoration,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          primary: buttonColor,
+          onPrimary: textColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // Hace el botón cuadrado
+          ),
+          padding: EdgeInsets.all(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(icon, color: textColor),
+            SizedBox(
+                width: 10), // Para dar un espacio entre el ícono y el texto
+            Text(
+              text,
+              style: _textStyle.copyWith(
+                  color: textColor), // Usamos el color de texto dado
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 BoxDecoration _decoration = BoxDecoration(
   borderRadius: BorderRadius.circular(20),
   color: Colors.white,

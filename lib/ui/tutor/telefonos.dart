@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../component/bottoms.dart';
 import '../../component/filds_forms.dart';
+import 'component/img_top2.dart';
 
 class TelefonosScreen extends StatefulWidget {
   @override
@@ -22,9 +23,10 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
+          myfam5(),
           SizedBox(height: 10),
           Text(
-              'Ingresa lo telefonos que tengas de familiares o amigos cercanos en caso de alguna emergencia',
+              'Ingresas lo telefonos que tengas de familiares o amigos cercanos en caso de alguna emergencia',
               style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
