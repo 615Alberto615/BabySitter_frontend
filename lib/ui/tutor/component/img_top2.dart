@@ -100,7 +100,7 @@ class myfam5 extends StatelessWidget {
             Expanded(
                 flex: 8,
                 child: Image.asset(
-                  "assets/nn.png",
+                  "assets/nn2.png",
                   height: 156,
                 )),
             const Spacer(),

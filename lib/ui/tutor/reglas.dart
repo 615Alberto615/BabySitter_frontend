@@ -59,10 +59,66 @@ class _ReglasScreenState extends State<ReglasScreen> {
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
-                          setState(() {
-                            rules.remove(
-                                rule); // Elimina la regla cuando se presiona el botón de eliminar.
-                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                backgroundColor: HexColor("#9695ff"),
+                                child: Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('Eliminar Regla',
+                                          style: TextStyle(
+                                              fontSize: 24.0,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 20.0),
+                                      Text(
+                                          'Estás seguro que quieres eliminar esta regla?'),
+                                      SizedBox(height: 20.0),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          TextButton(
+                                            child: Text(
+                                              'Cancelar',
+                                              style: TextStyle(
+                                                color: Colors
+                                                    .white, // Color de texto personalizado
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              // Cerrar el AlertDialog
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text(
+                                              'Eliminar',
+                                              style: TextStyle(
+                                                color: Colors
+                                                    .white, // Color de texto personalizado
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                rules.remove(rules);
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                         },
                       ),
                     ),
