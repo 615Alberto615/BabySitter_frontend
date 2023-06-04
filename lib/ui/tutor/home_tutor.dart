@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'component/Bottom_Tutor.dart';
+import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'component/ColoresTutor.dart';
 
 import 'component/icons.dart';
@@ -63,7 +63,7 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
-                                color: HexColor('#20262E'),
+                                color: bottomTutor.HexColor('#20262E'),
                               ),
                             ),
                           ),
@@ -85,4 +85,16 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

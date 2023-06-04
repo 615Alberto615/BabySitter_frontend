@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'component/Bottom_Tutor.dart';
+import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
+import 'package:front/ui/tutor/perfil.dart';
+import 'package:front/ui/tutor/reglas.dart';
+import 'package:front/ui/tutor/telefonos.dart';
+import '../../component/bottoms.dart';
 import 'component/ColoresTutor.dart';
 
 import 'component/icons.dart';
+import 'component/img_top.dart';
 import 'history_tutor.dart';
 import 'home_tutor.dart';
 import 'opciones_tutor.dart';
@@ -40,7 +45,7 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColoresTutor.background,
+      color: Colors.white,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: FutureBuilder<bool>(
@@ -49,105 +54,105 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
             if (!snapshot.hasData) {
               return const SizedBox();
             } else {
-              return Stack(
+              return ListView(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 children: <Widget>[
-                  ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    children: [
-                      SizedBox(height: 50),
-                      Container(
-                        margin: EdgeInsets.only(top: 20, bottom: 20),
-                        child: Text(
-                          'Familia',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: HexColor('#20262E'),
-                          ),
+                  SizedBox(height: 50),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Text(
+                        'Mi Familia',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: bottomTutor.HexColor('#20262E'),
                         ),
                       ),
-                      Text('Perfil',
+                    ),
+                  ),
+                  myfam(),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Hijos Registrados',
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: HexColor('#20262E'))),
-                      SizedBox(height: 10),
-                      fildform(
-                          controller: nameController,
-                          hint: 'Nombre',
-                          label: 'Nombre',
-                          icon: Icons.person),
-                      SizedBox(height: 10),
-                      fildform(
-                          controller: surnameController,
-                          hint: 'Apellido',
-                          label: 'Apellido',
-                          icon: Icons.person_outline),
-                      SizedBox(height: 10),
-                      fildform(
-                          controller: cityController,
-                          hint: 'Ciudad',
-                          label: 'Ciudad',
-                          icon: Icons.location_city),
-                      SizedBox(height: 30),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: HexColor('9695ff'),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                              color: bottomTutor.HexColor('#20262E'))),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.add,
+                          color: bottomTutor.HexColor('#20262E'),
                         ),
-                        child: Text(
-                          'Modificar campos de perfil',
-                          style: TextStyle(color: HexColor('20262E')),
-                        ),
-                        onPressed: modificarPerfil,
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Hijos Registrados',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: HexColor('#20262E'))),
-                          IconButton(
-                            onPressed: () {
-                              /*
-                              // Aquí va el código que debe ejecutarse cuando se presiona el botón
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Login()),
-                              );*/
-                            },
-                            icon: Icon(Icons.add, color: HexColor('#20262E')),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: hijos.map((hijo) {
-                          return Card(
-                            child: ListTile(
-                              leading: Icon(Icons.child_care,
-                                  color: HexColor("20262E")),
-                              title: Text(hijo),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete,
-                                    color: HexColor("20262E")),
-                                onPressed: () {
-                                  setState(() {
-                                    hijos.remove(hijo);
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        }).toList(),
                       ),
                     ],
                   ),
+                  ...hijos.map((hijo) {
+                    return Card(
+                      child: ListTile(
+                        leading: Icon(Icons.child_care,
+                            color: bottomTutor.HexColor('#20262E')),
+                        title: Text(hijo),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete,
+                              color: bottomTutor.HexColor('#20262E')),
+                          onPressed: () {
+                            setState(() {
+                              hijos.remove(hijo);
+                            });
+                          },
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  SizedBox(height: 20),
+                  SizedBox(height: 10),
+                  Text('Opciones',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: bottomTutor.HexColor('#20262E'))),
+                  SizedBox(height: 10),
+                  CustomButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PerfilScreen()),
+                      );
+                      // Hacer algo cuando se presiona el botón
+                    },
+                    text: 'Perfil',
+                    icon: Icons.person,
+                  ),
+                  SizedBox(height: 6),
+                  CustomButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ReglasScreen()),
+                      );
+                      // Hacer algo cuando se presiona el botón
+                    },
+                    text: 'Reglas de la casa',
+                    icon: Icons.medical_information,
+                  ),
+                  SizedBox(height: 6),
+                  CustomButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TelefonosScreen()),
+                      );
+                      // Hacer algo cuando se presiona el botón
+                    },
+                    text: 'Telefonos de emergencia',
+                    icon: Icons.phone,
+                  ),
+                  SizedBox(height: 120),
                 ],
               );
             }
@@ -185,7 +190,7 @@ class fildform extends StatelessWidget {
         controller: _controller,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          icon: Icon(icon, color: HexColor("20262E")),
+          icon: Icon(icon, color: bottomTutor.HexColor('#20262E')),
           hintText: hint,
           labelText: label,
           hintStyle: _textStyle,
@@ -216,4 +221,16 @@ TextStyle _textStyle = TextStyle(
 void modificarPerfil() {
   // En esta función se puede implementar la lógica de actualización del perfil.
   print("Perfil actualizado"); // Este es un ejemplo de implementación.
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
