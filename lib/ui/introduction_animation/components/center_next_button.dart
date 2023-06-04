@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
+import '../../../component/bottoms.dart';
 import '../../login/uiLogin.dart';
 
 class CenterNextButton extends StatelessWidget {

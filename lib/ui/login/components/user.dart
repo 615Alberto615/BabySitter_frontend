@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:front/ui/login/uiLogin.dart';
 
+import '../../../component/bottoms.dart';
+
 class UserTextField extends StatelessWidget {
   final TextEditingController _controller;
 

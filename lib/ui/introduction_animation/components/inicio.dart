@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../component/bottoms.dart';
 import '../../login/uiLogin.dart';
 
 class Inicio extends StatefulWidget {

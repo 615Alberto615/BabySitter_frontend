@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'booking.dart';
 import 'component/Bottom_Tutor.dart';
 import 'component/ColoresTutor.dart';
 import 'component/icons.dart';
@@ -61,7 +62,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         ),
         BottomBarView(
           tabIconsList: tabIconsList,
-          addClick: () {},
+          addClick: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewBooking()),
+            );
+          },
           changeIndex: (int index) {
             if (index == 0) {
               setState(() {
