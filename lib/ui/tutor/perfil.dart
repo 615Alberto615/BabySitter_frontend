@@ -5,6 +5,8 @@ import '../../component/filds_forms.dart';
 import '../register/components/filds_signup.dart';
 import 'component/img_top2.dart';
 
+int selectedCityId = 4; // Predeterminado a 'La Paz'
+
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
   @override
@@ -47,7 +49,12 @@ class _PerfilScreenState extends State<PerfilScreen> {
             icon: Icons.phone,
           ),
           SizedBox(height: 20),
-          CityDropdown(),
+          CityDropdown(
+            initialCityId: selectedCityId,
+            onCitySelected: (int cityId) {
+              selectedCityId = cityId;
+            },
+          ),
           SizedBox(height: 20),
           PerfilButton(
             text: 'Actualizar Perfil',

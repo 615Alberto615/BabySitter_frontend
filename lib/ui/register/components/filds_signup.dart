@@ -294,6 +294,7 @@ class AddressTextField extends StatelessWidget {
     );
   }
 }
+
 /*
 class CityDropdown extends StatefulWidget {
   CityDropdown({Key? key}) : super(key: key);
@@ -352,16 +353,39 @@ class _CityDropdownState extends State<CityDropdown> {
     );
   }
 }*/
-
 class CityDropdown extends StatefulWidget {
-  CityDropdown({Key? key}) : super(key: key);
+  final void Function(int) onCitySelected;
+  final int initialCityId;
+
+  CityDropdown({Key? key, required this.onCitySelected, this.initialCityId = 4})
+      : super(key: key);
 
   @override
   _CityDropdownState createState() => _CityDropdownState();
 }
 
 class _CityDropdownState extends State<CityDropdown> {
-  String dropdownValue = 'La Paz';
+  final Map<String, int> cityIds = {
+    'Beni': 1,
+    'Chuquisaca': 2,
+    'Cochabamba': 3,
+    'La Paz': 4,
+    'Oruro': 5,
+    'Pando': 6,
+    'Potosí': 7,
+    'Santa Cruz': 8,
+    'Tarija': 9,
+  };
+
+  late String dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownValue = cityIds.keys.firstWhere(
+        (key) => cityIds[key] == widget.initialCityId,
+        orElse: () => 'La Paz');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -398,18 +422,10 @@ class _CityDropdownState extends State<CityDropdown> {
                   setState(() {
                     dropdownValue = newValue!;
                   });
+                  widget.onCitySelected(cityIds[dropdownValue] ?? 4);
                 },
-                items: <String>[
-                  'Beni',
-                  'Chuquisaca',
-                  'Cochabamba',
-                  'La Paz',
-                  'Oruro',
-                  'Pando',
-                  'Potosí',
-                  'Santa Cruz',
-                  'Tarija',
-                ].map<DropdownMenuItem<String>>((String value) {
+                items:
+                    cityIds.keys.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),

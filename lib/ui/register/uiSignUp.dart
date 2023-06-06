@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front/ui/register/uiregister_babysiter.dart';
 
+import '../../service/ApiService.dart';
+import '../babysitter/home_babysiiter.dart';
 import '../tutor/home_tutor.dart';
 import '../tutor/mainT.dart';
+import 'components/filds_babysitter.dart';
 import 'components/filds_signup.dart';
 import 'components/login.dart';
 import 'components/sign_up_top_image.dart';
@@ -14,11 +17,22 @@ final _phonecontroller = TextEditingController();
 final _addresscontroller = TextEditingController();
 final _emailController = TextEditingController();
 final _conpasswordcontroller = TextEditingController();
-int selectedRole = -1;
 
-class SignUp extends StatelessWidget {
+int _selectedRole = -1;
+int _selectedCityId = 4;
+final _ciController = TextEditingController();
+final _extController = TextEditingController();
+final _contactNumberController = TextEditingController();
+final _descriptionController = TextEditingController();
+
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -101,7 +115,14 @@ class SignUp extends StatelessWidget {
                     height: 20,
                   ),
                   Center(
-                    child: CityDropdown(),
+                    child: CityDropdown(
+                      initialCityId: _selectedCityId,
+                      onCitySelected: (int cityId) {
+                        setState(() {
+                          _selectedCityId = cityId;
+                        });
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 5,
@@ -109,8 +130,31 @@ class SignUp extends StatelessWidget {
                   Center(
                     child: RoleSelector(
                       onRoleSelected: (int role) {
-                        selectedRole = role;
+                        setState(() {
+                          _selectedRole = role;
+                        });
                       },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Visibility(
+                    visible: _selectedRole ==
+                        1, // Mostrar solo cuando el rol seleccionado es 'Niñera'
+                    child: Column(
+                      children: [
+                        CarnetAndExtensionFields(
+                          ciController: _ciController,
+                          extController: _extController,
+                        ),
+                        SizedBox(height: 20),
+                        ContactNumberField(
+                            controller: _contactNumberController),
+                        SizedBox(height: 20),
+                        DescriptionField(controller: _descriptionController),
+                        SizedBox(height: 20),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -155,7 +199,7 @@ class SignUp extends StatelessWidget {
   }
 }
 
-void registerButtonFunction(BuildContext context) {
+void registerButtonFunction(BuildContext context) async {
   if (_nameController.text.isNotEmpty &&
       _lastnameController.text.isNotEmpty &&
       _passwordController.text.isNotEmpty &&
@@ -163,22 +207,73 @@ void registerButtonFunction(BuildContext context) {
       _addresscontroller.text.isNotEmpty &&
       _emailController.text.isNotEmpty &&
       _conpasswordcontroller.text.isNotEmpty &&
-      selectedRole != -1) {
-    if (selectedRole == 1) {
-      // Navigating to RegisterB() if user selected the 'Niñer@' role
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => RegisterB()));
-    } else {
-      // Navigating to HomeT() if user selected the 'Tutor' role
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+      _selectedRole != -1) {
+    try {
+      var userData = {
+        "userName": _nameController.text,
+        "userLastname": _lastnameController.text,
+        "userPhone": _phonecontroller.text,
+        "userAddres": _addresscontroller.text,
+        "userEmail": _emailController.text,
+        "userSecret": _passwordController.text,
+        "seLocationId": _selectedCityId,
+        "CI": _ciController.text,
+        "extension": _extController.text,
+        "phoneContact": _contactNumberController.text,
+        "description": _descriptionController.text,
+      };
+
+      Map<String, dynamic> response =
+          await ApiService().registerUser(userData, _selectedRole == 1);
+
+      if (response["code"] == 200) {
+        // Mostrar un mensaje de éxito
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Registrado satisfactoriamente')));
+
+        // Limpiar todos los campos del formulario
+        _nameController.clear();
+        _lastnameController.clear();
+        _passwordController.clear();
+        _phonecontroller.clear();
+        _addresscontroller.clear();
+        _emailController.clear();
+        _conpasswordcontroller.clear();
+        // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
+        _selectedRole = -1;
+        _selectedCityId = 4;
+
+        if (_selectedRole == 1) {
+          // Navigating to RegisterB() if user selected the 'Niñer@' role
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MainScreenBs()));
+          _nameController.clear();
+          _lastnameController.clear();
+          _passwordController.clear();
+          _phonecontroller.clear();
+          _addresscontroller.clear();
+          _emailController.clear();
+          _conpasswordcontroller.clear();
+          _selectedRole = -1;
+          _selectedCityId = 4;
+        } else {
+          // Navigating to HomeT() if user selected the 'Tutor' role
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MainScreen()));
+        }
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(response["message"])));
+      }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Hubo un error al registrarse')));
     }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content:
-              Text('Por favor, llena todos los campos y selecciona un rol')),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+            Text('Por favor, llena todos los campos y selecciona un rol')));
   }
 }
 
@@ -225,14 +320,3 @@ class HexColor extends Color {
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
-
-
-
-//ECF2FF
-//#FFFACD
-//#A2D5F2
-//#FFB6C1
-
-//2
-//#89CFF0
-

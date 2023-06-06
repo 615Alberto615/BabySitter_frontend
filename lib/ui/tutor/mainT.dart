@@ -40,15 +40,20 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColoresTutor.background,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: <Widget>[
-            tabBody,
-            bottomBar(),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false; // Esto bloquea el botón de retroceso
+      },
+      child: Container(
+        color: ColoresTutor.background,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Stack(
+            children: <Widget>[
+              tabBody,
+              bottomBar(),
+            ],
+          ),
         ),
       ),
     );
