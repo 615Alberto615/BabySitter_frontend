@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:front/ui/tutor/child/add_child.dart';
 
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
+import 'package:front/ui/tutor/child/medical_form.dart';
 import 'package:front/ui/tutor/perfil.dart';
 import 'package:front/ui/tutor/reglas.dart';
 import 'package:front/ui/tutor/telefonos.dart';
@@ -12,6 +14,7 @@ import 'component/img_top.dart';
 import 'history_tutor.dart';
 import 'home_tutor.dart';
 import 'opciones_tutor.dart';
+import 'child/options_child.dart';
 
 class familyT extends StatefulWidget {
   const familyT({Key? key}) : super(key: key);
@@ -82,7 +85,13 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
                               fontWeight: FontWeight.bold,
                               color: bottomTutor.HexColor('#20262E'))),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterBB()),
+                          );
+                        },
                         icon: Icon(
                           Icons.add,
                           color: bottomTutor.HexColor('#20262E'),
@@ -92,18 +101,99 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
                   ),
                   ...hijos.map((hijo) {
                     return Card(
+                      elevation:
+                          5.0, // Ajusta este valor para cambiar la intensidad de la sombra
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            15.0), // Ajusta este valor para cambiar el radio de los bordes redondeados
+                      ),
                       child: ListTile(
                         leading: Icon(Icons.child_care,
                             color: bottomTutor.HexColor('#20262E')),
                         title: Text(hijo),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete,
-                              color: bottomTutor.HexColor('#20262E')),
-                          onPressed: () {
-                            setState(() {
-                              hijos.remove(hijo);
-                            });
-                          },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit,
+                                  color: bottomTutor.HexColor('#20262E')),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => childOptions()),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete,
+                                  color: bottomTutor.HexColor('#20262E')),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0)),
+                                      backgroundColor: HexColor("#9695ff"),
+                                      child: Container(
+                                        padding: EdgeInsets.all(20.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text('Eliminar Hijo',
+                                                style: TextStyle(
+                                                    fontSize: 24.0,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            SizedBox(height: 20.0),
+                                            Text(
+                                                'Estás seguro que quieres eliminar este registro?'),
+                                            SizedBox(height: 20.0),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                TextButton(
+                                                  child: Text(
+                                                    'Cancelar',
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .white, // Color de texto personalizado
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    // Cerrar el AlertDialog
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    'Eliminar',
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .white, // Color de texto personalizado
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      hijos.remove(hijo);
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     );
