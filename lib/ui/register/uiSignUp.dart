@@ -232,16 +232,6 @@ void registerButtonFunction(BuildContext context) async {
             SnackBar(content: Text('Registrado satisfactoriamente')));
 
         // Limpiar todos los campos del formulario
-        _nameController.clear();
-        _lastnameController.clear();
-        _passwordController.clear();
-        _phonecontroller.clear();
-        _addresscontroller.clear();
-        _emailController.clear();
-        _conpasswordcontroller.clear();
-        // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
-        _selectedRole = -1;
-        _selectedCityId = 4;
 
         if (_selectedRole == 1) {
           // Navigating to RegisterB() if user selected the 'Niñer@' role
@@ -254,12 +244,28 @@ void registerButtonFunction(BuildContext context) async {
           _addresscontroller.clear();
           _emailController.clear();
           _conpasswordcontroller.clear();
+          _ciController.clear();
+          _descriptionController.clear();
+          // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
           _selectedRole = -1;
           _selectedCityId = 4;
         } else {
           // Navigating to HomeT() if user selected the 'Tutor' role
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MainScreen()));
+          _nameController.clear();
+          _lastnameController.clear();
+          _passwordController.clear();
+          _phonecontroller.clear();
+          _addresscontroller.clear();
+          _emailController.clear();
+          _conpasswordcontroller.clear();
+          _ciController.clear();
+          _contactNumberController.clear();
+          _descriptionController.clear();
+          // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
+          _selectedRole = -1;
+          _selectedCityId = 4;
         }
       } else {
         ScaffoldMessenger.of(context)
