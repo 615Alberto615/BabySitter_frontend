@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:front/ui/register/components/filds_babysitter.dart';
+import 'package:front/ui/register/components/filds_babysitter.dart'; //Asegúrate de que la ruta de importación sea correcta
 
 import '../../babysitter/home_babysiiter.dart';
 import '../component/SignUpScreenTopImage_child.dart';
+import '../component/filds_activity.dart';
 
 final _ciController = TextEditingController();
 final _extController = TextEditingController();
 final _phoneController = TextEditingController();
 final _descController = TextEditingController();
+List<String> _selectedActivities = [];
 
 class activForm extends StatelessWidget {
-  const activForm({super.key});
+  const activForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class activForm extends StatelessWidget {
                 children: <Widget>[
                   Container(
                       child: Text(
-                    "Recomendaciones de Cuidado:\n   Campo Actividades",
+                    "Recomendaciones de Cuidado:\n          Actividades",
                     style: TextStyle(
                         color: Color.fromRGBO(49, 39, 79, 1),
                         fontWeight: FontWeight.bold,
@@ -49,18 +51,11 @@ class activForm extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  CarnetAndExtensionFields(
-                    ciController: _ciController,
-                    extController: _extController,
+                  ActivitiesForm(
+                    onFieldChanged: (activities) {
+                      _selectedActivities = activities;
+                    },
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ContactNumberField(controller: _phoneController),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  DescriptionField(controller: _descController),
                   SizedBox(
                     height: 30,
                   ),
@@ -98,7 +93,7 @@ class activForm extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "Registrarse",
+                            "Registrar",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -134,14 +129,12 @@ class HexColor extends Color {
 }
 
 void navigateToHomeB(BuildContext context) {
-  if (_ciController.text.isNotEmpty &&
-      _extController.text.isNotEmpty &&
-      _phoneController.text.isNotEmpty &&
-      _descController.text.isNotEmpty) {
+  if (_selectedActivities.isNotEmpty) {
+    // verifica que al menos una actividad ha sido seleccionada
     // Si todos los campos están completos, navega a HomeB
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => HomeB()),
+      MaterialPageRoute(builder: (context) => MainScreenBs()),
     );
   } else {
     // Si no, muestra un snackbar indicando que todos los campos deben ser completados

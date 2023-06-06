@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:front/ui/babysitter/component/Bottom_bs.dart';
+import 'package:front/ui/babysitter/options_bs.dart';
 
 import '../tutor/component/ColoresTutor.dart';
 import '../tutor/component/icons.dart';
+import 'component/Bottom_bs.dart';
+import 'list_bs.dart';
 
-class HomeB extends StatefulWidget {
-  const HomeB({Key? key}) : super(key: key);
-  _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
+class MainScreenBs extends StatefulWidget {
+  const MainScreenBs({Key? key}) : super(key: key);
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _FitnessAppHomeScreenState extends State<HomeB>
+class _MainScreenState extends State<MainScreenBs>
     with TickerProviderStateMixin {
   AnimationController? animationController;
-
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
-
-  Widget tabBody = Container(
-    color: ColoresTutor.background,
-  );
+  Widget tabBody = Container(color: ColoresTutor.background);
 
   @override
   void initState() {
@@ -44,28 +42,14 @@ class _FitnessAppHomeScreenState extends State<HomeB>
       color: ColoresTutor.background,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            } else {
-              return Stack(
-                children: <Widget>[
-                  tabBody,
-                  bottomBar(),
-                ],
-              );
-            }
-          },
+        body: Stack(
+          children: <Widget>[
+            tabBody,
+            bottomBar(),
+          ],
         ),
       ),
     );
-  }
-
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
   }
 
   Widget bottomBar() {
@@ -76,21 +60,20 @@ class _FitnessAppHomeScreenState extends State<HomeB>
         ),
         BottomBarViewV2(
           tabIconsList: tabIconsList,
-          addClick: () {},
           changeIndex: (int index) {
-            if (index == 0 || index == 2) {
-              animationController?.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
+            if (index == 0) {
+              setState(() {
+                tabBody = HomeLB();
+                for (int i = 0; i < tabIconsList.length; i++) {
+                  tabIconsList[i].isSelected = i == index;
                 }
-                setState(() {});
               });
-            } else if (index == 1 || index == 3) {
-              animationController?.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
+            } else if (index == 3) {
+              setState(() {
+                tabBody = OptionsBs();
+                for (int i = 0; i < tabIconsList.length; i++) {
+                  tabIconsList[i].isSelected = i == index;
                 }
-                setState(() {});
               });
             }
           },

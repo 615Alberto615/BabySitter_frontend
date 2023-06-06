@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:front/ui/login/uiLogin.dart';
+import 'package:front/ui/tutor/child/medical_form.dart';
 
 import '../../../component/bottoms.dart';
 
 import '../component/ColoresTutor.dart';
 import '../component/SignUpScreenTopImage_child.dart';
 import '../component/icons.dart';
+import 'activity_form.dart';
+import 'edit_child.dart';
 
 // Asegúrate de importar CustomButton
 
@@ -86,6 +89,11 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
                           // Agrega los CustomButton aquí...
                           CustomButton(
                             onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => editBB()),
+                              );
                               // Hacer algo cuando se presiona el botón
                             },
                             text: 'Datos Registro',
@@ -96,6 +104,11 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
                           ),
                           CustomButton(
                             onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => medicalForm()),
+                              );
                               // Hacer algo cuando se presiona el botón
                             },
                             text: 'Datos Médicos',
@@ -106,6 +119,11 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
                           ),
                           CustomButton(
                             onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => activForm()),
+                              );
                               // Hacer algo cuando se presiona el botón
                             },
                             text: 'Actividades',
@@ -130,4 +148,16 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

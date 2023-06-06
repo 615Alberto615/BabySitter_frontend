@@ -136,7 +136,7 @@ void navigateToHomeB(BuildContext context) {
     // Si todos los campos están completos, navega a HomeB
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => HomeB()),
+      MaterialPageRoute(builder: (context) => MainScreenBs()),
     );
   } else {
     // Si no, muestra un snackbar indicando que todos los campos deben ser completados
