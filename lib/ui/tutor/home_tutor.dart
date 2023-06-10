@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'component/ColoresTutor.dart';
 
+import '../../component/bottoms.dart';
+
 import 'component/icons.dart';
 import 'family_tutor.dart';
 import 'history_tutor.dart';

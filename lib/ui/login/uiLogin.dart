@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:front/cubit/login_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/cubit/login_state.dart';
 
 import '../../component/bottoms.dart';
 import 'components/signup.dart';
 import 'components/user.dart';
+
+//LO DEMAS
 
 final _userController = TextEditingController();
 final _passwordController = TextEditingController();
@@ -12,6 +17,7 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LoginCubit loginCubit = BlocProvider.of<LoginCubit>(context);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -71,30 +77,28 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  InkWell(
-                    onTap: () => verifyAndLogin(context),
-                    child: Container(
-                      height: 50,
-                      margin: EdgeInsets.symmetric(horizontal: 60),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: HexColor("#9695ff"),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(196, 135, 198, .3),
-                            blurRadius: 20,
-                            offset: Offset(0, 10),
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Iniciar sesión",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                  Container(
+                      child: Container(
+                    height: 50,
+                    margin: EdgeInsets.symmetric(horizontal: 60),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: HexColor("#9695ff"),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(196, 135, 198, .3),
+                          blurRadius: 20,
+                          offset: Offset(0, 10),
+                        )
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Iniciar sesión",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                  ),
+                  )),
                   SizedBox(
                     height: 30,
                   ),
@@ -137,4 +141,3 @@ class Login extends StatelessWidget {
 
 //2
 //#89CFF0
-

@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/modelo_login.dart';
 import '../models/modelo_user.dart';
 
 class UserService {
