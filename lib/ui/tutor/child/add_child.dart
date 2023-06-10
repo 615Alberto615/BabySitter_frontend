@@ -89,7 +89,12 @@ class _RegisterBBState extends State<RegisterBB> {
                           _selectedGender != null) {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MainScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => medicalForm(
+                                    selectedGender: _selectedGender,
+                                    nameController: _nameController,
+                                    fnController: _fnController,
+                                  )),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(

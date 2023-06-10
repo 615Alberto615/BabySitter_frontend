@@ -74,7 +74,7 @@ class FNTextField extends StatelessWidget {
             controller: _controller,
             decoration: InputDecoration(
               icon: Icon(Icons.calendar_month, color: HexColor("20262E")),
-              hintText: 'dd/mm/aaaa',
+              hintText: 'aaaa/mm/dd',
               labelText: "Fecha de Nacimiento",
               hintStyle: TextStyle(
                 color: HexColor("20262E"),

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../models/modelo_child.dart';
+
 class ApiService {
   static final String apiUrl = "http://10.0.2.2:8080/api/v1/user";
-
+  //register users
   Future<Map<String, dynamic>> registerUser(
       Map<String, dynamic> userData, bool isBabysitter) async {
     final response = await http.post(

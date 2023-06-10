@@ -71,28 +71,30 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  Container(
-                      child: Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 60),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: HexColor("#9695ff"),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(196, 135, 198, .3),
-                          blurRadius: 20,
-                          offset: Offset(0, 10),
-                        )
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Iniciar sesión",
-                        style: TextStyle(color: Colors.white),
+                  InkWell(
+                    onTap: () => verifyAndLogin(context),
+                    child: Container(
+                      height: 50,
+                      margin: EdgeInsets.symmetric(horizontal: 60),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: HexColor("#9695ff"),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(196, 135, 198, .3),
+                            blurRadius: 20,
+                            offset: Offset(0, 10),
+                          )
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Iniciar sesión",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                  )),
+                  ),
                   SizedBox(
                     height: 30,
                   ),
@@ -107,6 +109,20 @@ class Login extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void verifyAndLogin(BuildContext context) {
+    if (_userController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      /*
+      Navigator.push(
+        
+      );*/
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor complete todos los campos')),
+      );
+    }
   }
 }
 

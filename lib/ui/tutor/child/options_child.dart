@@ -102,18 +102,7 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
                           SizedBox(
                             height: 7,
                           ),
-                          CustomButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => medicalForm()),
-                              );
-                              // Hacer algo cuando se presiona el botón
-                            },
-                            text: 'Datos Médicos',
-                            icon: Icons.medical_information,
-                          ),
+
                           SizedBox(
                             height: 7,
                           ),
