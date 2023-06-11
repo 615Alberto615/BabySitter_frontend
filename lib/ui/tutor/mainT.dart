@@ -124,7 +124,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               });
             } else if (index == 2) {
               setState(() {
-                tabBody = HistoryT();
+                tabBody = HistoryT(
+                  tutorId: tutorId ?? 0,
+                  userId: widget.userId,
+                );
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }

@@ -210,6 +210,8 @@ class InfoBs extends StatelessWidget {
                             print('fecha: $fecha');
                             print('startDate: $formattedStartDate');
                             print('endDate: $formattedEndDate');
+                            print(
+                                'differenceInHours: $babysitter.babysitterId');
 
                             BlocProvider.of<BookingCubit>(context)
                                 .createBooking(
@@ -222,7 +224,7 @@ class InfoBs extends StatelessWidget {
                                 'bookingTimeStart': formattedStartDate,
                                 'bookingTimeEnd': formattedEndDate,
                                 'bookingDate': fecha,
-                                'bookingCompleted': 0,
+                                'bookingCompleted': 1,
                                 'bookingPaid': false,
                                 'bookingAmount': differenceInHours * 40,
                                 'bookingStatus': 1,

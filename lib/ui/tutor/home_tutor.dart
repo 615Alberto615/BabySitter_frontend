@@ -42,6 +42,21 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  String getBookingStatus(int statusNumber) {
+    switch (statusNumber) {
+      case 1:
+        return "Pendiente";
+      case 2:
+        return "En Proceso";
+      case 3:
+        return "Terminado";
+      case 4:
+        return "Cancelado";
+      default:
+        return "Estado desconocido";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,9 +107,10 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: ListTile(
+                                  leading: Icon(Icons.book),
                                   title: Text('Reserva: ${booking.bookingId}'),
                                   subtitle: Text(
-                                      'Estado: ${booking.bookingCompleted}\nPrecio ${booking.bookingAmount} \nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}'),
+                                      'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
                                     icon: Icon(Icons.notifications),
                                     onPressed: () {
