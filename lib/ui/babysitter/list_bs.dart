@@ -109,7 +109,7 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                                   leading: Icon(Icons.book),
                                   title: Text('Reserva: ${booking.bookingId}'),
                                   subtitle: Text(
-                                      'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                      'Nombre: ${booking.userName} ${booking.userLastName}\nPrecio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
                                     icon: Icon(Icons.more),
                                     onPressed: () {},

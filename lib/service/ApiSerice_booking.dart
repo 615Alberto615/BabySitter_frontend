@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'package:front/models/modelo_booking.dart';
+import 'package:front/models/modelo_token.dart';
 import 'package:http/http.dart' as http;
 
 class BookingService {
+  String? token = ModeloToken.token;
   Future<http.Response> createBooking(
       String apiUrl, Map<String, dynamic> requestBody) async {
     var body = json.encode(requestBody);
     var response = await http.post(
       Uri.parse(apiUrl),
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
       body: body,
     );
     return response;
@@ -16,7 +21,13 @@ class BookingService {
 
   Future<List<Booking>> fetchBookings(String apiUrl, String tutorId) async {
     try {
-      final response = await http.get(Uri.parse('$apiUrl$tutorId'));
+      final response = await http.get(
+        Uri.parse('$apiUrl$tutorId'),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      );
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

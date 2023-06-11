@@ -31,7 +31,7 @@ class _HistoryTState extends State<HistoryT> with TickerProviderStateMixin {
   @override
   void initState() {
     context.read<BookingCubit>().fetchBookings(
-        'http://10.0.2.2:8080/api/v1/booking/tutor/', '${widget.tutorId}');
+        'http://10.0.2.2:8080/api/v1/booking/tutor/', '${widget.tutorId}/');
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
 
@@ -112,7 +112,7 @@ class _HistoryTState extends State<HistoryT> with TickerProviderStateMixin {
                                   leading: Icon(Icons.book),
                                   title: Text('Reserva: ${booking.bookingId}'),
                                   subtitle: Text(
-                                      'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                      'Nombre: ${booking.userName} ${booking.userLastName}\nPrecio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
                                     icon: Icon(Icons.reviews),
                                     onPressed: () {

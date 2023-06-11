@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/models/modelo_token.dart';
 import 'package:front/ui/babysitter/options_bs.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -20,10 +21,15 @@ class _MainScreenState extends State<MainScreenBs>
   AnimationController? animationController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
-
+  String? token = ModeloToken.token;
   Future<void> getBabysitterId() async {
-    final response = await http.get(Uri.parse(
-        'http://10.0.2.2:8080/api/v1/babysitter/user/${widget.userId}'));
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8080/api/v1/babysitter/user/${widget.userId}'),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
       // Si el servidor devuelve una respuesta OK, parseamos el JSON.

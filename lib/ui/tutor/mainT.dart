@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:front/models/modelo_token.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -24,10 +25,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
+  String? token = ModeloToken.token;
 
   Future<void> getTutorId() async {
     final response = await http.get(
-        Uri.parse('http://10.0.2.2:8080/api/v1/tutor/user/${widget.userId}'));
+      Uri.parse('http://10.0.2.2:8080/api/v1/tutor/user/${widget.userId}'),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
       // Si el servidor devuelve una respuesta OK, parseamos el JSON.

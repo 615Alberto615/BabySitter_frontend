@@ -1,13 +1,21 @@
 import 'dart:convert';
+import 'package:front/models/modelo_token.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/LocationDto.dart';
 import '../models/modelo_babysitter.dart';
 
 class BabysitterService {
+  String? token = ModeloToken.token;
   Future<List<Babysitter>> getAllBabysitters(String apiUrl) async {
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      );
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -31,8 +39,13 @@ class BabysitterService {
 
   Future<LocationDto> getLocationByTutorId(int id) async {
     try {
-      final response = await http
-          .get(Uri.parse('http://10.0.2.2:8080/api/v1/tutor/location/$id'));
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:8080/api/v1/tutor/location/$id'),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      );
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body)['data'];
