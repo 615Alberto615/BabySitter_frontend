@@ -44,4 +44,22 @@ class ChildCubit extends Cubit<ChildState> {
       return false;
     }
   }
+
+  Future<bool> deleteChild(String apiUrl, String childId) async {
+    emit(ChildLoading());
+    try {
+      var response = await _childService.deleteChild(apiUrl, childId);
+
+      if (response.statusCode == 200) {
+        emit(ChildDeleted());
+        return true;
+      } else {
+        emit(ChildError('Error deleting child'));
+        return false;
+      }
+    } catch (_) {
+      emit(ChildError('Error deleting child'));
+      return false;
+    }
+  }
 }

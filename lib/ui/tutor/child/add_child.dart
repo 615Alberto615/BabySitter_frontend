@@ -12,7 +12,14 @@ final _nameController = TextEditingController();
 final _fnController = TextEditingController();
 
 class RegisterBB extends StatefulWidget {
-  RegisterBB({Key? key}) : super(key: key);
+  final int tutorId;
+  final int userId;
+
+  RegisterBB({
+    Key? key,
+    required this.tutorId,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   _RegisterBBState createState() => _RegisterBBState();
@@ -87,6 +94,7 @@ class _RegisterBBState extends State<RegisterBB> {
                       if (_fnController.text.isNotEmpty &&
                           _nameController.text.isNotEmpty &&
                           _selectedGender != null) {
+                        print(widget.tutorId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -94,6 +102,8 @@ class _RegisterBBState extends State<RegisterBB> {
                                     selectedGender: _selectedGender,
                                     nameController: _nameController,
                                     fnController: _fnController,
+                                    tutorId: widget.tutorId,
+                                    userId: widget.userId,
                                   )),
                         );
                       } else {

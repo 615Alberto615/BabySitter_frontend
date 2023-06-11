@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 import 'booking.dart';
@@ -9,8 +11,12 @@ import 'history_tutor.dart';
 import 'home_tutor.dart';
 import 'opciones_tutor.dart';
 
+int? tutorId;
+
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final int userId;
+
+  const MainScreen({Key? key, required this.userId}) : super(key: key);
   _MainScreenState createState() => _MainScreenState();
 }
 
@@ -18,6 +24,24 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
+
+  Future<void> getTutorId() async {
+    final response = await http.get(
+        Uri.parse('http://10.0.2.2:8080/api/v1/tutor/user/${widget.userId}'));
+
+    if (response.statusCode == 200) {
+      // Si el servidor devuelve una respuesta OK, parseamos el JSON.
+      final json = jsonDecode(response.body);
+      setState(() {
+        tutorId = json['data']['tutorId'];
+        // Actualizado para acceder a tutorId correctamente
+        print(tutorId);
+      });
+    } else {
+      // Si la respuesta no es OK, lanzamos un error.
+      throw Exception('Failed to load tutor id');
+    }
+  }
 
   @override
   void initState() {
@@ -28,7 +52,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
-
+    getTutorId();
     super.initState();
   }
 
@@ -83,7 +107,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               });
             } else if (index == 1) {
               setState(() {
-                tabBody = familyT();
+                tabBody = familyT(
+                  tutorId: tutorId ?? 0,
+                  userId: widget.userId,
+                );
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }

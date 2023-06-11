@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/cubit/child_cubit.dart'; // Asegúrate de que esta ruta de importación es correcta
+import 'package:front/service/LoginService.dart';
 import 'package:front/service/ApiService_child.dart';
 import 'package:front/ui/introduction_animation/introduction_animation_screen.dart';
 import 'package:front/ui/login/uiLogin.dart';
+import 'package:front/cubit/login_cubit.dart';
+import 'package:front/cubit/child_cubit.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,9 +16,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ChildCubit(ChildService()),
-      // Provee una nueva instancia de ChildCubit
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginCubit>(
+          create: (context) => LoginCubit(LoginService()),
+        ),
+        BlocProvider<ChildCubit>(
+          create: (context) => ChildCubit(ChildService()),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: IntroductionAnimationScreen(),

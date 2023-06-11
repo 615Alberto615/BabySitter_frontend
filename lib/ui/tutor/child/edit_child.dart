@@ -75,10 +75,11 @@ class _RegisterBBState extends State<editBB> {
                     onTap: () {
                       if (_fnController.text.isNotEmpty &&
                           _nameController.text.isNotEmpty) {
+                        /*
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => MainScreen()),
-                        );
+                        );*/
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

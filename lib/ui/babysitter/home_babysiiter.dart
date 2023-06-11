@@ -7,7 +7,8 @@ import 'component/Bottom_bs.dart';
 import 'list_bs.dart';
 
 class MainScreenBs extends StatefulWidget {
-  const MainScreenBs({Key? key}) : super(key: key);
+  const MainScreenBs({Key? key, required seRoleId, required userId})
+      : super(key: key);
   _MainScreenState createState() => _MainScreenState();
 }
 

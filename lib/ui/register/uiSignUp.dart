@@ -3,6 +3,7 @@ import 'package:front/ui/register/uiregister_babysiter.dart';
 
 import '../../service/ApiService.dart';
 import '../babysitter/home_babysiiter.dart';
+import '../login/uiLogin.dart';
 import '../tutor/home_tutor.dart';
 import '../tutor/mainT.dart';
 import 'components/filds_babysitter.dart';
@@ -236,7 +237,7 @@ void registerButtonFunction(BuildContext context) async {
         if (_selectedRole == 1) {
           // Navigating to RegisterB() if user selected the 'Niñer@' role
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainScreenBs()));
+              context, MaterialPageRoute(builder: (context) => Login()));
           _nameController.clear();
           _lastnameController.clear();
           _passwordController.clear();
@@ -252,7 +253,7 @@ void registerButtonFunction(BuildContext context) async {
         } else {
           // Navigating to HomeT() if user selected the 'Tutor' role
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainScreen()));
+              context, MaterialPageRoute(builder: (context) => Login()));
           _nameController.clear();
           _lastnameController.clear();
           _passwordController.clear();

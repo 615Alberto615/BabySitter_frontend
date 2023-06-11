@@ -18,12 +18,16 @@ class medicalForm extends StatefulWidget {
   final String? selectedGender;
   final TextEditingController nameController;
   final TextEditingController fnController;
+  final int tutorId;
+  final int userId;
 
   const medicalForm({
     Key? key,
     this.selectedGender,
     required this.nameController,
     required this.fnController,
+    required this.tutorId,
+    required this.userId,
   }) : super(key: key);
 
   @override
@@ -162,7 +166,7 @@ class _medicalFormState extends State<medicalForm> {
     String medubi = _medubiController.text;
     String enfermedades = _enfController.text;
     String medicamentos = _medController.text;
-
+    int tutorIdd = widget.tutorId;
     print("selectedGender: $selectedGender");
     print("gender: $gender");
     print("name: $name");
@@ -170,6 +174,7 @@ class _medicalFormState extends State<medicalForm> {
     print("medubiValue: $medubi");
     print("enfermedadesValue: $enfermedades");
     print("medicamentosValue: $medicamentos");
+    print("tutor:$tutorIdd");
     if (_medController.text.isNotEmpty &&
         _medubiController.text.isNotEmpty &&
         _enfController.text.isNotEmpty) {
@@ -177,22 +182,23 @@ class _medicalFormState extends State<medicalForm> {
       var result = await childCubit.createChild(
         'http://10.0.2.2:8080/api/v1/child/',
         {
-          'name': name,
-          'birthdate': fn,
-          'phoneEmergency': '123', // Cambiar a los datos correspondientes
-          'gender': gender,
-          'childStatus': 1, // Cambiar a los datos correspondientes
-
-          'allergieType': enfermedades,
-          'medication': medicamentos,
-          'medicationUbication': medubi,
+          'tutor': tutorIdd,
+          'childName': name,
+          'childBirthdate': fn,
+          'childPhoneEmergency': '123', // Cambiar a los datos correspondientes
+          'childGender': gender, // Cambiar a los datos correspondientes
+          'medicalAllergieType': enfermedades,
+          'medicalMedication': medicamentos,
+          'medicalMedicationUbication': medubi,
         },
       );
       if (result) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MainScreen(),
+            builder: (context) => MainScreen(
+              userId: widget.userId,
+            ),
           ),
         );
         ScaffoldMessenger.of(context).showSnackBar(

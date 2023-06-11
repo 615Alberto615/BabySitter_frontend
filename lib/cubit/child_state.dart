@@ -13,6 +13,8 @@ class ChildLoading extends ChildState {}
 
 class ChildCreated extends ChildState {}
 
+class ChildDeleted extends ChildState {}
+
 class ChildrenLoaded extends ChildState {
   final List<Child> children;
 

@@ -21,7 +21,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/cubit/child_cubit.dart';
 
 class familyT extends StatefulWidget {
-  const familyT({Key? key}) : super(key: key);
+  final int tutorId;
+  final int userId;
+  const familyT({
+    Key? key,
+    required this.tutorId,
+    required this.userId,
+  }) : super(key: key);
   _familyTState createState() => _familyTState();
 }
 
@@ -43,12 +49,13 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 600), vsync: this);
 
     try {
-      context
-          .read<ChildCubit>()
-          .fetchChildren('http://10.0.2.2:8080/api/v1/child/tutor/', '33');
+      context.read<ChildCubit>().fetchChildren(
+          'http://10.0.2.2:8080/api/v1/child/tutor/',
+          widget.tutorId.toString());
     } catch (e) {
       print(e);
     }
+    print(widget.tutorId);
   }
 
   @override
@@ -69,6 +76,13 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),
               );
+            } else if (state is ChildDeleted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Child successfully deleted')),
+              );
+              context.read<ChildCubit>().fetchChildren(
+                  'http://10.0.2.2:8080/api/v1/child/tutor/',
+                  widget.tutorId.toString());
             }
           },
           builder: (context, state) {
@@ -103,7 +117,11 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RegisterBB()),
+                          MaterialPageRoute(
+                              builder: (context) => RegisterBB(
+                                    tutorId: widget.tutorId,
+                                    userId: widget.userId,
+                                  )),
                         );
                       },
                       icon: Icon(
@@ -150,70 +168,77 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
                               IconButton(
                                 icon: Icon(Icons.delete,
                                     color: bottomTutor.HexColor('#20262E')),
-                                onPressed: () {
-                                  /*
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0)),
-                                    backgroundColor: HexColor("#9695ff"),
-                                    child: Container(
-                                      padding: EdgeInsets.all(20.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text('Eliminar Hijo',
-                                              style: TextStyle(
-                                                  fontSize: 24.0,
-                                                  fontWeight:
-                                                      FontWeight.bold)),
-                                          SizedBox(height: 20.0),
-                                          Text(
-                                              'Estás seguro que quieres eliminar este registro?'),
-                                          SizedBox(height: 20.0),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
+                                onPressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        backgroundColor: HexColor("#9695ff"),
+                                        child: Container(
+                                          padding: EdgeInsets.all(20.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              TextButton(
-                                                child: Text(
-                                                  'Cancelar',
-                                                  style: TextStyle(
-                                                    color: Colors
-                                                        .white, // Color de texto personalizado
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  // Cerrar el AlertDialog
-                                                  Navigator.of(context).pop();
-                                                },
+                                              Text(
+                                                'Eliminar Hijo',
+                                                style: TextStyle(
+                                                    fontSize: 24.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              TextButton(
-                                                child: Text(
-                                                  'Eliminar',
-                                                  style: TextStyle(
-                                                    color: Colors
-                                                        .white, // Color de texto personalizado
+                                              SizedBox(height: 20.0),
+                                              Text(
+                                                  'Estás seguro que quieres eliminar este registro?'),
+                                              SizedBox(height: 20.0),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  TextButton(
+                                                    child: Text(
+                                                      'Cancelar',
+                                                      style: TextStyle(
+                                                        color: Colors
+                                                            .white, // Color de texto personalizado
+                                                      ),
+                                                    ),
+                                                    onPressed: () {
+                                                      // Cerrar el AlertDialog
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
                                                   ),
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    hijos.remove(hijo);
-                                                  });
-                                                  Navigator.of(context).pop();
-                                                },
+                                                  TextButton(
+                                                    child: Text(
+                                                      'Eliminar',
+                                                      style: TextStyle(
+                                                        color: Colors
+                                                            .white, // Color de texto personalizado
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      await context
+                                                          .read<ChildCubit>()
+                                                          .deleteChild(
+                                                              'http://10.0.2.2:8080/api/v1/child/',
+                                                              '${hijo.childId}');
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
+                                      );
+                                    },
                                   );
-                                },
-                              );*/
                                 },
                               ),
                             ],

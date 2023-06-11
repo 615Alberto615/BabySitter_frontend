@@ -132,10 +132,11 @@ void navigateToHomeB(BuildContext context) {
   if (_selectedActivities.isNotEmpty) {
     // verifica que al menos una actividad ha sido seleccionada
     // Si todos los campos están completos, navega a HomeB
+    /*
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MainScreenBs()),
-    );
+    );*/
   } else {
     // Si no, muestra un snackbar indicando que todos los campos deben ser completados
     ScaffoldMessenger.of(context).showSnackBar(

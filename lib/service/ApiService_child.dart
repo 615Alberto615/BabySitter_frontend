@@ -43,4 +43,12 @@ class ChildService {
       return [];
     }
   }
+
+  Future<http.Response> deleteChild(String apiUrl, String childId) async {
+    var response = await http.delete(
+      Uri.parse('$apiUrl$childId'),
+      headers: {"Content-Type": "application/json"},
+    );
+    return response;
+  }
 }
