@@ -111,10 +111,8 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                                   subtitle: Text(
                                       'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
-                                    icon: Icon(Icons.notifications),
-                                    onPressed: () {
-                                      // Acción que se ejecutará al presionar el botón de campana
-                                    },
+                                    icon: Icon(Icons.more),
+                                    onPressed: () {},
                                   ),
                                 ),
                               );
