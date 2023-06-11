@@ -13,6 +13,7 @@ class NewBooking extends StatelessWidget {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   NewBooking({required this.tutorId, required this.userId});
 
   @override
@@ -33,7 +34,7 @@ class NewBooking extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 335,
+              height: 255,
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -68,15 +69,23 @@ class NewBooking extends StatelessWidget {
                   ),
                   fildform(
                       controller: addressController,
-                      hint: 'Dirección',
-                      label: 'Dirección',
+                      hint: 'Dirección/Zona',
+                      label: 'Dirección/Zona',
                       icon: Icons.home),
                   SizedBox(
                     height: 20,
                   ),
                   fildform(
+                      controller: dateController,
+                      hint: 'aaaa/mm/dd',
+                      label: 'Fecha',
+                      icon: Icons.calendar_month),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  fildform(
                       controller: startTimeController,
-                      hint: 'Hora de inicio',
+                      hint: 'hh:mm',
                       label: 'Hora de inicio',
                       icon: Icons.timer),
                   SizedBox(
@@ -84,7 +93,7 @@ class NewBooking extends StatelessWidget {
                   ),
                   fildform(
                       controller: endTimeController,
-                      hint: 'Hora de fin',
+                      hint: 'hh:mm',
                       label: 'Hora de fin',
                       icon: Icons.timer_off),
                   SizedBox(
@@ -92,18 +101,41 @@ class NewBooking extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FindBs(
-                            tutorId: tutorId,
-                            userId: userId,
-                            address: addressController.text,
-                            startTime: startTimeController.text,
-                            endTime: endTimeController.text,
+                      if (addressController.text.isNotEmpty &&
+                          startTimeController.text.isNotEmpty &&
+                          endTimeController.text.isNotEmpty &&
+                          dateController.text.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FindBs(
+                              tutorId: tutorId,
+                              userId: userId,
+                              address: addressController.text,
+                              startTime: startTimeController.text,
+                              endTime: endTimeController.text,
+                              fecha: dateController.text,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Campos vacíos'),
+                              content: Text(
+                                  'Por favor, complete todos los campos para continuar.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Aceptar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
                     child: Container(
                       height: 50,

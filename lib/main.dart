@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/cubit/babysitter_cubit.dart';
+import 'package:front/cubit/booking_cubit.dart';
+import 'package:front/service/ApiSerice_booking.dart';
 import 'package:front/service/ApiService_babysitter.dart';
 import 'package:front/service/LoginService.dart';
 import 'package:front/service/ApiService_child.dart';
@@ -29,6 +31,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<BabysitterCubit>(
           create: (context) => BabysitterCubit(BabysitterService()),
         ), // Aquí agregamos el proveedor para BabysitterCubit
+        BlocProvider<BookingCubit>(
+          create: (context) => BookingCubit(BookingService()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

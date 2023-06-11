@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/cubit/LocationLoaded.dart';
+import 'package:front/ui/tutor/info_bs.dart';
 
 import '../../cubit/babysitter_cubit.dart';
 import '../../cubit/babysitter_state.dart';
@@ -11,14 +12,18 @@ import '../../cubit/babysitter_state.dart';
 class FindBs extends StatefulWidget {
   final int tutorId;
   final int userId;
-
+  final String address;
+  final String startTime;
+  final String endTime;
+  final String fecha;
   const FindBs({
     Key? key,
     required this.tutorId,
     required this.userId,
-    required String address,
-    required String startTime,
-    required String endTime,
+    required this.address,
+    required this.startTime,
+    required this.endTime,
+    required this.fecha,
   }) : super(key: key);
 
   _FindBsState createState() => _FindBsState();
@@ -39,12 +44,12 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
       color: Colors.white,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
+          title: Text(
+            '         Niñeras Disponibles',
+            style: TextStyle(
+                color: Colors.white, fontFamily: 'Roboto', fontSize: 20.0),
           ),
-          backgroundColor: Colors.white,
-          elevation: 0,
+          backgroundColor: HexColor("#9695ff"),
         ),
         backgroundColor: Colors.transparent,
         body: BlocConsumer<BabysitterCubit, BabysitterState>(
@@ -62,20 +67,6 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               children: <Widget>[
-                SizedBox(height: 10),
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 0),
-                    child: Text(
-                      'Niñeras Disponibles',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: HexColor('#20262E'),
-                      ),
-                    ),
-                  ),
-                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -106,6 +97,7 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
 
                       if (babysitter.seLocationId == locationIdT) {
                         return Card(
+                          shadowColor: HexColor('#eaafc8'),
                           margin: EdgeInsets.symmetric(vertical: 5),
                           elevation: 5.0,
                           shape: RoundedRectangleBorder(
@@ -114,7 +106,7 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
                           child: ListTile(
                             leading:
                                 Icon(Icons.person, color: HexColor('#20262E')),
-                            title: Text('Tarifa: 40Bs por Hora.'),
+                            title: Text('Tarifa:  40Bs por Hora.'),
                             subtitle: Text(
                                 'Nombre: ${babysitter.userName} ${babysitter.userLastName}'),
                             trailing: IconButton(
@@ -122,16 +114,21 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
                               icon: Icon(Icons.next_plan,
                                   color: HexColor('#9695ff')),
                               onPressed: () {
-                                /*
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                            builder: (context) => InfoBs(
-                                babysitter:
-                                babysitter, // Pasamos el objeto de babysitter a la nueva página
-                            ),
-                            ),
-                        );*/
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => InfoBs(
+                                      babysitter:
+                                          babysitter, // Pasamos el objeto de babysitter a la nueva página
+                                      tutorId: widget.tutorId,
+                                      userId: widget.userId,
+                                      address: widget.address,
+                                      startTime: widget.startTime,
+                                      endTime: widget.endTime,
+                                      fecha: widget.fecha,
+                                    ),
+                                  ),
+                                );
                               },
                             ),
                           ),
