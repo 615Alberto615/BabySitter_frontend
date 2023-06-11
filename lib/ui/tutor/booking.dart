@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/ui/tutor/findBs.dart';
 
 import '../../component/filds_forms.dart';
 
@@ -7,9 +8,12 @@ import 'package:flutter/material.dart';
 import '../../component/filds_forms.dart';
 
 class NewBooking extends StatelessWidget {
+  final int tutorId;
+  final int userId;
   final TextEditingController addressController = TextEditingController();
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
+  NewBooking({required this.tutorId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +92,18 @@ class NewBooking extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      /*
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FindBs()),
-                      );*/
+                        MaterialPageRoute(
+                          builder: (context) => FindBs(
+                            tutorId: tutorId,
+                            userId: userId,
+                            address: addressController.text,
+                            startTime: startTimeController.text,
+                            endTime: endTimeController.text,
+                          ),
+                        ),
+                      );
                     },
                     child: Container(
                       height: 50,
@@ -127,4 +138,16 @@ class NewBooking extends StatelessWidget {
       ),
     );
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

@@ -94,7 +94,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           addClick: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NewBooking()),
+              MaterialPageRoute(
+                  builder: (context) => NewBooking(
+                        tutorId: tutorId ?? 0,
+                        userId: widget.userId,
+                      )),
             );
           },
           changeIndex: (int index) {
