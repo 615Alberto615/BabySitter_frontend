@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class LoginService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     final url =
-        'http://10.0.2.2:8080/api/v1/user/login'; // Reemplaza con la URL de tu API
+        'http://localhost:8080/api/v1/user/login'; // Reemplaza con la URL de tu API
 
     print('Request URL: $url');
     print(email);
@@ -28,8 +28,10 @@ class LoginService {
 
       if (jsonData['code'] == 200) {
         return jsonData;
+      } else if (jsonData['code'] == 401) {
+        return jsonData;
       } else {
-        throw Exception(jsonData['message']);
+        throw Exception('Error en la solicitud');
       }
     } else {
       print("Error en la solicitud:");

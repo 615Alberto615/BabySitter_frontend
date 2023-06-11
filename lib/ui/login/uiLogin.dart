@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/cubit/login_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/cubit/login_state.dart';
+import 'package:front/models/modelo_token.dart';
 
 import '../../component/bottoms.dart';
 import '../babysitter/home_babysiiter.dart';
@@ -30,8 +31,13 @@ class Login extends StatelessWidget {
               if (state.userData != null) {
                 final userId = state.userData!['userId'];
                 final seRoleId = state.userData!['seRoleId'];
+                final token = state.userData!['token'];
+                //print(token);
+                ModeloToken.token = token;
+                String? tk = ModeloToken.token;
+                /*print("Persistencia del toke: $tk");
                 print(userId);
-                print(seRoleId);
+                print(seRoleId);*/
                 // 1 es Tutor, 2 el Niñera
                 if (seRoleId == 1) {
                   Navigator.push(
@@ -52,10 +58,11 @@ class Login extends StatelessWidget {
                   _passwordController.clear();
                   _userController.clear();
                 }
-              } else {
+              } else if (state.userData == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Usuario o contraseña incorrectos'),
+                    content: Text(
+                        'Usuario o contraseña incorrectos. Intente denuevo por favor.'),
                     backgroundColor: Colors.red,
                   ),
                 );
