@@ -104,7 +104,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           changeIndex: (int index) {
             if (index == 0) {
               setState(() {
-                tabBody = HomeT();
+                tabBody = HomeT(
+                  tutorId: tutorId ?? 0,
+                  userId: widget.userId,
+                );
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }
