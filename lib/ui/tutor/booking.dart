@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:front/ui/tutor/findBs.dart';
+import 'package:intl/intl.dart';
 import '../../component/filds_forms.dart';
 
 import 'package:flutter/material.dart';
@@ -7,9 +8,13 @@ import 'package:flutter/material.dart';
 import '../../component/filds_forms.dart';
 
 class NewBooking extends StatelessWidget {
+  final int tutorId;
+  final int userId;
   final TextEditingController addressController = TextEditingController();
   final TextEditingController startTimeController = TextEditingController();
   final TextEditingController endTimeController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  NewBooking({required this.tutorId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class NewBooking extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 335,
+              height: 255,
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -64,15 +69,23 @@ class NewBooking extends StatelessWidget {
                   ),
                   fildform(
                       controller: addressController,
-                      hint: 'Dirección',
-                      label: 'Dirección',
+                      hint: 'Dirección/Zona',
+                      label: 'Dirección/Zona',
                       icon: Icons.home),
                   SizedBox(
                     height: 20,
                   ),
                   fildform(
+                      controller: dateController,
+                      hint: 'aaaa/mm/dd',
+                      label: 'Fecha',
+                      icon: Icons.calendar_month),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  fildform(
                       controller: startTimeController,
-                      hint: 'Hora de inicio',
+                      hint: 'hh:mm',
                       label: 'Hora de inicio',
                       icon: Icons.timer),
                   SizedBox(
@@ -80,7 +93,7 @@ class NewBooking extends StatelessWidget {
                   ),
                   fildform(
                       controller: endTimeController,
-                      hint: 'Hora de fin',
+                      hint: 'hh:mm',
                       label: 'Hora de fin',
                       icon: Icons.timer_off),
                   SizedBox(
@@ -88,11 +101,41 @@ class NewBooking extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      /*
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => FindBs()),
-                      );*/
+                      if (addressController.text.isNotEmpty &&
+                          startTimeController.text.isNotEmpty &&
+                          endTimeController.text.isNotEmpty &&
+                          dateController.text.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FindBs(
+                              tutorId: tutorId,
+                              userId: userId,
+                              address: addressController.text,
+                              startTime: startTimeController.text,
+                              endTime: endTimeController.text,
+                              fecha: dateController.text,
+                            ),
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Campos vacíos'),
+                              content: Text(
+                                  'Por favor, complete todos los campos para continuar.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Aceptar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
                     child: Container(
                       height: 50,
@@ -127,4 +170,16 @@ class NewBooking extends StatelessWidget {
       ),
     );
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

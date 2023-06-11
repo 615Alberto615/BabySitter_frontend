@@ -94,13 +94,20 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           addClick: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NewBooking()),
+              MaterialPageRoute(
+                  builder: (context) => NewBooking(
+                        tutorId: tutorId ?? 0,
+                        userId: widget.userId,
+                      )),
             );
           },
           changeIndex: (int index) {
             if (index == 0) {
               setState(() {
-                tabBody = HomeT();
+                tabBody = HomeT(
+                  tutorId: tutorId ?? 0,
+                  userId: widget.userId,
+                );
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }
@@ -117,7 +124,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               });
             } else if (index == 2) {
               setState(() {
-                tabBody = HistoryT();
+                tabBody = HistoryT(
+                  tutorId: tutorId ?? 0,
+                  userId: widget.userId,
+                );
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }

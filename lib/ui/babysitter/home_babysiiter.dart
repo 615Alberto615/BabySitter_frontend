@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:front/ui/babysitter/options_bs.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../tutor/component/ColoresTutor.dart';
 import '../tutor/component/icons.dart';
 import 'component/Bottom_bs.dart';
 import 'list_bs.dart';
 
+int? babysitterId;
+
 class MainScreenBs extends StatefulWidget {
-  const MainScreenBs({Key? key, required seRoleId, required userId})
-      : super(key: key);
+  final int userId;
+  const MainScreenBs({Key? key, required this.userId}) : super(key: key);
   _MainScreenState createState() => _MainScreenState();
 }
 
@@ -17,6 +20,24 @@ class _MainScreenState extends State<MainScreenBs>
   AnimationController? animationController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
+
+  Future<void> getBabysitterId() async {
+    final response = await http.get(Uri.parse(
+        'http://10.0.2.2:8080/api/v1/babysitter/user/${widget.userId}'));
+
+    if (response.statusCode == 200) {
+      // Si el servidor devuelve una respuesta OK, parseamos el JSON.
+      final json = jsonDecode(response.body);
+      setState(() {
+        babysitterId = json['data']['babysitterId'];
+        // Actualizado para acceder a tutorId correctamente
+        print(babysitterId);
+      });
+    } else {
+      // Si la respuesta no es OK, lanzamos un error.
+      throw Exception('Failed to load tutor id');
+    }
+  }
 
   @override
   void initState() {
@@ -69,7 +90,11 @@ class _MainScreenState extends State<MainScreenBs>
           changeIndex: (int index) {
             if (index == 0) {
               setState(() {
-                tabBody = HomeLB();
+                tabBody = HomeLB(
+                  userId: widget.userId,
+                  babysitterId: babysitterId ?? 0,
+                );
+
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }

@@ -54,7 +54,6 @@ class Login extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => MainScreenBs(
                                 userId: userId,
-                                seRoleId: seRoleId,
                               )));
                   _passwordController.clear();
                   _userController.clear();

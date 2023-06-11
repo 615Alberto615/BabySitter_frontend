@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'component/ColoresTutor.dart';
-
 import '../../component/bottoms.dart';
-
 import 'component/icons.dart';
 import 'family_tutor.dart';
 import 'history_tutor.dart';
 import 'opciones_tutor.dart';
+import 'package:front/cubit/booking_cubit.dart';
 
 class HomeT extends StatefulWidget {
-  const HomeT({Key? key}) : super(key: key);
+  final int userId;
+  final int tutorId;
+  const HomeT({Key? key, required this.userId, required this.tutorId})
+      : super(key: key);
   _HomeTState createState() => _HomeTState();
 }
 
@@ -26,6 +28,8 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    context.read<BookingCubit>().fetchBookings(
+        'http://10.0.2.2:8080/api/v1/booking/tutor/', '${widget.tutorId}');
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
 
@@ -36,6 +40,21 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
   void dispose() {
     animationController?.dispose();
     super.dispose();
+  }
+
+  String getBookingStatus(int statusNumber) {
+    switch (statusNumber) {
+      case 1:
+        return "Pendiente";
+      case 2:
+        return "En Proceso";
+      case 3:
+        return "Terminado";
+      case 4:
+        return "Cancelado";
+      default:
+        return "Estado desconocido";
+    }
   }
 
   @override
@@ -50,31 +69,65 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
             if (!snapshot.hasData) {
               return const SizedBox();
             } else {
-              return Stack(
-                children: <Widget>[
-                  ListView(children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Text(
-                              'Lista de Reservas',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: bottomTutor.HexColor('#20262E'),
-                              ),
+              return BlocConsumer<BookingCubit, BookingState>(
+                listener: (context, state) {
+                  if (state is BookingError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: ${state.message}')),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is BookingLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is BookingsLoaded) {
+                    return Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 100, bottom: 20),
+                          child: Text(
+                            'Lista de Reservas',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: bottomTutor.HexColor('#20262E'),
                             ),
                           ),
-                          // Agrega más hijos a la lista aquí...
-                        ],
-                      ),
-                    ),
-                  ]),
-                ],
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            padding: EdgeInsets.all(15),
+                            itemCount: state.bookings.length,
+                            itemBuilder: (context, index) {
+                              final booking = state.bookings[index];
+                              return Card(
+                                shadowColor: HexColor('#B799FF'),
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(Icons.book),
+                                  title: Text('Reserva: ${booking.bookingId}'),
+                                  subtitle: Text(
+                                      'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.notifications),
+                                    onPressed: () {
+                                      // Acción que se ejecutará al presionar el botón de campana
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
               );
             }
           },
