@@ -4,6 +4,7 @@ class Booking {
   final int tutorId;
   final String userName;
   final String userLastName;
+  final String userPhone;
   final String bookingChild;
   final int bookingEstimatedTime;
   final String bookingTimeStart;
@@ -20,6 +21,7 @@ class Booking {
     required this.tutorId,
     required this.userName,
     required this.userLastName,
+    required this.userPhone,
     required this.bookingChild,
     required this.bookingEstimatedTime,
     required this.bookingTimeStart,
@@ -38,6 +40,7 @@ class Booking {
       tutorId: json['tutorId'] as int? ?? 0,
       userName: json['userName'] as String? ?? '',
       userLastName: json['userLastName'] as String? ?? '',
+      userPhone: json['userPhone'] as String? ?? '',
       bookingChild: json['bookingChild'] as String? ?? '',
       bookingEstimatedTime: json['bookingEstimatedTime'] as int? ?? 0,
       bookingTimeStart: json['bookingTimeStart'] as String? ?? '',

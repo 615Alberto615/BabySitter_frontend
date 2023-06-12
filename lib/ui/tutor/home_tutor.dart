@@ -8,6 +8,7 @@ import 'family_tutor.dart';
 import 'history_tutor.dart';
 import 'opciones_tutor.dart';
 import 'package:front/cubit/booking_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeT extends StatefulWidget {
   final int userId;
@@ -34,6 +35,14 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 600), vsync: this);
 
     super.initState();
+  }
+
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -127,6 +136,15 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                                               content: Text(
                                                   'Esta reserva está actualmente en proceso.'),
                                               actions: <Widget>[
+                                                TextButton(
+                                                  child: Text(
+                                                      'Abrir chat de WhatsApp'),
+                                                  onPressed: () {
+                                                    final whatsappUrl =
+                                                        'https://wa.me/+591${booking.userPhone}?text=Hola,%20necesito%20más%20información%20sobre%20la%20reserva.';
+                                                    _launchURL(whatsappUrl);
+                                                  },
+                                                ),
                                                 TextButton(
                                                   child: Text('OK'),
                                                   onPressed: () {
