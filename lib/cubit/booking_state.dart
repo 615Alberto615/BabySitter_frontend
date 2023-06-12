@@ -13,6 +13,8 @@ class BookingLoading extends BookingState {}
 
 class BookingCreated extends BookingState {}
 
+class BookingUpdated extends BookingState {}
+
 class BookingsLoaded extends BookingState {
   final List<Booking> bookings;
 

@@ -114,7 +114,30 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                                   trailing: IconButton(
                                     icon: Icon(Icons.notifications),
                                     onPressed: () {
-                                      // Acción que se ejecutará al presionar el botón de campana
+                                      if (booking.bookingCompleted == 2) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Reserva en proceso'),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              content: Text(
+                                                  'Esta reserva está actualmente en proceso.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: Text('OK'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     },
                                   ),
                                 ),

@@ -74,6 +74,10 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Error: ${state.message}')),
                     );
+                  } else if (state is BookingUpdated) {
+                    context.read<BookingCubit>().fetchBookings(
+                        'http://10.0.2.2:8080/api/v1/booking/babysitter/',
+                        '${widget.babysitterId}/');
                   }
                 },
                 builder: (context, state) {
@@ -112,7 +116,64 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                                       'Nombre: ${booking.userName} ${booking.userLastName}\nPrecio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
                                     icon: Icon(Icons.more),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Opciones reserva',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.close),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
+                                            content: Text(
+                                                '¿Quieres aceptar o cancelar esta reserva?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('CANCELAR'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  context
+                                                      .read<BookingCubit>()
+                                                      .updateBookingStatus(
+                                                          'http://10.0.2.2:8080/api/v1/booking/status/',
+                                                          '${booking.bookingId}',
+                                                          4);
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text('ACEPTAR'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  context
+                                                      .read<BookingCubit>()
+                                                      .updateBookingStatus(
+                                                          'http://10.0.2.2:8080/api/v1/booking/status/',
+                                                          '${booking.bookingId}',
+                                                          2);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
                                   ),
                                 ),
                               );

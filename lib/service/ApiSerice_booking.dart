@@ -48,4 +48,19 @@ class BookingService {
       return [];
     }
   }
+
+  Future<http.Response> updateBookingStatus(
+      String apiUrl, String bookingId, int status) async {
+    var requestBody = {'bookingCompleted': status};
+    var body = json.encode(requestBody);
+    var response = await http.put(
+      Uri.parse('$apiUrl$bookingId'),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: body,
+    );
+    return response;
+  }
 }
