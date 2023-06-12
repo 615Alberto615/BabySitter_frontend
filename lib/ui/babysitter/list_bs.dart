@@ -28,7 +28,7 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
     print("idbabysitter: ${widget.babysitterId}");
     context.read<BookingCubit>().fetchBookings(
         'http://10.0.2.2:8080/api/v1/booking/babysitter/',
-        '${widget.babysitterId}');
+        '${widget.babysitterId}/');
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
 
