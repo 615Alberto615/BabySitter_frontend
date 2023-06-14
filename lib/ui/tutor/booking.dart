@@ -105,6 +105,24 @@ class NewBooking extends StatelessWidget {
                           startTimeController.text.isNotEmpty &&
                           endTimeController.text.isNotEmpty &&
                           dateController.text.isNotEmpty) {
+                        if (!isValidDate(dateController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Por favor, introduce un formato de fecha válido, aaaa/mm/dd')));
+                          return;
+                        }
+                        if (!isValidTime(startTimeController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Por favor, introduce un formato de hora válido para la hora de inicio, hh:mm')));
+                          return;
+                        }
+                        if (!isValidTime(endTimeController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Por favor, introduce un formato de hora válido para la hora de fin, hh:mm')));
+                          return;
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -182,4 +200,22 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
+bool isValidDate(String input) {
+  try {
+    DateFormat('yyyy/MM/dd').parseStrict(input);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+bool isValidTime(String input) {
+  try {
+    DateFormat('HH:mm').parseStrict(input);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }

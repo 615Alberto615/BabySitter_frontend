@@ -56,12 +56,12 @@ class InfoBs extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              'Información de Niñer@',
-              style: TextStyle(
-                  color: Colors.white, fontFamily: 'Roboto', fontSize: 20.0),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.pop(context),
             ),
-            backgroundColor: HexColor("#9695ff"),
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -69,6 +69,13 @@ class InfoBs extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Center(
+                    child: Text('Información de niñer@',
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: HexColor('#20262E'))),
+                  ),
                   myfam4(),
                   Card(
                     shadowColor: HexColor('#B799FF'),

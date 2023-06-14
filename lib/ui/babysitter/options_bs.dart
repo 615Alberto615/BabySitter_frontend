@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:front/cubit/login_cubit.dart';
 import 'package:front/ui/babysitter/perfil_bs.dart';
 import 'package:front/ui/babysitter/verify_bs.dart';
 import 'package:front/ui/login/uiLogin.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/ui/tutor/component/ColoresTutor.dart';
+import 'package:front/ui/tutor/component/icons.dart';
 
 import '../../component/bottoms.dart';
-import '../tutor/component/ColoresTutor.dart';
-import '../tutor/component/icons.dart';
-
-// Asegúrate de importar CustomButton
 
 class OptionsBs extends StatefulWidget {
   const OptionsBs({Key? key}) : super(key: key);
@@ -39,6 +39,8 @@ class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final loginCubit = context.read<LoginCubit>();
+
     return Container(
       color: ColoresTutor.background,
       child: Scaffold(
@@ -57,24 +59,18 @@ class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
                           EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 30,
-                          ),
+                          SizedBox(height: 30),
                           Container(
                             margin: EdgeInsets.only(top: 20, bottom: 20),
                             child: Text(
                               'Opciones',
                               style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: HexColor('#20262E'),
-                              ),
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: HexColor('#20262E')),
                             ),
                           ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          // Agrega los CustomButton aquí...
+                          SizedBox(height: 30),
                           CustomButton(
                             onPressed: () {
                               Navigator.push(
@@ -102,67 +98,48 @@ class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
                             text: 'Verificar',
                             icon: Icons.verified,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
+                          SizedBox(height: 5),
                           CustomButton(
                             onPressed: () {
-                              // Mostrar un AlertDialog con un estilo personalizado
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return Theme(
                                     data: Theme.of(context).copyWith(
-                                      dialogBackgroundColor: HexColor(
-                                          "#9695ff"), // Color de fondo personalizado
-                                    ),
+                                        dialogBackgroundColor:
+                                            HexColor("#9695ff")),
                                     child: AlertDialog(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            20.0), // Bordes redondeados
-                                      ),
-                                      title: Text(
-                                        'Cerrar sesión',
-                                        style: TextStyle(
-                                          color: Colors
-                                              .white, // Color de texto personalizado
-                                        ),
-                                      ),
+                                          borderRadius:
+                                              BorderRadius.circular(20.0)),
+                                      title: Text('Cerrar sesión',
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                       content: Text(
-                                        '¿Estás seguro de que quieres cerrar la sesión?',
-                                        style: TextStyle(
-                                          color: Colors
-                                              .white, // Color de texto personalizado
-                                        ),
-                                      ),
+                                          '¿Estás seguro de que quieres cerrar la sesión?',
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                       actions: <Widget>[
                                         TextButton(
-                                          child: Text(
-                                            'Cancelar',
-                                            style: TextStyle(
-                                              color: Colors
-                                                  .white, // Color de texto personalizado
-                                            ),
-                                          ),
+                                          child: Text('Cancelar',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
                                           onPressed: () {
-                                            // Cerrar el AlertDialog
                                             Navigator.of(context).pop();
                                           },
                                         ),
                                         TextButton(
-                                          child: Text(
-                                            'Aceptar',
-                                            style: TextStyle(
-                                              color: Colors
-                                                  .white, // Color de texto personalizado
-                                            ),
-                                          ),
+                                          child: Text('Aceptar',
+                                              style: TextStyle(
+                                                  color: Colors.white)),
                                           onPressed: () {
-                                            Navigator.push(
+                                            loginCubit.logout();
+                                            Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       Login()),
+                                              (route) => false,
                                             );
                                           },
                                         ),
@@ -175,8 +152,6 @@ class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
                             text: 'Cerrar sesión',
                             icon: Icons.exit_to_app,
                           ),
-
-                          // Agrega más botones según necesites...
                         ],
                       ),
                     ),

@@ -29,6 +29,7 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    print('Tutor ID: ${widget.tutorId}');
     context.read<BookingCubit>().fetchBookings(
         'http://10.0.2.2:8080/api/v1/booking/tutor/', '${widget.tutorId}/');
     animationController = AnimationController(
@@ -90,6 +91,9 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                   if (state is BookingLoading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is BookingsLoaded) {
+                    var filteredBookings = state.bookings
+                        .where((booking) => booking.tutorId == widget.tutorId)
+                        .toList();
                     return Column(
                       children: [
                         Container(
@@ -106,9 +110,9 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                         Expanded(
                           child: ListView.builder(
                             padding: EdgeInsets.all(15),
-                            itemCount: state.bookings.length,
+                            itemCount: filteredBookings.length,
                             itemBuilder: (context, index) {
-                              final booking = state.bookings[index];
+                              final booking = filteredBookings[index];
                               return Card(
                                 shadowColor: HexColor('#B799FF'),
                                 elevation: 5.0,
@@ -116,10 +120,14 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: ListTile(
-                                  leading: Icon(Icons.book),
-                                  title: Text('Reserva: ${booking.bookingId}'),
+                                  leading: Icon(
+                                    Icons.book,
+                                    size: 30,
+                                  ),
+                                  title: Text(
+                                      'Reserva: ${booking.userName}${booking.userLastName}'),
                                   subtitle: Text(
-                                      'Niñer@: ${booking.userName} ${booking.userLastName}\nPrecio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                      'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
                                     icon: Icon(Icons.notifications),
                                     onPressed: () {
@@ -140,9 +148,10 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                                                   child: Text(
                                                       'Abrir chat de WhatsApp'),
                                                   onPressed: () {
+                                                    /*
                                                     final whatsappUrl =
                                                         'https://wa.me/+591${booking.userPhone}?text=Hola,%20necesito%20más%20información%20sobre%20la%20reserva.';
-                                                    _launchURL(whatsappUrl);
+                                                    _launchURL(whatsappUrl);*/
                                                   },
                                                 ),
                                                 TextButton(
@@ -162,6 +171,9 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                               );
                             },
                           ),
+                        ),
+                        SizedBox(
+                          height: 70,
                         ),
                       ],
                     );

@@ -31,4 +31,8 @@ class LoginCubit extends Cubit<LoginState> {
       ));
     }
   }
+
+  void logout() {
+    emit(LoginState(isLoading: false, isSuccess: false));
+  }
 }

@@ -22,16 +22,20 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
-        backgroundColor: HexColor("#9695ff"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
           myfam4(),
-          Text('Datos del perfil',
+          Text(' Datos del perfil',
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: HexColor('#20262E'))),
           SizedBox(height: 30),

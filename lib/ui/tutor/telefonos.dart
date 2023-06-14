@@ -17,20 +17,27 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Teléfonos de Emergencia',
-          style: TextStyle(
-              color: Colors.white, fontFamily: 'Roboto', fontSize: 20.0),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: HexColor("#9695ff"),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
+          Center(
+            child: Text('Teléfonos de emergencia',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: HexColor('#20262E'))),
+          ),
           //myfam5(),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
           Text(
-            'Ingresas lo telefonos que tengas de familiares o amigos cercanos en caso de alguna emergencia',
+            'Ingresas telefonos en caso de alguna emergencia',
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -48,7 +55,7 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
           CustomButton(
             onPressed: () {
               if (phoneController.text.isNotEmpty &&
-                  phoneController.text.contains(RegExp(r'^\d+$'))) {
+                  phoneController.text.contains(RegExp(r'^[67]\d{7}$'))) {
                 setState(() {
                   phones.add(phoneController.text);
                   phoneController.clear();

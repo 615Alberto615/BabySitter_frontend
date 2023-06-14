@@ -17,8 +17,12 @@ class _ReglasScreenState extends State<ReglasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reglas de la casa'),
-        backgroundColor: HexColor("#9695ff"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
@@ -28,7 +32,7 @@ class _ReglasScreenState extends State<ReglasScreen> {
           Center(
             child: Text('Reglas de la Casa',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: HexColor('#20262E'))),
           ),

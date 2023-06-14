@@ -84,10 +84,14 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                   if (state is BookingLoading) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is BookingsLoaded) {
+                    var filteredBookings = state.bookings
+                        .where((booking) =>
+                            booking.babysitterId == widget.babysitterId)
+                        .toList();
                     return Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 100, bottom: 20),
+                          margin: EdgeInsets.only(top: 80, bottom: 20),
                           child: Text(
                             'Lista de Reservas',
                             style: TextStyle(
@@ -100,9 +104,9 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                         Expanded(
                           child: ListView.builder(
                             padding: EdgeInsets.all(15),
-                            itemCount: state.bookings.length,
+                            itemCount: filteredBookings.length,
                             itemBuilder: (context, index) {
-                              final booking = state.bookings[index];
+                              final booking = filteredBookings[index];
                               return Card(
                                 shadowColor: HexColor('#B799FF'),
                                 elevation: 5.0,
@@ -179,6 +183,9 @@ class _HomeTState extends State<HomeLB> with TickerProviderStateMixin {
                               );
                             },
                           ),
+                        ),
+                        SizedBox(
+                          height: 70,
                         ),
                       ],
                     );

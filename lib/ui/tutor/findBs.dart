@@ -44,12 +44,12 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
       color: Colors.white,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            '         Niñeras Disponibles',
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Roboto', fontSize: 20.0),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
           ),
-          backgroundColor: HexColor("#9695ff"),
         ),
         backgroundColor: Colors.transparent,
         body: BlocConsumer<BabysitterCubit, BabysitterState>(
@@ -67,6 +67,13 @@ class _FindBsState extends State<FindBs> with TickerProviderStateMixin {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               children: <Widget>[
+                Center(
+                  child: Text('Encuentra una niñera',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: HexColor('#20262E'))),
+                ),
                 SizedBox(
                   height: 10,
                 ),

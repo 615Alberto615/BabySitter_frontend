@@ -45,7 +45,7 @@ class myfam3 extends StatelessWidget {
                 flex: 8,
                 child: Image.asset(
                   "assets/rr.png",
-                  height: 156,
+                  height: 186,
                 )),
             const Spacer(),
           ],

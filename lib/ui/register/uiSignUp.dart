@@ -209,6 +209,17 @@ void registerButtonFunction(BuildContext context) async {
       _emailController.text.isNotEmpty &&
       _conpasswordcontroller.text.isNotEmpty &&
       _selectedRole != -1) {
+    if (!isValidEmail(_emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Por favor, introduce un correo electrónico válido')));
+      return;
+    }
+    if (!isValidPhoneNumber(_phonecontroller.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'Por favor, introduce un número de teléfono válido en Bolivia')));
+      return;
+    }
     try {
       var userData = {
         "userName": _nameController.text,
@@ -326,4 +337,16 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
+bool isValidEmail(String email) {
+  final RegExp regex = RegExp(
+      r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+'); // Una simple regex para validar el email.
+  return regex.hasMatch(email);
+}
+
+bool isValidPhoneNumber(String phoneNumber) {
+  final RegExp regex = RegExp(
+      r'^[67]\d{7}$'); // Regex que verifica si el número tiene 8 dígitos y comienza con 6 o 7.
+  return regex.hasMatch(phoneNumber);
 }
