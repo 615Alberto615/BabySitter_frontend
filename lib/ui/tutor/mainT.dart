@@ -13,6 +13,7 @@ import 'home_tutor.dart';
 import 'opciones_tutor.dart';
 
 int? tutorId;
+Widget tabBody = Center(child: CircularProgressIndicator());
 
 class MainScreen extends StatefulWidget {
   final int userId;
@@ -59,6 +60,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
+    getTutorId().then((_) {
+      // Después de obtener el babysitterId, cambia tabBody a HomeLB
+      setState(() {
+        tabBody = HomeT(
+          userId: widget.userId,
+          tutorId: tutorId ?? 0,
+        );
+      });
+    });
     getTutorId();
     super.initState();
   }

@@ -9,6 +9,7 @@ import 'component/Bottom_bs.dart';
 import 'list_bs.dart';
 
 int? babysitterId;
+Widget tabBody = Center(child: CircularProgressIndicator());
 
 class MainScreenBs extends StatefulWidget {
   final int userId;
@@ -22,6 +23,7 @@ class _MainScreenState extends State<MainScreenBs>
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
   String? token = ModeloToken.token;
+
   Future<void> getBabysitterId() async {
     final response = await http.get(
       Uri.parse('http://10.0.2.2:8080/api/v1/babysitter/user/${widget.userId}'),
@@ -54,6 +56,15 @@ class _MainScreenState extends State<MainScreenBs>
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
+    getBabysitterId().then((_) {
+      // Después de obtener el babysitterId, cambia tabBody a HomeLB
+      setState(() {
+        tabBody = HomeLB(
+          userId: widget.userId,
+          babysitterId: babysitterId ?? 0,
+        );
+      });
+    });
     getBabysitterId();
     super.initState();
   }

@@ -22,8 +22,12 @@ class _verifyBsState extends State<verifyBs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
-        backgroundColor: HexColor("#9695ff"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
