@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/ui/register/components/filds_babysitter.dart';
 import 'package:front/ui/tutor/component/SignUpScreenTopImage_child.dart';
 import 'package:front/ui/tutor/family_tutor.dart';
+import 'package:intl/intl.dart';
 import '../../babysitter/home_babysiiter.dart';
 import 'activity_form.dart';
 import '../component/filds_child.dart';
@@ -95,6 +96,12 @@ class _RegisterBBState extends State<RegisterBB> {
                           _nameController.text.isNotEmpty &&
                           _selectedGender != null) {
                         print(widget.tutorId);
+                        if (!isValidDate(_fnController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Por favor, introduce un formato de fecha válido, aaaa/mm/dd')));
+                          return;
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -203,5 +210,14 @@ class GenderSelector extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+bool isValidDate(String input) {
+  try {
+    DateFormat('yyyy/MM/dd').parseStrict(input);
+    return true;
+  } catch (e) {
+    return false;
   }
 }

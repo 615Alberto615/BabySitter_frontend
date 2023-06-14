@@ -27,6 +27,7 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
+          myfam6(),
           Center(
             child: Text('Teléfonos de emergencia',
                 style: TextStyle(
@@ -34,10 +35,9 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
                     fontWeight: FontWeight.bold,
                     color: HexColor('#20262E'))),
           ),
-          //myfam5(),
           SizedBox(height: 20),
           Text(
-            'Ingresas telefonos en caso de alguna emergencia',
+            'Ingresa algunos telefonos en caso de alguna emergencia',
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,

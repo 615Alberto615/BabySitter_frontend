@@ -111,3 +111,31 @@ class myfam5 extends StatelessWidget {
     );
   }
 }
+
+class myfam6 extends StatelessWidget {
+  const myfam6({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 15),
+        Row(
+          children: [
+            const Spacer(),
+            Expanded(
+                flex: 8,
+                child: Image.asset(
+                  "assets/phone.png",
+                  height: 156,
+                )),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+}

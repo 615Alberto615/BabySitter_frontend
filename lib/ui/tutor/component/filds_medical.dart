@@ -26,7 +26,7 @@ class formTextField extends StatelessWidget {
           child: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              icon: Icon(Icons.calendar_month, color: HexColor("20262E")),
+              icon: Icon(Icons.medication_sharp, color: HexColor("20262E")),
               hintText: 'El niño necesita algún medicamento?',
               labelText: "Medicamentos",
               hintStyle: TextStyle(
@@ -73,7 +73,7 @@ class formTextField2 extends StatelessWidget {
           child: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              icon: Icon(Icons.calendar_month, color: HexColor("20262E")),
+              icon: Icon(Icons.sick, color: HexColor("20262E")),
               hintText: 'El niño tiene alguna enfermedad y/o alergia?',
               labelText: "Enfermedad y/o Alergia",
               hintStyle: TextStyle(
@@ -120,7 +120,7 @@ class formTextField3 extends StatelessWidget {
           child: TextField(
             controller: _controller,
             decoration: InputDecoration(
-              icon: Icon(Icons.calendar_month, color: HexColor("20262E")),
+              icon: Icon(Icons.medical_services, color: HexColor("20262E")),
               hintText: 'Donde se encuentra el botiquin/medicamentos?',
               labelText: "Botiquin y/o Medicamentos",
               hintStyle: TextStyle(
