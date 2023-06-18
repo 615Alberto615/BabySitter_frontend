@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/login_cubit.dart';
+import 'package:front/ui/babysitter/history_bs.dart';
 import 'package:front/ui/babysitter/perfil_bs.dart';
 import 'package:front/ui/babysitter/verify_bs.dart';
 import 'package:front/ui/login/uiLogin.dart';
@@ -10,13 +11,14 @@ import 'package:front/ui/tutor/component/icons.dart';
 import '../../component/bottoms.dart';
 
 class OptionsBs extends StatefulWidget {
-  const OptionsBs({Key? key}) : super(key: key);
+  final int userId;
+  final int babysitterId;
+  const OptionsBs({Key? key, required this.userId, required this.babysitterId})
+      : super(key: key);
   _OptionsTState createState() => _OptionsTState();
 }
 
-class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
-  AnimationController? animationController;
-
+class _OptionsTState extends State<OptionsBs> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -25,15 +27,11 @@ class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
-
     super.initState();
   }
 
   @override
   void dispose() {
-    animationController?.dispose();
     super.dispose();
   }
 
@@ -97,6 +95,24 @@ class _OptionsTState extends State<OptionsBs> with TickerProviderStateMixin {
                             },
                             text: 'Verificar',
                             icon: Icons.verified,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HistoryBs(
+                                          userId: widget.userId,
+                                          babysitterId: widget.babysitterId,
+                                        )),
+                              );
+                              // Hacer algo cuando se presiona el botón
+                            },
+                            text: 'Historial de servicios',
+                            icon: Icons.history,
                           ),
                           SizedBox(height: 5),
                           CustomButton(

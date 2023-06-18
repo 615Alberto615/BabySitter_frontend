@@ -13,7 +13,7 @@ class OptionsT extends StatefulWidget {
   _OptionsTState createState() => _OptionsTState();
 }
 
-class _OptionsTState extends State<OptionsT> with TickerProviderStateMixin {
+class _OptionsTState extends State<OptionsT> {
   AnimationController? animationController;
 
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
@@ -24,15 +24,11 @@ class _OptionsTState extends State<OptionsT> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
-
     super.initState();
   }
 
   @override
   void dispose() {
-    animationController?.dispose();
     super.dispose();
   }
 

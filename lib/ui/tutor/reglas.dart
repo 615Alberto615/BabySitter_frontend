@@ -1,134 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/cubit/reglas_cubit.dart';
+import 'package:front/service/ApiService_reglas.dart';
 import 'package:front/ui/tutor/perfil.dart';
 
 import '../../component/filds_forms.dart';
 import 'component/img_top2.dart';
 
 class ReglasScreen extends StatefulWidget {
+  final int tutorId;
+  final int userId;
+  const ReglasScreen({Key? key, required this.tutorId, required this.userId})
+      : super(key: key);
   @override
   _ReglasScreenState createState() => _ReglasScreenState();
 }
 
 class _ReglasScreenState extends State<ReglasScreen> {
   final TextEditingController ruleController = TextEditingController();
-  List<String> rules = []; // Mantén una lista de reglas.
+  late ReglasCubit reglasCubit;
+  @override
+  void initState() {
+    super.initState();
+    reglasCubit = ReglasCubit(ReglasService());
+    reglasCubit.fetchReglas(widget.tutorId);
+  }
+
+  @override
+  void dispose() {
+    reglasCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+    return BlocProvider<ReglasCubit>.value(
+      value: reglasCubit,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(20),
-        children: [
-          myfam3(),
-          SizedBox(height: 10),
-          Center(
-            child: Text('Reglas de la Casa',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: HexColor('#20262E'))),
-          ),
-          SizedBox(height: 30),
-          fildform(
-            controller: ruleController,
-            hint: 'Introduce la regla',
-            label: 'Regla',
-            icon: Icons.rule,
-          ),
-          SizedBox(height: 20),
-          PerfilButton(
-            text: 'Guardar Regla',
-            onPressed: () {
-              setState(() {
-                rules.add(
-                    ruleController.text); // Agrega la nueva regla a la lista.
-                ruleController.clear(); // Limpia el campo después de agregarlo.
-              });
-            },
-          ),
-          SizedBox(height: 20),
-          ...rules
-              .map((rule) => Card(
-                    // Genera una tarjeta por cada regla.
-                    child: ListTile(
-                      title: Text(rule),
+        body: BlocConsumer<ReglasCubit, ReglasState>(
+          listener: (context, state) {
+            if (state is ReglasError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: ${state.message}')),
+              );
+            }
+          },
+          builder: (context, state) {
+            return ListView(
+              padding: EdgeInsets.all(20),
+              children: [
+                myfam3(),
+                SizedBox(height: 10),
+                Center(
+                  child: Text('Reglas de la Casa',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: HexColor('#20262E'))),
+                ),
+                SizedBox(height: 30),
+                fildform(
+                  controller: ruleController,
+                  hint: 'Introduce la regla',
+                  label: 'Regla',
+                  icon: Icons.rule,
+                ),
+                SizedBox(height: 20),
+                PerfilButton(
+                  text: 'Guardar Regla',
+                  onPressed: () {
+                    context.read<ReglasCubit>().addRegla(ruleController.text);
+                    ruleController.clear();
+                  },
+                ),
+                SizedBox(height: 20),
+                if (state is ReglasLoaded)
+                  for (var regla in state.reglas)
+                    ListTile(
+                      title: Text(regla.regla),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                backgroundColor: HexColor("#9695ff"),
-                                child: Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text('Eliminar Regla',
-                                          style: TextStyle(
-                                              fontSize: 24.0,
-                                              fontWeight: FontWeight.bold)),
-                                      SizedBox(height: 20.0),
-                                      Text(
-                                          'Estás seguro que quieres eliminar esta regla?'),
-                                      SizedBox(height: 20.0),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          TextButton(
-                                            child: Text(
-                                              'Cancelar',
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white, // Color de texto personalizado
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              // Cerrar el AlertDialog
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text(
-                                              'Eliminar',
-                                              style: TextStyle(
-                                                color: Colors
-                                                    .white, // Color de texto personalizado
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                rules.remove(rules);
-                                              });
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
+                          /*
+                            context.read<ReglasCubit>().deleteRegla(regla.id);*/
                         },
                       ),
                     ),
-                  ))
-              .toList(),
-        ],
+                if (state is ReglasLoading) CircularProgressIndicator(),
+                SizedBox(height: 10),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

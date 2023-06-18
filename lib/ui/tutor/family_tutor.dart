@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/ui/tutor/child/activity_form.dart';
 import 'package:front/ui/tutor/child/add_child.dart';
 
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
@@ -31,9 +32,7 @@ class familyT extends StatefulWidget {
   _familyTState createState() => _familyTState();
 }
 
-class _familyTState extends State<familyT> with TickerProviderStateMixin {
-  AnimationController? animationController;
-
+class _familyTState extends State<familyT> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   final TextEditingController nameController = TextEditingController();
@@ -45,8 +44,6 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
 
     try {
       context.read<ChildCubit>().fetchChildren(
@@ -60,7 +57,6 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    animationController?.dispose();
     super.dispose();
   }
 
@@ -78,7 +74,7 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
               );
             } else if (state is ChildDeleted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Child successfully deleted')),
+                SnackBar(content: Text('Registro eliminado correctamente')),
               );
               context.read<ChildCubit>().fetchChildren(
                   'http://10.0.2.2:8080/api/v1/child/tutor/',
@@ -273,7 +269,11 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ReglasScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => ReglasScreen(
+                                tutorId: widget.tutorId,
+                                userId: widget.userId,
+                              )),
                     );
                     // Hacer algo cuando se presiona el botón
                   },
@@ -292,6 +292,18 @@ class _familyTState extends State<familyT> with TickerProviderStateMixin {
                   },
                   text: 'Telefonos de emergencia',
                   icon: Icons.phone,
+                ),
+                SizedBox(height: 6),
+                CustomButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => activForm()),
+                    );
+                    // Hacer algo cuando se presiona el botón
+                  },
+                  text: 'Actividades',
+                  icon: Icons.local_activity,
                 ),
                 SizedBox(height: 120),
               ],

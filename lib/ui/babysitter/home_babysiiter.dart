@@ -19,7 +19,7 @@ class MainScreenBs extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreenBs>
     with TickerProviderStateMixin {
-  AnimationController? animationController;
+  AnimationController? _animationController;
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
   String? token = ModeloToken.token;
@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreenBs>
     });
     tabIconsList[0].isSelected = true;
 
-    animationController = AnimationController(
+    _animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     getBabysitterId().then((_) {
       // Después de obtener el babysitterId, cambia tabBody a HomeLB
@@ -71,7 +71,8 @@ class _MainScreenState extends State<MainScreenBs>
 
   @override
   void dispose() {
-    animationController?.dispose();
+    _animationController?.stop(); // Detén el AnimationController
+    _animationController?.dispose(); // Elimina el AnimationController
     super.dispose();
   }
 
@@ -118,7 +119,10 @@ class _MainScreenState extends State<MainScreenBs>
               });
             } else if (index == 3) {
               setState(() {
-                tabBody = OptionsBs();
+                tabBody = OptionsBs(
+                  userId: widget.userId,
+                  babysitterId: babysitterId ?? 0,
+                );
                 for (int i = 0; i < tabIconsList.length; i++) {
                   tabIconsList[i].isSelected = i == index;
                 }

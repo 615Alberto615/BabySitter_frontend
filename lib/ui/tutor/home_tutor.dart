@@ -18,9 +18,7 @@ class HomeT extends StatefulWidget {
   _HomeTState createState() => _HomeTState();
 }
 
-class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
-  AnimationController? animationController;
-
+class _HomeTState extends State<HomeT> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -32,8 +30,6 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
     print('Tutor ID: ${widget.tutorId}');
     context.read<BookingCubit>().fetchBookings(
         'http://10.0.2.2:8080/api/v1/booking/tutor/', '${widget.tutorId}/');
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
 
     super.initState();
   }
@@ -48,7 +44,6 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    animationController?.dispose();
     super.dispose();
   }
 
@@ -92,7 +87,9 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is BookingsLoaded) {
                     var filteredBookings = state.bookings
-                        .where((booking) => booking.tutorId == widget.tutorId)
+                        .where((booking) =>
+                            booking.tutorId == widget.tutorId &&
+                            booking.bookingCompleted != 3)
                         .toList();
                     return Column(
                       children: [
@@ -107,12 +104,31 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
+                        //SearchBar(),
                         Expanded(
                           child: ListView.builder(
                             padding: EdgeInsets.all(15),
                             itemCount: filteredBookings.length,
                             itemBuilder: (context, index) {
                               final booking = filteredBookings[index];
+                              Color
+                                  statusColor; // Definición del color del estado
+                              switch (booking.bookingCompleted) {
+                                case 1:
+                                  statusColor = Colors.yellow;
+                                  break;
+                                case 2:
+                                  statusColor = HexColor('#ffab7d');
+                                  break;
+                                case 3:
+                                  statusColor = Colors.green;
+                                  break;
+                                case 4:
+                                  statusColor = HexColor('#ff6b6b');
+                                  break;
+                                default:
+                                  statusColor = HexColor('#B799FF');
+                              }
                               return Card(
                                 shadowColor: HexColor('#B799FF'),
                                 elevation: 5.0,
@@ -123,9 +139,16 @@ class _HomeTState extends State<HomeT> with TickerProviderStateMixin {
                                   leading: Icon(
                                     Icons.book,
                                     size: 30,
+                                    color:
+                                        statusColor, // Aplicación del color al icono
                                   ),
                                   title: Text(
-                                      'Reserva: ${booking.userName}${booking.userLastName}'),
+                                    'Reserva: ${booking.userName}${booking.userLastName}',
+                                    style: TextStyle(
+                                      color:
+                                          statusColor, // Aplicación del color al título
+                                    ),
+                                  ),
                                   subtitle: Text(
                                       'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
                                   trailing: IconButton(
@@ -205,4 +228,38 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
+class SearchBar extends StatelessWidget {
+  final pink = const Color(0xFFFACCCC);
+  final grey = const Color(0xFFF2F2F7);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 32,
+      child: TextFormField(
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          focusColor: pink,
+          focusedBorder: _border(pink),
+          border: _border(grey),
+          enabledBorder: _border(grey),
+          hintText: 'Start brand search',
+          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+          prefixIcon: const Icon(
+            Icons.search,
+            color: Colors.grey,
+          ),
+        ),
+        onFieldSubmitted: (value) {},
+      ),
+    );
+  }
+
+  OutlineInputBorder _border(Color color) => OutlineInputBorder(
+        borderSide: BorderSide(width: 0.5, color: color),
+        borderRadius: BorderRadius.circular(12),
+      );
 }

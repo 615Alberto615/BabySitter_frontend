@@ -105,7 +105,7 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
 
                           SizedBox(
                             height: 7,
-                          ),
+                          ), /*
                           CustomButton(
                             onPressed: () {
                               Navigator.push(
@@ -118,7 +118,7 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
                             text: 'Actividades',
                             icon: Icons.local_activity,
                           ),
-
+                              */
                           // Agrega más botones según necesites...
                         ],
                       ),

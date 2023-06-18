@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:front/cubit/booking_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
-import 'component/Bottom_Tutor.dart';
-import 'component/ColoresTutor.dart';
+import 'package:front/ui/tutor/component/ColoresTutor.dart';
+import 'package:front/ui/tutor/component/icons.dart';
 
-import 'component/icons.dart';
-import 'family_tutor.dart';
-import 'home_tutor.dart';
-import 'opciones_tutor.dart';
-
-class HistoryT extends StatefulWidget {
+class HistoryBs extends StatefulWidget {
   final int userId;
-  final int tutorId;
+  final int babysitterId;
 
-  const HistoryT({Key? key, required this.userId, required this.tutorId})
-      : super(key: key);
+  const HistoryBs({
+    Key? key,
+    required this.userId,
+    required this.babysitterId,
+  }) : super(key: key);
   _HistoryTState createState() => _HistoryTState();
 }
 
-class _HistoryTState extends State<HistoryT> {
+class _HistoryTState extends State<HistoryBs> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -29,7 +27,8 @@ class _HistoryTState extends State<HistoryT> {
   @override
   void initState() {
     context.read<BookingCubit>().fetchBookings(
-        'http://10.0.2.2:8080/api/v1/booking/tutor/', '${widget.tutorId}/');
+        'http://10.0.2.2:8080/api/v1/booking/babysitter/',
+        '${widget.babysitterId}/');
 
     super.initState();
   }
@@ -59,6 +58,14 @@ class _HistoryTState extends State<HistoryT> {
     return Container(
       color: ColoresTutor.background,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
         backgroundColor: Colors.transparent,
         body: FutureBuilder<bool>(
           future: getData(),
@@ -83,8 +90,8 @@ class _HistoryTState extends State<HistoryT> {
                       ),
                     );
                     context.read<BookingCubit>().fetchBookings(
-                        'http://10.0.2.2:8080/api/v1/booking/tutor/',
-                        '${widget.tutorId}/');
+                        'http://10.0.2.2:8080/api/v1/booking/babysitter/',
+                        '${widget.babysitterId}/');
                   }
                 },
                 builder: (context, state) {
@@ -93,14 +100,14 @@ class _HistoryTState extends State<HistoryT> {
                   } else if (state is BookingsLoaded) {
                     var filteredBookings = state.bookings
                         .where((booking) =>
-                            booking.tutorId == widget.tutorId &&
+                            booking.babysitterId == widget.babysitterId &&
                             booking.bookingCompleted == 3)
                         .toList();
 
                     return Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 100, bottom: 20),
+                          margin: EdgeInsets.only(top: 10, bottom: 20),
                           child: Text(
                             'Lista de Reservas',
                             style: TextStyle(

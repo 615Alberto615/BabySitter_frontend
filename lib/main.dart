@@ -11,6 +11,9 @@ import 'package:front/ui/login/uiLogin.dart';
 import 'package:front/cubit/login_cubit.dart';
 import 'package:front/cubit/child_cubit.dart';
 
+import 'package:front/cubit/reglas_cubit.dart';
+import 'package:front/service/ApiService_reglas.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -33,6 +36,9 @@ class MyApp extends StatelessWidget {
         ), // Aquí agregamos el proveedor para BabysitterCubit
         BlocProvider<BookingCubit>(
           create: (context) => BookingCubit(BookingService()),
+        ),
+        BlocProvider<ReglasCubit>(
+          create: (context) => ReglasCubit(ReglasService()),
         ),
       ],
       child: MaterialApp(
