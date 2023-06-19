@@ -4,10 +4,10 @@ import 'package:front/models/modelo_telfono.dart';
 import 'package:front/models/modelo_token.dart';
 import 'package:http/http.dart' as http;
 
-class ReglasService {
+class TelefonoService {
   String? token = ModeloToken.token;
 
-  Future<http.Response> createTele(
+  Future<http.Response> createTelefono(
       String apiUrl, Map<String, dynamic> requestBody) async {
     var body = json.encode(requestBody);
     var response = await http.post(
@@ -21,7 +21,7 @@ class ReglasService {
     return response;
   }
 
-  Future<http.Response> deleteTele(String apiUrl, String tutorId) async {
+  Future<http.Response> deleteTelefono(String apiUrl, String tutorId) async {
     var response = await http.delete(
       Uri.parse('$apiUrl$tutorId'),
       headers: {
@@ -32,7 +32,7 @@ class ReglasService {
     return response;
   }
 
-  Future<List<telfono>> fetchTele(String apiUrl, String parentId) async {
+  Future<List<telfono>> fetchTelefono(String apiUrl, String parentId) async {
     try {
       final response = await http.get(
         Uri.parse('$apiUrl$parentId'),

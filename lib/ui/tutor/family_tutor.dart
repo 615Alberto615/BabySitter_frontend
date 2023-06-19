@@ -286,7 +286,10 @@ class _familyTState extends State<familyT> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TelefonosScreen()),
+                          builder: (context) => TelefonosScreen(
+                                tutorId: widget.tutorId,
+                                userId: widget.userId,
+                              )),
                     );
                     // Hacer algo cuando se presiona el botón
                   },
