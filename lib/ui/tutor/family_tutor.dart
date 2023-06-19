@@ -157,7 +157,11 @@ class _familyTState extends State<familyT> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => childOptions()),
+                                        builder: (context) => childOptions(
+                                              child: hijo,
+                                              tutorId: widget.tutorId,
+                                              userId: widget.userId,
+                                            )),
                                   );
                                 },
                               ),
@@ -257,7 +261,11 @@ class _familyTState extends State<familyT> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PerfilScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => PerfilScreen(
+                                tutorId: widget.tutorId,
+                                userId: widget.userId,
+                              )),
                     );
                     // Hacer algo cuando se presiona el botón
                   },

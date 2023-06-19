@@ -62,4 +62,24 @@ class ChildCubit extends Cubit<ChildState> {
       return false;
     }
   }
+
+  Future<bool> updateChild(
+      String apiUrl, String childId, Map<String, dynamic> requestBody) async {
+    emit(ChildLoading());
+    try {
+      var response =
+          await _childService.updateChild(apiUrl, childId, requestBody);
+
+      if (response.statusCode == 200) {
+        emit(ChildUpdated());
+        return true;
+      } else {
+        emit(ChildError('Error updating child'));
+        return false;
+      }
+    } catch (_) {
+      emit(ChildError('Error updating child'));
+      return false;
+    }
+  }
 }

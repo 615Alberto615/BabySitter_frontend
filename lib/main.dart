@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/cubit/babysitter_cubit.dart';
 import 'package:front/cubit/booking_cubit.dart';
 import 'package:front/cubit/telefonos_cubit.dart';
+import 'package:front/cubit/user_cubit.dart';
 import 'package:front/service/ApiSerice_booking.dart';
+import 'package:front/service/ApiService_User.dart';
 import 'package:front/service/ApiService_babysitter.dart';
 import 'package:front/service/ApiService_telefonos.dart';
 import 'package:front/service/LoginService.dart';
@@ -44,6 +46,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TelefonoCubit>(
           create: (context) => TelefonoCubit(TelefonoService()),
+        ),
+        BlocProvider<UsuarioCubit>(
+          create: (context) => UsuarioCubit(UsuarioService()),
         ),
       ],
       child: MaterialApp(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/models/modelo_child.dart';
 import 'package:front/ui/login/uiLogin.dart';
 import 'package:front/ui/tutor/child/medical_form.dart';
 
@@ -13,13 +14,15 @@ import 'edit_child.dart';
 // Asegúrate de importar CustomButton
 
 class childOptions extends StatefulWidget {
-  const childOptions({Key? key}) : super(key: key);
+  final Child child;
+  final tutorId;
+  final userId;
+  const childOptions({Key? key, required this.child, this.tutorId, this.userId})
+      : super(key: key);
   _OptionsTState createState() => _OptionsTState();
 }
 
-class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
-  AnimationController? animationController;
-
+class _OptionsTState extends State<childOptions> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -28,15 +31,11 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
-
     super.initState();
   }
 
   @override
   void dispose() {
-    animationController?.dispose();
     super.dispose();
   }
 
@@ -92,7 +91,10 @@ class _OptionsTState extends State<childOptions> with TickerProviderStateMixin {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => editBB()),
+                                    builder: (context) => editBB(
+                                        child: widget.child,
+                                        tutorId: widget.tutorId,
+                                        userId: widget.userId)),
                               );
                               // Hacer algo cuando se presiona el botón
                             },
