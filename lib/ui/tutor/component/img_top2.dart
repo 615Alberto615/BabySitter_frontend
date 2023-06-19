@@ -139,3 +139,59 @@ class myfam6 extends StatelessWidget {
     );
   }
 }
+
+class myfam7 extends StatelessWidget {
+  const myfam7({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 15),
+        Row(
+          children: [
+            const Spacer(),
+            Expanded(
+                flex: 8,
+                child: Image.asset(
+                  "assets/h1.png",
+                  height: 156,
+                )),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+}
+
+class myfam8 extends StatelessWidget {
+  const myfam8({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 15),
+        Row(
+          children: [
+            const Spacer(),
+            Expanded(
+                flex: 8,
+                child: Image.asset(
+                  "assets/h2.png",
+                  height: 156,
+                )),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+}

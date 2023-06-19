@@ -11,6 +11,10 @@ class ReglasInitial extends ReglasState {}
 
 class ReglasLoading extends ReglasState {}
 
+class ReglaCreated extends ReglasState {}
+
+class ReglaDeleted extends ReglasState {}
+
 class ReglasLoaded extends ReglasState {
   final List<Regla> reglas;
 

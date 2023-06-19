@@ -47,6 +47,13 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
           SizedBox(height: 30),
           fildform(
             controller: phoneController,
+            hint: 'Introduce el nombre del contacto',
+            label: 'Nombre',
+            icon: Icons.person,
+          ),
+          SizedBox(height: 10),
+          fildform(
+            controller: phoneController,
             hint: 'Introduce el teléfono de emergencia',
             label: 'Teléfono',
             icon: Icons.phone,

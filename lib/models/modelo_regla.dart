@@ -1,23 +1,19 @@
 class Regla {
-  final int id;
-  final int tutorId;
-  final String regla;
+  final int tutorRulesId;
+  final int tutor;
+  final String rulesHome;
 
-  Regla({required this.id, required this.tutorId, required this.regla});
+  Regla({
+    required this.tutorRulesId,
+    required this.tutor,
+    required this.rulesHome,
+  });
 
   factory Regla.fromJson(Map<String, dynamic> json) {
     return Regla(
-      id: json['tutorRulesId'],
-      tutorId: json['tutor'],
-      regla: json['rulesHome'],
+      tutorRulesId: json['tutorRulesId'] as int? ?? 0,
+      tutor: json['tutor'] as int? ?? 0,
+      rulesHome: json['rulesHome'] as String? ?? '',
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'tutorRulesId': id,
-      'tutor': tutorId,
-      'rulesHome': regla,
-    };
   }
 }

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:front/models/modelo_regla.dart';
+import 'package:front/models/modelo_telfono.dart';
 import 'package:front/models/modelo_token.dart';
 import 'package:http/http.dart' as http;
 
 class ReglasService {
   String? token = ModeloToken.token;
 
-  Future<http.Response> createRegla(
+  Future<http.Response> createTele(
       String apiUrl, Map<String, dynamic> requestBody) async {
     var body = json.encode(requestBody);
     var response = await http.post(
@@ -21,7 +21,7 @@ class ReglasService {
     return response;
   }
 
-  Future<http.Response> deleteRegla(String apiUrl, String tutorId) async {
+  Future<http.Response> deleteTele(String apiUrl, String tutorId) async {
     var response = await http.delete(
       Uri.parse('$apiUrl$tutorId'),
       headers: {
@@ -32,7 +32,7 @@ class ReglasService {
     return response;
   }
 
-  Future<List<Regla>> fetchReglas(String apiUrl, String parentId) async {
+  Future<List<telfono>> fetchTele(String apiUrl, String parentId) async {
     try {
       final response = await http.get(
         Uri.parse('$apiUrl$parentId'),
@@ -48,7 +48,7 @@ class ReglasService {
         List<dynamic> jsonResponse =
             data['data']; // 'data' es la clave de la lista en la respuesta
         if (jsonResponse != null) {
-          return jsonResponse.map((item) => Regla.fromJson(item)).toList();
+          return jsonResponse.map((item) => telfono.fromJson(item)).toList();
         } else {
           // manejar la situación cuando 'data' es null
           print('Error: el campo "data" es null');

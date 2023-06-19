@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/cubit/login_cubit.dart';
 import 'package:front/ui/login/uiLogin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/ui/tutor/ayuda.dart';
 
 import '../../component/bottoms.dart';
 
@@ -67,7 +68,13 @@ class _OptionsTState extends State<OptionsT> {
                           ),
                           SizedBox(height: 30),
                           CustomButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AyudaScreen()),
+                              );
+                            },
                             text: 'Ayuda',
                             icon: Icons.help,
                           ),
