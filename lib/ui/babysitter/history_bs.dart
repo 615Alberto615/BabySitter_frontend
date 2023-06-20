@@ -172,13 +172,13 @@ class _HistoryTState extends State<HistoryBs> {
                                       Text(
                                           'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
                                     ],
-                                  ),
+                                  ), /*
                                   trailing: IconButton(
                                     icon: Icon(Icons.reviews),
                                     onPressed: () {
                                       // Acción que se ejecutará al presionar el botón de campana
                                     },
-                                  ),
+                                  ),*/
                                 ),
                               );
                             },

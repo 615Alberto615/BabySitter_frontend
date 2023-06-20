@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/booking_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/ui/babysitter/home_babysiiter.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
+import 'package:front/ui/tutor/reviews.dart';
 import 'component/Bottom_Tutor.dart';
 import 'component/ColoresTutor.dart';
 import 'package:intl/intl.dart';
@@ -168,6 +170,68 @@ class _HistoryTState extends State<HistoryT> {
                                   trailing: IconButton(
                                     icon: Icon(Icons.reviews),
                                     onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Opciones de reseña',
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.close),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
+                                            content: Text(
+                                              '¿Desea hacer una reseña a ${booking.userName} ${booking.userLastName}?',
+                                              textAlign: TextAlign.justify,
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('Cerrar'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text('Hacer reseña'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          reviewsScreen(
+                                                        booking: booking,
+                                                        tutorId:
+                                                            booking.tutorId,
+                                                        babysitterId: booking
+                                                            .babysitterId,
+                                                        userId: widget.userId,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                       // Acción que se ejecutará al presionar el botón de campana
                                     },
                                   ),
