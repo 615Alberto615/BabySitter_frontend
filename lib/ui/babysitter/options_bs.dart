@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/login_cubit.dart';
+import 'package:front/ui/babysitter/ReviewsBs.dart';
 import 'package:front/ui/babysitter/history_bs.dart';
 import 'package:front/ui/babysitter/perfil_bs.dart';
 import 'package:front/ui/babysitter/verify_bs.dart';
@@ -134,6 +135,22 @@ class _OptionsTState extends State<OptionsBs> {
                             },
                             text: 'Historial de servicios',
                             icon: Icons.history,
+                          ),
+                          SizedBox(height: 5),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => reviewsScreenBsS(
+                                          userId: widget.userId,
+                                          babysitterId: widget.babysitterId,
+                                        )),
+                              );
+                              // Hacer algo cuando se presiona el botón
+                            },
+                            text: 'Reseñas de tus servicios',
+                            icon: Icons.reviews,
                           ),
                           SizedBox(height: 5),
                           CustomButton(

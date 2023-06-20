@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/ui/babysitter/BookingChildsMed.dart';
 import 'package:front/ui/babysitter/component/img_topBs.dart';
 import 'package:front/ui/tutor/child/activity_form.dart';
 import 'package:front/ui/tutor/child/add_child.dart';
@@ -138,7 +139,18 @@ class _familyTState extends State<BookingChilds> {
                               IconButton(
                                 icon: Icon(Icons.medical_information,
                                     color: bottomTutor.HexColor('#20262E')),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChildMed(
+                                        tutorId: widget.tutorId,
+                                        userId: widget.userId,
+                                        child: hijo,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
