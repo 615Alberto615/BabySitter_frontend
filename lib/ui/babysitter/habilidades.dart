@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/activity_cubit.dart';
 import 'package:front/ui/register/components/filds_babysitter.dart'; //Asegúrate de que la ruta de importación sea correcta
+import 'package:front/ui/tutor/component/SignUpScreenTopImage_child.dart';
+import 'package:front/ui/tutor/component/filds_activity.dart';
 import 'package:front/ui/tutor/mainT.dart';
 
-import '../../babysitter/home_babysiiter.dart';
-import '../component/SignUpScreenTopImage_child.dart';
-import '../component/filds_activity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 final _ciController = TextEditingController();
@@ -52,7 +51,7 @@ class _RegisterBBState extends State<ActivForm> {
         } else if (state is ActivityUpdated) {
           // Muestra un mensaje de éxito y navega a la pantalla principal
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registro realizado exitosamente')),
+            SnackBar(content: Text('Registro relizado exitosamente')),
           );
           Navigator.push(
             context,
@@ -89,7 +88,7 @@ class _RegisterBBState extends State<ActivForm> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Recomendaciones de Cuidado:\n          Actividades",
+                          "Habilidades que posee como Niñer@",
                           style: TextStyle(
                             color: Color.fromRGBO(49, 39, 79, 1),
                             fontWeight: FontWeight.bold,
@@ -110,45 +109,12 @@ class _RegisterBBState extends State<ActivForm> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          print(_selectedActivities);
-                          print(_selectedActivities.length);
-                          print(_selectedActivities[0]);
-                          print(_selectedActivities[1]);
-                          print(widget.tutorId);
                           try {
                             if (_selectedActivities.isNotEmpty) {
                               // Crear el requestBody con los datos del formulario
-                              Map<String, dynamic> requestBody = {
-                                'tutorId': widget.tutorId,
-                                "activityTableGames":
-                                    _selectedActivities[0].toString(),
-                                "activityArtsAndCrafts":
-                                    _selectedActivities[1].toString(),
-                                "activityReadingOfBooks":
-                                    _selectedActivities[2].toString(),
-                                "activityCookingAndPastry":
-                                    _selectedActivities[3].toString(),
-                                "activityOutdoorActivities":
-                                    _selectedActivities[4].toString(),
-                                "activityBlockConstruction":
-                                    _selectedActivities[5].toString(),
-                                "activityRolePlays":
-                                    _selectedActivities[6].toString(),
-                                "activityMusicAndDance":
-                                    _selectedActivities[7].toString(),
-                                "activityExercisesAndYoga":
-                                    _selectedActivities[8].toString(),
-                                "activityGardening":
-                                    _selectedActivities[9].toString(),
-                                "activityConstructionOfFortresses":
-                                    _selectedActivities[10].toString(),
-                                "activityMoviesAndTvShows":
-                                    _selectedActivities[11].toString(),
-                                "activityNone":
-                                    _selectedActivities[12].toString()
-                              };
+                              Map<String, dynamic> requestBody = {};
                               context.read<ActivityCubit>().updateActivity(
-                                  'http://10.0.2.2:8080/api/v1/childActivity/tutor/',
+                                  'http://10.0.2.2:8080/api/v1/child/',
                                   widget.tutorId,
                                   requestBody);
                             } else {

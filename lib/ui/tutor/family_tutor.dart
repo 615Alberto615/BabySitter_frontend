@@ -309,7 +309,11 @@ class _familyTState extends State<familyT> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => activForm()),
+                      MaterialPageRoute(
+                          builder: (context) => ActivForm(
+                                tutorId: widget.tutorId,
+                                userId: widget.userId,
+                              )),
                     );
                     // Hacer algo cuando se presiona el botón
                   },

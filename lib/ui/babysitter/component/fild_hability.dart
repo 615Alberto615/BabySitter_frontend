@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Activity {
+class hability {
   final String title;
   bool value;
 
-  Activity({required this.title, this.value = false});
+  hability({required this.title, this.value = false});
 }
 
 class ActivitiesForm extends StatefulWidget {
@@ -17,20 +17,20 @@ class ActivitiesForm extends StatefulWidget {
 }
 
 class _ActivitiesFormState extends State<ActivitiesForm> {
-  List<Activity> activities = [
-    Activity(title: '1)	Juegos de mesa'),
-    Activity(title: '2)	Artes y manualidades'),
-    Activity(title: '3)	Lectura de libros'),
-    Activity(title: '4)	Cocina y repostería'),
-    Activity(title: '5)	Actividades al aire libre'),
-    Activity(title: '6)	Construcción con bloques'),
-    Activity(title: '7)	Juegos de roles'),
-    Activity(title: '8)	Música y baile'),
-    Activity(title: '9) Jugar videojuegos'),
-    Activity(title: '10) Jardinería'),
-    Activity(title: '11) Construcción de fortalezas'),
-    Activity(title: '12) Películas y programas de televisión'),
-    Activity(title: 'Ninguna de las anteriores'),
+  List<hability> activities = [
+    hability(title: '1)	Conocimientos sobre el desarrollo infantil'),
+    hability(title: '2)	Empatía y paciencia'),
+    hability(title: '3)	Comunicación efectiva'),
+    hability(title: '4)	Habilidades de organización'),
+    hability(title: '5)	Flexibilidad y adaptabilidad'),
+    hability(title: '6)	Conocimientos de primeros auxilios'),
+    hability(title: '7)	Sensibilidad cultural'),
+    hability(title: '8)	Habilidades de resolución de conflictos'),
+    hability(title: '9)	Creatividad'),
+    hability(title: '10)	Conocimiento de necesidades especiales'),
+    hability(title: '11)	Observación atenta'),
+    hability(title: '12)	Gusto por la enseñanza'),
+    hability(title: 'Ninguna de las anteriores'),
     // Añade más actividades si necesitas
   ];
 

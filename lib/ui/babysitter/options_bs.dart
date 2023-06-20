@@ -84,6 +84,21 @@ class _OptionsTState extends State<OptionsBs> {
                             text: 'Perfil',
                             icon: Icons.person,
                           ),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PerfilScreenB(
+                                          userId: widget.userId,
+                                          babysitterId: widget.babysitterId,
+                                        )),
+                              );
+                              // Hacer algo cuando se presiona el botón
+                            },
+                            text: 'Habilidades',
+                            icon: Icons.person_add_alt,
+                          ),
                           SizedBox(
                             height: 5,
                           ),
