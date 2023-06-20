@@ -235,40 +235,12 @@ void registerButtonFunction(BuildContext context) async {
         TextEditingController codeController = TextEditingController();
 
         return AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Codigo de Verificación',
-                textAlign: TextAlign.center,
-              ),
-              IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  'Por favor, ingrese el código de verificación que se le ha enviado a su correo electrónico',
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: codeController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Código de verificación',
-                  ),
-                ),
-              ],
+          title: Text(
+              'Ingresa el código de 4 digitos enviado a tu correo electronico'),
+          content: TextField(
+            controller: codeController,
+            decoration: InputDecoration(
+              hintText: 'Ingresa el código',
             ),
           ),
           actions: [
@@ -279,6 +251,26 @@ void registerButtonFunction(BuildContext context) async {
                 Navigator.of(context).pop(isMatched);
               },
               child: Text('Aceptar'),
+            ),
+            //Reenviar codigo
+            TextButton(
+              onPressed: () async {
+                codigo = generateRandomCode();
+                print("nuevo codigo: " + codigo);
+                Map<String, dynamic> respuesta = await ApiService()
+                    .sendRegistrationCode(_emailController.text, codigo);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        'Se ha enviado un nuevo código a su correo electrónico')));
+              },
+              child: Text('Reenviar código'),
+            ),
+            // Botón para cerrar el diálogo
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancelar'),
             ),
           ],
         );
