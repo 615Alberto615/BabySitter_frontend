@@ -22,8 +22,7 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  AnimationController? _animationController;
+class _MainScreenState extends State<MainScreen> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   Widget tabBody = Container(color: ColoresTutor.background);
   String? token = ModeloToken.token;
@@ -58,8 +57,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     });
     tabIconsList[0].isSelected = true;
 
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
     getTutorId().then((_) {
       // Después de obtener el babysitterId, cambia tabBody a HomeLB
       setState(() {
@@ -75,8 +72,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _animationController?.stop(); // Detén el AnimationController
-    _animationController?.dispose(); // Elimina el AnimationController
     super.dispose();
   }
 

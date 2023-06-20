@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:front/component/bottoms.dart';
 import 'package:front/cubit/booking_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/models/modelo_babysitter.dart';
+import 'package:front/models/modelo_booking.dart';
+import 'package:front/ui/babysitter/BookingChilds.dart';
 import 'package:front/ui/babysitter/BookingDetail.dart';
+import 'package:front/ui/babysitter/BookingRules.dart';
+import 'package:front/ui/babysitter/component/img_topBs.dart';
 import 'package:front/ui/babysitter/home_babysiiter.dart';
 import '../tutor/component/ColoresTutor.dart';
 import '../tutor/component/icons.dart';
-
 import 'package:intl/intl.dart';
 
-class HomeLB extends StatefulWidget {
+class BookingDetail extends StatefulWidget {
   final int userId;
   final int babysitterId;
-  const HomeLB({Key? key, required this.userId, required this.babysitterId})
+  final Booking booking;
+  const BookingDetail(
+      {Key? key,
+      required this.userId,
+      required this.babysitterId,
+      required this.booking})
       : super(key: key);
   _HomeTState createState() => _HomeTState();
 }
 
-class _HomeTState extends State<HomeLB> {
+class _HomeTState extends State<BookingDetail> {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   Widget tabBody = Container(
@@ -59,6 +69,14 @@ class _HomeTState extends State<HomeLB> {
     return Container(
       color: ColoresTutor.background,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
         backgroundColor: Colors.transparent,
         body: FutureBuilder<bool>(
           future: getData(),
@@ -93,16 +111,15 @@ class _HomeTState extends State<HomeLB> {
                   } else if (state is BookingsLoaded) {
                     var filteredBookings = state.bookings
                         .where((booking) =>
-                            booking.babysitterId == widget.babysitterId &&
-                            booking.bookingCompleted != 3)
+                            booking.bookingId == widget.booking.bookingId)
                         .toList();
 
                     return Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 80, bottom: 20),
+                          margin: EdgeInsets.only(top: 0, bottom: 20),
                           child: Text(
-                            'Lista de Reservas',
+                            'Más Información',
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -110,9 +127,10 @@ class _HomeTState extends State<HomeLB> {
                             ),
                           ),
                         ),
+                        info(),
                         Expanded(
                           child: ListView.separated(
-                            padding: EdgeInsets.all(20),
+                            padding: EdgeInsets.all(10),
                             itemCount: filteredBookings.length,
                             separatorBuilder: (context, index) =>
                                 Divider(height: 15, color: Colors.transparent),
@@ -194,9 +212,7 @@ class _HomeTState extends State<HomeLB> {
                                                   BorderRadius.circular(20.0),
                                             ),
                                             content: Text(
-                                              'Si deseas cancelar esta reserva o si deseas saber más información sobre ella, pulsa el botón correspondiente.',
-                                              textAlign: TextAlign.justify,
-                                            ),
+                                                'Elige una opción para la reserva:'),
                                             actions: <Widget>[
                                               TextButton(
                                                 child: Text('Cancelar',
@@ -214,27 +230,6 @@ class _HomeTState extends State<HomeLB> {
                                                 },
                                               ),
                                               TextButton(
-                                                child: Text('Más información',
-                                                    style: TextStyle(
-                                                        color: Colors.black)),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BookingDetail(
-                                                              userId:
-                                                                  widget.userId,
-                                                              babysitterId: widget
-                                                                  .babysitterId,
-                                                              booking: booking),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              /*
-                                              TextButton(
                                                 child: Text('Aceptar',
                                                     style: TextStyle(
                                                         color: Colors.black)),
@@ -247,7 +242,7 @@ class _HomeTState extends State<HomeLB> {
                                                           '${booking.bookingId}',
                                                           2);
                                                 },
-                                              ),*/
+                                              ),
                                             ],
                                           );
                                         },
@@ -259,8 +254,78 @@ class _HomeTState extends State<HomeLB> {
                             },
                           ),
                         ),
+                        SizedBox(height: 0),
+                        Container(
+                          margin: EdgeInsets.all(30),
+                          child: Column(children: [
+                            Text('Informacion',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: HexColor('#20262E'))),
+                            SizedBox(height: 10),
+                            CustomButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BookingChilds(
+                                            tutorId: widget.booking.tutorId,
+                                            userId: widget.userId,
+                                          )),
+                                );
+                              },
+                              text: 'Información niños',
+                              icon: Icons.child_care,
+                            ),
+                            SizedBox(height: 8),
+                            CustomButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BookingRules(
+                                            tutorId: widget.booking.tutorId,
+                                            userId: widget.userId,
+                                          )),
+                                );
+                              },
+                              text: 'Reglas de la casa',
+                              icon: Icons.medical_information,
+                            ),
+                            SizedBox(height: 8),
+                            CustomButton(
+                              onPressed: () {
+                                /*
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TelefonosScreen(
+                                        tutorId: widget.tutorId,
+                                        userId: widget.userId,
+                                      )),
+                            );*/
+                              },
+                              text: 'Telefonos de emergencia',
+                              icon: Icons.phone,
+                            ),
+                            SizedBox(height: 8),
+                            CustomButton(
+                              onPressed: () {
+                                /*
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => activForm()),
+                            );*/
+                              },
+                              text: 'Actividades',
+                              icon: Icons.local_activity,
+                            ),
+                          ]),
+                        ),
                         SizedBox(
-                          height: 70,
+                          height: 30,
                         ),
                       ],
                     );

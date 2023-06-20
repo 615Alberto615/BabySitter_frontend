@@ -28,4 +28,24 @@ class UsuarioCubit extends Cubit<UsuarioState> {
       emit(UsuarioError('Error loading children: $e'));
     }
   }
+
+  Future<bool> updateUsuario(
+      String apiUrl, String childId, Map<String, dynamic> requestBody) async {
+    emit(UsuarioLoading());
+    try {
+      var response =
+          await _reglasservice.updateUsuario(apiUrl, childId, requestBody);
+
+      if (response.statusCode == 200) {
+        emit(UsuarioUpdated());
+        return true;
+      } else {
+        emit(UsuarioError('Error updating child'));
+        return false;
+      }
+    } catch (_) {
+      emit(UsuarioError('Error updating child'));
+      return false;
+    }
+  }
 }

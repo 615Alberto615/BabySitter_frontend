@@ -11,6 +11,8 @@ class UsuarioInitial extends UsuarioState {}
 
 class UsuarioLoading extends UsuarioState {}
 
+class UsuarioUpdated extends UsuarioState {}
+
 class UsuarioLoaded extends UsuarioState {
   final List<usuario> usuarios;
 

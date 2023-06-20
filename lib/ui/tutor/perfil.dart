@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:front/cubit/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/models/modelo_usuario.dart';
+import 'package:front/ui/babysitter/home_babysiiter.dart';
+import 'package:front/ui/tutor/mainT.dart';
 import '../../component/bottoms.dart';
 import '../../component/filds_forms.dart';
 import '../register/components/filds_signup.dart';
@@ -27,7 +29,8 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   @override
   void initState() {
-    print('Tutor ID: ${widget.userId}');
+    print(' ID: ${widget.userId}');
+    print('tutor  ID: ${widget.tutorId}');
     context.read<UsuarioCubit>().fetchUsuario(
         'http://10.0.2.2:8080/api/v1/user/', widget.userId.toString());
 
@@ -37,8 +40,24 @@ class _PerfilScreenState extends State<PerfilScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UsuarioCubit, UsuarioState>(listener: (context, state) {
-      // Aquí puedes manejar los estados que impliquen un cambio de pantalla o la
-      // aparición de diálogos/snackbars
+      if (state is UsuarioError) {
+        // Muestra un mensaje de error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.message)),
+        );
+      } else if (state is UsuarioUpdated) {
+        // Muestra un mensaje de éxito y navega a la pantalla principal
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registro modificado exitosamente')),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MainScreen(
+                    userId: widget.userId,
+                  )),
+        );
+      }
     }, builder: (context, state) {
       if (state is UsuarioLoading) {
         return CircularProgressIndicator();
@@ -61,7 +80,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
           body: ListView(
             padding: EdgeInsets.all(20),
             children: [
-              myfam4(),
+              myfam9(),
               Text(' Datos del perfil',
                   style: TextStyle(
                       fontSize: 30,
@@ -111,15 +130,132 @@ class _PerfilScreenState extends State<PerfilScreen> {
               SizedBox(height: 20),
               PerfilButton(
                 text: 'Actualizar Datos ',
-                onPressed: () {
-                  // Aquí puedes agregar la funcionalidad que necesitas para cuando se presione el botón
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        backgroundColor: HexColor("#9695ff"),
+                        child: Container(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Modificar Datos de Perfil',
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 20.0),
+                              Text(
+                                  'Estás seguro que quieres modificar tus datos?'),
+                              SizedBox(height: 20.0),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  TextButton(
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                        color: Colors
+                                            .white, // Color de texto personalizado
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // Cerrar el AlertDialog
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text(
+                                      'Modificar',
+                                      style: TextStyle(
+                                        color: Colors
+                                            .white, // Color de texto personalizado
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      try {
+                                        if (nameController.text.isNotEmpty &&
+                                            lastNameController
+                                                .text.isNotEmpty &&
+                                            emailController.text.isNotEmpty &&
+                                            phoneController.text.isNotEmpty &&
+                                            adressController.text.isNotEmpty) {
+                                          if (!isValidEmail(
+                                              emailController.text)) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        'Por favor, introduce un correo electrónico válido')));
+                                            return;
+                                          }
+                                          if (!isValidPhoneNumber(
+                                              phoneController.text)) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        'Por favor, introduce un número de teléfono válido en Bolivia')));
+                                            return;
+                                          }
+                                          Map<String, dynamic> requestBody = {
+                                            'userId': widget.userId.toString(),
+                                            'seLocationId':
+                                                user.seLocationId.toString(),
+                                            'userName': nameController.text,
+                                            'userLastname':
+                                                lastNameController.text,
+                                            'userEmail': emailController.text,
+                                            'userAddres': adressController.text,
+                                            'userPhone': phoneController.text,
+                                            'userSecret':
+                                                user.userSecret.toString(),
+                                            'userStatus':
+                                                user.userStatus.toString(),
+                                          };
+                                          context
+                                              .read<UsuarioCubit>()
+                                              .updateUsuario(
+                                                  'http://10.0.2.2:8080/api/v1/user/',
+                                                  widget.userId.toString(),
+                                                  requestBody);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    'Por favor, llena todos los campos')),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Formato de fecha incorrecto. Por favor ingrese la fecha en formato aaaa/mm/dd')),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             ],
           ),
         );
       } else {
-        // Asegúrate de manejar todos los estados posibles, incluyendo error o inicial.
         return Container();
       }
     });
@@ -171,4 +307,16 @@ class PerfilButton extends StatelessWidget {
       ),
     );
   }
+}
+
+bool isValidEmail(String email) {
+  final RegExp regex = RegExp(
+      r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+'); // Una simple regex para validar el email.
+  return regex.hasMatch(email);
+}
+
+bool isValidPhoneNumber(String phoneNumber) {
+  final RegExp regex = RegExp(
+      r'^[67]\d{7}$'); // Regex que verifica si el número tiene 8 dígitos y comienza con 6 o 7.
+  return regex.hasMatch(phoneNumber);
 }

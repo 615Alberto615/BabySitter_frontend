@@ -77,7 +77,7 @@ class NewBooking extends StatelessWidget {
                   ),
                   fildform(
                       controller: dateController,
-                      hint: 'aaaa/mm/dd',
+                      hint: 'aaaa-mm-dd',
                       label: 'Fecha',
                       icon: Icons.calendar_month),
                   SizedBox(
@@ -204,7 +204,7 @@ class HexColor extends Color {
 
 bool isValidDate(String input) {
   try {
-    DateFormat('yyyy/MM/dd').parseStrict(input);
+    DateFormat('yyyy-MM-dd').parseStrict(input);
     return true;
   } catch (e) {
     return false;

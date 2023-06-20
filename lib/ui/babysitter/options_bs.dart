@@ -74,7 +74,10 @@ class _OptionsTState extends State<OptionsBs> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PerfilScreenB()),
+                                    builder: (context) => PerfilScreenB(
+                                          userId: widget.userId,
+                                          babysitterId: widget.babysitterId,
+                                        )),
                               );
                               // Hacer algo cuando se presiona el botón
                             },

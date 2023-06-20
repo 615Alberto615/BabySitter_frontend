@@ -195,3 +195,31 @@ class myfam8 extends StatelessWidget {
     );
   }
 }
+
+class myfam9 extends StatelessWidget {
+  const myfam9({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 0),
+        Row(
+          children: [
+            const Spacer(),
+            Expanded(
+                flex: 8,
+                child: Image.asset(
+                  "assets/ussu.png",
+                  height: 126,
+                )),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+}

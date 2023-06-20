@@ -115,7 +115,7 @@ class _HomeTState extends State<HomeT> {
                                   statusColor; // Definición del color del estado
                               switch (booking.bookingCompleted) {
                                 case 1:
-                                  statusColor = Colors.yellow;
+                                  statusColor = HexColor('#DBDFAA');
                                   break;
                                 case 2:
                                   statusColor = HexColor('#ffab7d');
@@ -143,7 +143,7 @@ class _HomeTState extends State<HomeT> {
                                         statusColor, // Aplicación del color al icono
                                   ),
                                   title: Text(
-                                    'Reserva: ${booking.userName}${booking.userLastName}',
+                                    'Reserva: ${booking.userName} ${booking.userLastName}',
                                     style: TextStyle(
                                       color:
                                           statusColor, // Aplicación del color al título
