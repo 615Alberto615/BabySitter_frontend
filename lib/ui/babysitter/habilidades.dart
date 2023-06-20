@@ -103,6 +103,7 @@ class _RegisterBBState extends State<ActivForm> {
                         onFieldChanged: (activities) {
                           _selectedActivities = activities;
                         },
+                        initialActivities: [],
                       ),
                       SizedBox(
                         height: 30,

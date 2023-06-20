@@ -84,6 +84,9 @@ class _OptionsTState extends State<OptionsBs> {
                             text: 'Perfil',
                             icon: Icons.person,
                           ),
+                          SizedBox(
+                            height: 5,
+                          ),
                           CustomButton(
                             onPressed: () {
                               Navigator.push(

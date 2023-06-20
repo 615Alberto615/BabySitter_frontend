@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/booking_cubit.dart';
+import 'package:front/ui/tutor/booking_reviews.dart';
 import 'package:front/ui/tutor/component/img_top2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/ui/tutor/mainT.dart';
@@ -76,6 +77,7 @@ class InfoBs extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: HexColor('#20262E'))),
                   ),
+                  SizedBox(height: 5),
                   myfam4(),
                   Card(
                     shadowColor: HexColor('#B799FF'),
@@ -149,12 +151,26 @@ class InfoBs extends StatelessWidget {
                           ),
                           Text('${babysitter.babysitterDescription}'),
                           SizedBox(height: 16.0),
+                          Text(
+                            'Reseñas:',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  // Acción del botón de estrella
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => reviewsScreenBs(
+                                              babysitterId:
+                                                  babysitter.babysitterId,
+                                              userId: userId,
+                                            )),
+                                  );
                                 },
                                 icon: Icon(Icons.reviews),
                               ),

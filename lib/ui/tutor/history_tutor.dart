@@ -203,13 +203,12 @@ class _HistoryTState extends State<HistoryT> {
                                             ),
                                             actions: <Widget>[
                                               TextButton(
-                                                child: Text('Cerrar'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: Text('Hacer reseña'),
+                                                child: Text(
+                                                  'Hacer reseña',
+                                                  style: TextStyle(
+                                                      color:
+                                                          HexColor('#B799FF')),
+                                                ),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   Navigator.push(

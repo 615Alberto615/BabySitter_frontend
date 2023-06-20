@@ -9,23 +9,17 @@ import '../../component/filds_forms.dart';
 import 'component/img_top2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class reviewsScreen extends StatefulWidget {
-  final int tutorId;
+class reviewsScreenBs extends StatefulWidget {
   final int userId;
-  final Booking booking;
   final int babysitterId;
-  const reviewsScreen(
-      {Key? key,
-      required this.tutorId,
-      required this.userId,
-      required this.booking,
-      required this.babysitterId})
+  const reviewsScreenBs(
+      {Key? key, required this.userId, required this.babysitterId})
       : super(key: key);
   @override
   _PerfilScreenState createState() => _PerfilScreenState();
 }
 
-class _PerfilScreenState extends State<reviewsScreen> {
+class _PerfilScreenState extends State<reviewsScreenBs> {
   final TextEditingController _reviewController = TextEditingController();
   final TextEditingController _calificaciontelController =
       TextEditingController();
@@ -39,7 +33,7 @@ class _PerfilScreenState extends State<reviewsScreen> {
     } catch (e) {
       print(e);
     }
-    print(widget.tutorId);
+
     print(widget.userId);
   }
 
@@ -85,7 +79,7 @@ class _PerfilScreenState extends State<reviewsScreen> {
                 children: [
                   re2(),
                   Center(
-                    child: Text('Reseña del servicio',
+                    child: Text('Reseñas de la niñera',
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -93,64 +87,32 @@ class _PerfilScreenState extends State<reviewsScreen> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Ingresa una reseña y un calificacion para la niñera que te atendió',
+                    'Reseñas y un calificacion de la niñera',
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: HexColor('#20262E'),
                     ),
                   ),
-                  SizedBox(height: 30),
-                  fildform(
-                    controller: _reviewController,
-                    hint: 'Ingresa tu reseña',
-                    label: 'Reseña',
-                    icon: Icons.reviews,
-                  ),
-                  SizedBox(height: 10),
-                  fildform(
-                    controller: _calificaciontelController,
-                    hint: 'Ingresa una calificacion del 1 al 5',
-                    label: 'Calificacion',
-                    icon: Icons.star,
-                  ),
                   SizedBox(height: 20),
-                  CustomButton(
-                    onPressed: () {
-                      if (_reviewController.text.isNotEmpty &&
-                          _calificaciontelController.text.isNotEmpty) {
-                        int? calificacion =
-                            int.tryParse(_calificaciontelController.text);
-                        if (calificacion != null &&
-                            calificacion >= 1 &&
-                            calificacion <= 5) {
-                          final telefonoCubit = context.read<ReviewCubit>();
-                          var result = telefonoCubit.createReview(
-                            'http://10.0.2.2:8080/api/v1/review',
-                            {
-                              'bookingId': widget.booking.bookingId,
-                              'review': _reviewController.text,
-                              'stars': _calificaciontelController.text,
-                            },
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Por favor, introduce una calificación válida del 1 al 5.'),
-                            ),
-                          );
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Por favor, complete los campos requeridos.')),
-                        );
-                      }
-                    },
-                    text: 'Guardar Reseña',
-                    icon: Icons.save,
+                  Container(
+                    height:
+                        300, // Ajusta el tamaño del contenedor según sea necesario
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Image.asset('assets/stars.png'),
+                        TextField(
+                          controller: _reviewController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Escribe aquí',
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 20),
                   if (state is ReviewLoaded)
