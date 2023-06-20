@@ -12,7 +12,6 @@ final _ciController = TextEditingController();
 final _extController = TextEditingController();
 final _phoneController = TextEditingController();
 final _descController = TextEditingController();
-List<bool> _selectedActivities = [];
 
 class ActivForm extends StatefulWidget {
   final tutorId;
@@ -24,12 +23,19 @@ class ActivForm extends StatefulWidget {
 }
 
 class _RegisterBBState extends State<ActivForm> {
+  List<bool> _selectedActivities = List.filled(13, false);
+  //List<bool> _selectedActivities = [];
   late TextEditingController _nameController = TextEditingController();
   late TextEditingController _fnController = TextEditingController();
   void initState() {
     super.initState();
+
     print(widget.tutorId);
     print(widget.userId);
+    context.read<ActivityCubit>().fetchActivityByTutorId(
+          'http://10.0.2.2:8080/api/v1/childActivity/tutor/',
+          widget.tutorId,
+        );
   }
 
   @override
@@ -49,6 +55,29 @@ class _RegisterBBState extends State<ActivForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
+        } else if (state is ActivityLoaded) {
+          // Cuando se carguen los datos de la actividad, establece _selectedActivities
+          setState(() {
+            _selectedActivities = [
+              state.activity.activityTableGames,
+              state.activity.activityArtsAndCrafts,
+              state.activity.activityReadingOfBooks,
+              state.activity.activityCookingAndPastry,
+              state.activity.activityOutdoorActivities,
+              state.activity.activityBlockConstruction,
+              state.activity.activityRolePlays,
+              state.activity.activityMusicAndDance,
+              state.activity.activityExercisesAndYoga,
+              state.activity.activityGardening,
+              state.activity.activityConstructionOfFortresses,
+              state.activity.activityMoviesAndTvShows,
+              state.activity.activityNone,
+            ];
+          });
+          for (var i = 0; i < _selectedActivities.length; i++) {
+            print('xd');
+            print(_selectedActivities[i]);
+          }
         } else if (state is ActivityUpdated) {
           // Muestra un mensaje de éxito y navega a la pantalla principal
           ScaffoldMessenger.of(context).showSnackBar(
@@ -101,6 +130,8 @@ class _RegisterBBState extends State<ActivForm> {
                         height: 30,
                       ),
                       ActivitiesForm(
+                        // Pasar _selectedActivities a ActivitiesForm
+                        initialActivities: _selectedActivities,
                         onFieldChanged: (activities) {
                           _selectedActivities = activities;
                         },
@@ -120,32 +151,26 @@ class _RegisterBBState extends State<ActivForm> {
                               // Crear el requestBody con los datos del formulario
                               Map<String, dynamic> requestBody = {
                                 'tutorId': widget.tutorId,
-                                "activityTableGames":
-                                    _selectedActivities[0].toString(),
-                                "activityArtsAndCrafts":
-                                    _selectedActivities[1].toString(),
+                                "activityTableGames": _selectedActivities[0],
+                                "activityArtsAndCrafts": _selectedActivities[1],
                                 "activityReadingOfBooks":
-                                    _selectedActivities[2].toString(),
+                                    _selectedActivities[2],
                                 "activityCookingAndPastry":
-                                    _selectedActivities[3].toString(),
+                                    _selectedActivities[3],
                                 "activityOutdoorActivities":
-                                    _selectedActivities[4].toString(),
+                                    _selectedActivities[4],
                                 "activityBlockConstruction":
-                                    _selectedActivities[5].toString(),
-                                "activityRolePlays":
-                                    _selectedActivities[6].toString(),
-                                "activityMusicAndDance":
-                                    _selectedActivities[7].toString(),
+                                    _selectedActivities[5],
+                                "activityRolePlays": _selectedActivities[6],
+                                "activityMusicAndDance": _selectedActivities[7],
                                 "activityExercisesAndYoga":
-                                    _selectedActivities[8].toString(),
-                                "activityGardening":
-                                    _selectedActivities[9].toString(),
+                                    _selectedActivities[8],
+                                "activityGardening": _selectedActivities[9],
                                 "activityConstructionOfFortresses":
-                                    _selectedActivities[10].toString(),
+                                    _selectedActivities[10],
                                 "activityMoviesAndTvShows":
-                                    _selectedActivities[11].toString(),
-                                "activityNone":
-                                    _selectedActivities[12].toString()
+                                    _selectedActivities[11],
+                                "activityNone": _selectedActivities[12]
                               };
                               context.read<ActivityCubit>().updateActivity(
                                   'http://10.0.2.2:8080/api/v1/childActivity/tutor/',
@@ -216,22 +241,4 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}
-
-void navigateToHomeB(BuildContext context) {
-  if (_selectedActivities.isNotEmpty && _selectedActivities.contains(true)) {
-    print(_selectedActivities);
-    // verifica que al menos una actividad ha sido seleccionada
-    // Si todos los campos están completos, navega a HomeB
-    /*
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainScreenBs()),
-    );*/
-  } else {
-    // Si no, muestra un snackbar indicando que todos los campos deben ser completados
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Por favor, llena todos los campos')),
-    );
-  }
 }

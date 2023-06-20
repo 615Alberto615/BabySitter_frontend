@@ -5,6 +5,7 @@ import 'package:front/cubit/booking_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/models/modelo_babysitter.dart';
 import 'package:front/models/modelo_booking.dart';
+import 'package:front/ui/babysitter/BookingAct.dart';
 import 'package:front/ui/babysitter/BookingChilds.dart';
 import 'package:front/ui/babysitter/BookingDetail.dart';
 import 'package:front/ui/babysitter/BookingPhones.dart';
@@ -507,12 +508,15 @@ class _HomeTState extends State<BookingDetail> {
                                   SizedBox(height: 8),
                                   CustomButton(
                                     onPressed: () {
-                                      /*
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => activForm()),
-        );*/
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ActivFormBs(
+                                                  tutorId:
+                                                      widget.booking.tutorId,
+                                                  userId: widget.userId,
+                                                )),
+                                      );
                                     },
                                     text: 'Actividades',
                                     icon: Icons.local_activity,

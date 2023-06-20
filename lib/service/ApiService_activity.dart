@@ -24,14 +24,19 @@ class ActivityService {
 
   Future<Activity> fetchActivityByTutorId(String apiUrl, int id) async {
     var response = await http.get(
-      Uri.parse('$apiUrl/tutor/$id'),
+      Uri.parse('$apiUrl$id'),
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token',
       },
     );
     if (response.statusCode == 200) {
-      return Activity.fromJson(json.decode(response.body));
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      if (jsonResponse['data'] != null) {
+        return Activity.fromJson(jsonResponse['data']);
+      } else {
+        throw Exception('Failed to load Activity: No data field in response');
+      }
     } else {
       throw Exception('Failed to load Activity');
     }

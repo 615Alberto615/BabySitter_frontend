@@ -9,14 +9,25 @@ class Activity {
 
 class ActivitiesForm extends StatefulWidget {
   final ValueChanged<List<bool>> onFieldChanged;
+  final List<bool> initialActivities;
 
-  ActivitiesForm({required this.onFieldChanged});
+  ActivitiesForm(
+      {required this.onFieldChanged, required this.initialActivities});
 
   @override
   _ActivitiesFormState createState() => _ActivitiesFormState();
 }
 
 class _ActivitiesFormState extends State<ActivitiesForm> {
+  @override
+  void initState() {
+    super.initState();
+    // Inicializar activities con los valores de widget.initialActivities
+    for (int i = 0; i < activities.length; i++) {
+      activities[i].value = widget.initialActivities[i];
+    }
+  }
+
   List<Activity> activities = [
     Activity(title: '1)	Juegos de mesa'),
     Activity(title: '2)	Artes y manualidades'),
@@ -33,11 +44,6 @@ class _ActivitiesFormState extends State<ActivitiesForm> {
     Activity(title: 'Ninguna de las anteriores'),
     // Añade más actividades si necesitas
   ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
