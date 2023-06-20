@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:front/cubit/reglas_cubit.dart';
-import 'package:front/service/ApiService_reglas.dart';
+import 'package:front/cubit/telefonos_cubit.dart';
 import 'package:front/ui/babysitter/component/img_topBs.dart';
-import 'package:front/ui/tutor/component/img_top2.dart';
-import 'package:front/ui/tutor/perfil.dart';
 
+import '../../component/bottoms.dart';
 import '../../component/filds_forms.dart';
 
-class BookingRules extends StatefulWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class BookingPh extends StatefulWidget {
   final int tutorId;
   final int userId;
-  const BookingRules({Key? key, required this.tutorId, required this.userId})
+  const BookingPh({Key? key, required this.tutorId, required this.userId})
       : super(key: key);
   @override
-  _ReglasScreenState createState() => _ReglasScreenState();
+  _TelefonosScreenState createState() => _TelefonosScreenState();
 }
 
-class _ReglasScreenState extends State<BookingRules> {
-  final TextEditingController _ruleController = TextEditingController();
-  @override
+class _TelefonosScreenState extends State<BookingPh> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _nombretelController = TextEditingController();
   void initState() {
     super.initState();
+
     try {
-      context.read<ReglasCubit>().fetchReglas(
-          'http://10.0.2.2:8080/api/v1/tutorRules/tutor/',
+      context.read<TelefonoCubit>().fetchTelefono(
+          'http://10.0.2.2:8080/api/v1/tutorEmergencyContact/tutor/',
           widget.tutorId.toString());
     } catch (e) {
       print(e);
@@ -52,26 +52,27 @@ class _ReglasScreenState extends State<BookingRules> {
               onPressed: () => Navigator.pop(context),
             ),
           ),
-          body: BlocConsumer<ReglasCubit, ReglasState>(
+          body: BlocConsumer<TelefonoCubit, TelefonoState>(
             listener: (context, state) {
-              if (state is ReglasError) {
+              if (state is TelefonoError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Error: ${state.message}')),
                 );
-              } else if (state is ReglaDeleted) {
+              } else if (state is TelefonoDeleted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Registro eliminado correctamente')),
                 );
-                context.read<ReglasCubit>().fetchReglas(
-                    'http://10.0.2.2:8080/api/v1/tutorRules/tutor/',
+                context.read<TelefonoCubit>().fetchTelefono(
+                    'http://10.0.2.2:8080/api/v1/tutorEmergencyContact/tutor/',
                     widget.tutorId.toString());
-              } else if (state is ReglaCreated) {
+              } else if (state is TelefonoCreated) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Registro creado correctamente')),
                 );
-                _ruleController.clear();
-                context.read<ReglasCubit>().fetchReglas(
-                    'http://10.0.2.2:8080/api/v1/tutorRules/tutor/',
+                _nombretelController.clear();
+                _phoneController.clear();
+                context.read<TelefonoCubit>().fetchTelefono(
+                    'http://10.0.2.2:8080/api/v1/tutorEmergencyContact/tutor/',
                     widget.tutorId.toString());
               }
             },
@@ -79,45 +80,50 @@ class _ReglasScreenState extends State<BookingRules> {
               return ListView(
                 padding: EdgeInsets.all(20),
                 children: [
-                  rules(),
-                  SizedBox(height: 10),
-                  Text('Reglas de la casa',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: HexColor('#20262E'))),
-                  SizedBox(height: 10),
+                  tles(),
+                  Center(
+                    child: Text('Teléfonos de emergencia',
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: HexColor('#20262E'))),
+                  ),
+                  SizedBox(height: 20),
                   Text(
-                      'Informacion que debe saber antes de aceptar la reserva.',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: HexColor('#20262E'))),
-                  SizedBox(height: 10),
-                  if (state is ReglasLoaded)
+                    'Teléfonos en caso de emergencia para la reserva.',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: HexColor('#20262E'),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  if (state is TelefonoLoaded)
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: state.reglas.length,
+                      itemCount: state.telefonos.length,
                       itemBuilder: (context, index) {
-                        final rule = state.reglas[index];
+                        final tele = state.telefonos[index];
                         return Card(
                           elevation: 5.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
                           child: ListTile(
-                            leading: Icon(Icons.rule_sharp,
-                                color: HexColor('#20262E')),
-                            title: Text(rule.rulesHome.toString(),
+                            leading:
+                                Icon(Icons.phone, color: HexColor('#20262E')),
+                            title: Text(tele.nameContact,
+                                style: TextStyle(
+                                    fontSize: 15, color: HexColor('#20262E'))),
+                            subtitle: Text(tele.phoneContact,
                                 style: TextStyle(
                                     fontSize: 15, color: HexColor('#20262E'))),
                           ),
                         );
                       },
                     ),
-                  if (state is ReglasLoading) CircularProgressIndicator(),
+                  if (state is TelefonoLoading) CircularProgressIndicator(),
                   SizedBox(height: 10),
                 ],
               );

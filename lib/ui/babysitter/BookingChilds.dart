@@ -98,13 +98,19 @@ class _familyTState extends State<BookingChilds> {
                 ),
                 childs(),
                 SizedBox(height: 10),
-                Center(
-                  child: Text('Informacion',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: HexColor('#20262E'))),
-                ),
+                Text('Informacion',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: HexColor('#20262E'))),
+                SizedBox(height: 5),
+                Text(
+                    'Informacion medica de los niños en el boton de la derecha.',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: HexColor('#20262E'))),
                 SizedBox(height: 10),
                 if (state is ChildrenLoaded)
                   ListView.builder(

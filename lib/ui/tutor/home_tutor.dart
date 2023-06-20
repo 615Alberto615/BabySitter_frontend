@@ -4,6 +4,7 @@ import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'component/ColoresTutor.dart';
 import '../../component/bottoms.dart';
 import 'component/icons.dart';
+import 'package:intl/intl.dart';
 import 'family_tutor.dart';
 import 'history_tutor.dart';
 import 'opciones_tutor.dart';
@@ -149,8 +150,18 @@ class _HomeTState extends State<HomeT> {
                                           statusColor, // Aplicación del color al título
                                     ),
                                   ),
-                                  subtitle: Text(
-                                      'Precio ${booking.bookingAmount}\nZona: ${booking.bookingChild}\nFecha: ${booking.bookingTimeEnd}\nEstado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Precio ${booking.bookingAmount}'),
+                                      Text('Zona: ${booking.bookingChild}'),
+                                      Text(
+                                          'Fecha: ${DateFormat('yyyy/MM/dd').format(DateTime.parse(booking.bookingDate).toLocal())}'),
+                                      Text(
+                                          'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                    ],
+                                  ),
                                   trailing: IconButton(
                                     icon: Icon(Icons.notifications),
                                     onPressed: () {

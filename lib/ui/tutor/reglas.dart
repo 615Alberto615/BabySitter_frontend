@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/cubit/reglas_cubit.dart';
 import 'package:front/service/ApiService_reglas.dart';
+import 'package:front/ui/babysitter/component/img_topBs.dart';
 import 'package:front/ui/tutor/perfil.dart';
 
 import '../../component/filds_forms.dart';
@@ -78,7 +79,7 @@ class _ReglasScreenState extends State<ReglasScreen> {
               return ListView(
                 padding: EdgeInsets.all(20),
                 children: [
-                  myfam3(),
+                  rules(),
                   SizedBox(height: 10),
                   Center(
                     child: Text('Reglas de la Casa',

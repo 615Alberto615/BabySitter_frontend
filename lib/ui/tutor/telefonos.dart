@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/telefonos_cubit.dart';
+import 'package:front/ui/babysitter/component/img_topBs.dart';
 
 import '../../component/bottoms.dart';
 import '../../component/filds_forms.dart';
@@ -79,7 +80,7 @@ class _TelefonosScreenState extends State<TelefonosScreen> {
               return ListView(
                 padding: EdgeInsets.all(20),
                 children: [
-                  myfam6(),
+                  tles(),
                   Center(
                     child: Text('Teléfonos de emergencia',
                         style: TextStyle(

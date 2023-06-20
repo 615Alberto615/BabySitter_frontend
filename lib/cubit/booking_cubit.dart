@@ -63,4 +63,24 @@ class BookingCubit extends Cubit<BookingState> {
       return false;
     }
   }
+
+  Future<bool> updateBookingStatus2(
+      String apiUrl, String childId, Map<String, dynamic> requestBody) async {
+    emit(BookingLoading());
+    try {
+      var response = await _bookingService.updateBookingStatus2(
+          apiUrl, childId, requestBody);
+
+      if (response.statusCode == 200) {
+        emit(BookingUpdated());
+        return true;
+      } else {
+        emit(BookingError('Error updating child'));
+        return false;
+      }
+    } catch (_) {
+      emit(BookingError('Error updating child'));
+      return false;
+    }
+  }
 }

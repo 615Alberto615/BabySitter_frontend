@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:front/component/bottoms.dart';
 import 'package:front/cubit/booking_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:front/models/modelo_babysitter.dart';
 import 'package:front/models/modelo_booking.dart';
 import 'package:front/ui/babysitter/BookingChilds.dart';
 import 'package:front/ui/babysitter/BookingDetail.dart';
+import 'package:front/ui/babysitter/BookingPhones.dart';
 import 'package:front/ui/babysitter/BookingRules.dart';
 import 'package:front/ui/babysitter/component/img_topBs.dart';
 import 'package:front/ui/babysitter/home_babysiiter.dart';
@@ -130,7 +132,9 @@ class _HomeTState extends State<BookingDetail> {
                         info(),
                         Expanded(
                           child: ListView.separated(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ), //vertical: 10),
                             itemCount: filteredBookings.length,
                             separatorBuilder: (context, index) =>
                                 Divider(height: 15, color: Colors.transparent),
@@ -160,103 +164,207 @@ class _HomeTState extends State<BookingDetail> {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 child: ListTile(
-                                  leading: Icon(
-                                    Icons.book,
-                                    size: 30,
-                                    color: statusColor,
-                                  ),
-                                  title: Text(
-                                    'Reserva: ${booking.userName} ${booking.userLastName}',
-                                    style: TextStyle(
+                                    leading: Icon(
+                                      Icons.book,
+                                      size: 30,
                                       color: statusColor,
                                     ),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Precio ${booking.bookingAmount}'),
-                                      Text('Zona: ${booking.bookingChild}'),
-                                      Text(
-                                          'Fecha: ${DateFormat('yyyy/MM/dd').format(DateTime.parse(booking.bookingDate).toLocal())}'),
-                                      Text(
-                                          'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
-                                    ],
-                                  ),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.more),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Text(
-                                                  'Opciones reserva',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(Icons.close),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                            content: Text(
-                                                'Elige una opción para la reserva:'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: Text('Cancelar',
-                                                    style: TextStyle(
-                                                        color: HexColor(
-                                                            '#ff6b6b'))),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  context
-                                                      .read<BookingCubit>()
-                                                      .updateBookingStatus(
-                                                          'http://10.0.2.2:8080/api/v1/booking/status/',
-                                                          '${booking.bookingId}',
-                                                          4);
+                                    title: Text(
+                                      'Reserva: ${booking.userName} ${booking.userLastName}',
+                                      style: TextStyle(
+                                        color: statusColor,
+                                      ),
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Precio ${booking.bookingAmount}'),
+                                        Text('Zona: ${booking.bookingChild}'),
+                                        Text(
+                                            'Fecha: ${DateFormat('yyyy/MM/dd').format(DateTime.parse(booking.bookingDate).toLocal())}'),
+                                        Text(
+                                            'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
+                                      ],
+                                    ),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.more),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'Opciones reserva',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      IconButton(
+                                                        icon: Icon(Icons.close),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                  ),
+                                                  content: Text(
+                                                      'Elige una opción para la reserva:'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: Text('Cancelar',
+                                                          style: TextStyle(
+                                                              color: HexColor(
+                                                                  '#ff6b6b'))),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        context
+                                                            .read<
+                                                                BookingCubit>()
+                                                            .updateBookingStatus(
+                                                                'http://10.0.2.2:8080/api/v1/booking/status/',
+                                                                '${booking.bookingId}',
+                                                                4);
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: Text('Aceptar',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black)),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        context
+                                                            .read<
+                                                                BookingCubit>()
+                                                            .updateBookingStatus(
+                                                                'http://10.0.2.2:8080/api/v1/booking/status/',
+                                                                '${booking.bookingId}',
+                                                                2);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.notifications),
+                                          onPressed: () {
+                                            if (booking.bookingCompleted == 2) {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  String amountPaid = '';
+
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        'Reserva en proceso'),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                    ),
+                                                    content: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                            'Esta reserva está actualmente en proceso.'),
+                                                        SizedBox(height: 10),
+                                                        TextField(
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelText:
+                                                                'Ingrese el monto pagado',
+                                                          ),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .numberWithOptions(
+                                                                      decimal:
+                                                                          true),
+                                                          inputFormatters: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(
+                                                              RegExp(
+                                                                  r'^\d+\.?\d{0,2}$'),
+                                                            ),
+                                                          ],
+                                                          onChanged: (value) {
+                                                            amountPaid = value;
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: Text(
+                                                            'Marcar como completada'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+
+                                                          if (amountPaid
+                                                              .isNotEmpty) {
+                                                            double paidAmount =
+                                                                double.parse(
+                                                                    amountPaid);
+                                                            // Aquí se realiza el procesamiento con el monto pagado
+
+                                                            Map<String, dynamic>
+                                                                requestBody = {
+                                                              'bookingCompleted':
+                                                                  3,
+                                                              'bookingAmount':
+                                                                  paidAmount,
+                                                            };
+                                                            context
+                                                                .read<
+                                                                    BookingCubit>()
+                                                                .updateBookingStatus2(
+                                                                  'http://10.0.2.2:8080/api/v1/booking/status/',
+                                                                  '${booking.bookingId}',
+                                                                  requestBody,
+                                                                );
+                                                          } else {
+                                                            // Si el campo está vacío, muestra un mensaje de error o realiza alguna acción
+                                                          }
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
                                                 },
-                                              ),
-                                              TextButton(
-                                                child: Text('Aceptar',
-                                                    style: TextStyle(
-                                                        color: Colors.black)),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  context
-                                                      .read<BookingCubit>()
-                                                      .updateBookingStatus(
-                                                          'http://10.0.2.2:8080/api/v1/booking/status/',
-                                                          '${booking.bookingId}',
-                                                          2);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    )),
                               );
                             },
                           ),
                         ),
-                        SizedBox(height: 0),
+                        SizedBox(height: 20),
                         Container(
-                          margin: EdgeInsets.all(30),
+                          margin: EdgeInsets.symmetric(horizontal: 20),
                           child: Column(children: [
                             Text('Informacion',
                                 style: TextStyle(
@@ -296,15 +404,14 @@ class _HomeTState extends State<BookingDetail> {
                             SizedBox(height: 8),
                             CustomButton(
                               onPressed: () {
-                                /*
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TelefonosScreen(
-                                        tutorId: widget.tutorId,
-                                        userId: widget.userId,
-                                      )),
-                            );*/
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BookingPh(
+                                            tutorId: widget.booking.tutorId,
+                                            userId: widget.userId,
+                                          )),
+                                );
                               },
                               text: 'Telefonos de emergencia',
                               icon: Icons.phone,
@@ -325,7 +432,7 @@ class _HomeTState extends State<BookingDetail> {
                           ]),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 50,
                         ),
                       ],
                     );
