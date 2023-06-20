@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'package:front/ui/tutor/component/ColoresTutor.dart';
 import 'package:front/ui/tutor/component/icons.dart';
+import 'package:intl/intl.dart';
 
 class HistoryBs extends StatefulWidget {
   final int userId;
@@ -166,7 +167,8 @@ class _HistoryTState extends State<HistoryBs> {
                                     children: [
                                       Text('Precio ${booking.bookingAmount}'),
                                       Text('Zona: ${booking.bookingChild}'),
-                                      Text('Fecha: ${booking.bookingTimeEnd}'),
+                                      Text(
+                                          'Fecha: ${DateFormat('yyyy/MM/dd').format(DateTime.parse(booking.bookingDate).toLocal())}'),
                                       Text(
                                           'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
                                     ],

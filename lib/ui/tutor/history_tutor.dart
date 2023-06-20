@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'component/Bottom_Tutor.dart';
 import 'component/ColoresTutor.dart';
-
+import 'package:intl/intl.dart';
 import 'component/icons.dart';
 import 'family_tutor.dart';
 import 'home_tutor.dart';
@@ -159,7 +159,8 @@ class _HistoryTState extends State<HistoryT> {
                                     children: [
                                       Text('Precio ${booking.bookingAmount}'),
                                       Text('Zona: ${booking.bookingChild}'),
-                                      Text('Fecha: ${booking.bookingTimeEnd}'),
+                                      Text(
+                                          'Fecha: ${DateFormat('yyyy/MM/dd').format(DateTime.parse(booking.bookingDate).toLocal())}'),
                                       Text(
                                           'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
                                     ],
