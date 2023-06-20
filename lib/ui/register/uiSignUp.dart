@@ -235,12 +235,39 @@ void registerButtonFunction(BuildContext context) async {
         TextEditingController codeController = TextEditingController();
 
         return AlertDialog(
-          title: Text(
-              'Ingresa el código de 4 digitos enviado a tu correo electronico'),
-          content: TextField(
-            controller: codeController,
-            decoration: InputDecoration(
-              hintText: 'Ingresa el código',
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Código de verificación',
+                textAlign: TextAlign.center,
+              ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                    'Se ha enviado un código de verificación de 4 digitos al correo electrónico que ingreso. Por favor, ingreselo a continuación:',
+                    textAlign: TextAlign.justify),
+                SizedBox(height: 20),
+                TextField(
+                  controller: codeController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Código',
+                  ),
+                ),
+              ],
             ),
           ),
           actions: [
@@ -250,7 +277,10 @@ void registerButtonFunction(BuildContext context) async {
                 bool isMatched = (codeController.text == codigo);
                 Navigator.of(context).pop(isMatched);
               },
-              child: Text('Aceptar'),
+              child: Text(
+                'Verificar código',
+                style: TextStyle(color: HexColor('#B799FF')),
+              ),
             ),
             //Reenviar codigo
             TextButton(
@@ -263,15 +293,12 @@ void registerButtonFunction(BuildContext context) async {
                     content: Text(
                         'Se ha enviado un nuevo código a su correo electrónico')));
               },
-              child: Text('Reenviar código'),
+              child: Text(
+                'Reenviar código',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
             // Botón para cerrar el diálogo
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: Text('Cancelar'),
-            ),
           ],
         );
       },
