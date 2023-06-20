@@ -45,7 +45,7 @@ class info extends StatelessWidget {
                 flex: 8,
                 child: Image.asset(
                   "assets/info.png",
-                  height: 186,
+                  height: 206,
                 )),
             const Spacer(),
           ],
