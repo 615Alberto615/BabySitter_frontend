@@ -17,9 +17,8 @@ class MedCubit extends Cubit<MedState> {
   Future<void> fetchMed(String apiUrl, String parentId) async {
     emit(MedLoading());
     try {
-      List<MedicalForm> telefonos =
-          await _telefonoservice.fetchMed(apiUrl, parentId);
-      emit(MedLoaded(telefonos));
+      MedicalForm medForm = await _telefonoservice.fetchMed(apiUrl, parentId);
+      emit(MedLoaded(medForm));
     } catch (e) {
       emit(MedError('Error loading children: $e'));
     }

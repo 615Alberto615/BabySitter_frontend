@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/activity_cubit.dart';
+import 'package:front/cubit/hability_cubit.dart';
+import 'package:front/ui/babysitter/component/fild_hability.dart';
+import 'package:front/ui/babysitter/home_babysiiter.dart';
 import 'package:front/ui/register/components/filds_babysitter.dart'; //Asegúrate de que la ruta de importación sea correcta
 import 'package:front/ui/tutor/component/SignUpScreenTopImage_child.dart';
-import 'package:front/ui/tutor/component/filds_activity.dart';
+
 import 'package:front/ui/tutor/mainT.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,22 +16,29 @@ final _phoneController = TextEditingController();
 final _descController = TextEditingController();
 List<bool> _selectedActivities = [];
 
-class ActivForm extends StatefulWidget {
-  final tutorId;
+class HabilityForm extends StatefulWidget {
+  final babysitterId;
   final userId;
-  const ActivForm({Key? key, this.tutorId, this.userId}) : super(key: key);
+  const HabilityForm({Key? key, this.userId, this.babysitterId})
+      : super(key: key);
 
   @override
   _RegisterBBState createState() => _RegisterBBState();
 }
 
-class _RegisterBBState extends State<ActivForm> {
+class _RegisterBBState extends State<HabilityForm> {
+  List<bool> _selectedActivities = List.filled(13, false);
+  //List<bool> _selectedActivities = [];
   late TextEditingController _nameController = TextEditingController();
   late TextEditingController _fnController = TextEditingController();
   void initState() {
     super.initState();
-    print(widget.tutorId);
+
     print(widget.userId);
+    context.read<HabilityCubit>().fetchHabilityByTutorId(
+          'http://10.0.2.2:8080/api/v1/babysitterAbility/babysitter/',
+          widget.babysitterId,
+        );
   }
 
   @override
@@ -41,22 +51,45 @@ class _RegisterBBState extends State<ActivForm> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return BlocConsumer<ActivityCubit, ActivityState>(
+    return BlocConsumer<HabilityCubit, HabilityState>(
       listener: (context, state) {
-        if (state is ActivityError) {
+        if (state is HabilityError) {
           // Muestra un mensaje de error
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
-        } else if (state is ActivityUpdated) {
+        } else if (state is HabilityLoaded) {
+          // Cuando se carguen los datos de la actividad, establece _selectedActivities
+          setState(() {
+            _selectedActivities = [
+              state.activity.abilityKnowledgeChildDevelopment,
+              state.activity.abilityEmpeathyAndPatience,
+              state.activity.abilityEfectiveCommunication,
+              state.activity.abilityOrganizationalSkills,
+              state.activity.abilityFlexibilityAndAdaptability,
+              state.activity.abilityFirstAid,
+              state.activity.abilityCulturalSensitivity,
+              state.activity.abilityConflictsResolution,
+              state.activity.abilityCreativity,
+              state.activity.abilitySpecialNeeds,
+              state.activity.abilityCrefulObservation,
+              state.activity.abilityTasteForTeaching,
+              state.activity.abilityNone,
+            ];
+          });
+          for (var i = 0; i < _selectedActivities.length; i++) {
+            print('xd');
+            print(_selectedActivities[i]);
+          }
+        } else if (state is HabilityUpdated) {
           // Muestra un mensaje de éxito y navega a la pantalla principal
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registro relizado exitosamente')),
+            SnackBar(content: Text('Registro realizado exitosamente')),
           );
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => MainScreen(
+                builder: (context) => MainScreenBs(
                       userId: widget.userId,
                     )),
           );
@@ -88,7 +121,7 @@ class _RegisterBBState extends State<ActivForm> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Habilidades que posee como Niñer@",
+                          "Mis Habilidades",
                           style: TextStyle(
                             color: Color.fromRGBO(49, 39, 79, 1),
                             fontWeight: FontWeight.bold,
@@ -97,26 +130,66 @@ class _RegisterBBState extends State<ActivForm> {
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 10,
+                      ),
+                      Text(
+                        "Rellene los campos con sus habilidades, recuerde que debe seleccionar al menos una habilidad para poder continuar con el registro, ademas llene el fromulario con responsabilidad y veracidad.",
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          color: Color.fromRGBO(49, 39, 79, 1),
+                          fontSize: 15,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       ActivitiesForm(
+                        // Pasar _selectedActivities a ActivitiesForm
+                        initialActivities: _selectedActivities,
                         onFieldChanged: (activities) {
                           _selectedActivities = activities;
                         },
-                        initialActivities: [],
                       ),
                       SizedBox(
                         height: 30,
                       ),
                       GestureDetector(
                         onTap: () {
+                          print(_selectedActivities);
+                          print(_selectedActivities.length);
+                          print(_selectedActivities[0]);
+                          print(_selectedActivities[1]);
                           try {
                             if (_selectedActivities.isNotEmpty) {
                               // Crear el requestBody con los datos del formulario
-                              Map<String, dynamic> requestBody = {};
-                              context.read<ActivityCubit>().updateActivity(
-                                  'http://10.0.2.2:8080/api/v1/child/',
-                                  widget.tutorId,
+                              Map<String, dynamic> requestBody = {
+                                'babysitterId': widget.babysitterId,
+                                "abilityKnowledgeChildDevelopment":
+                                    _selectedActivities[0],
+                                "abilityEmpeathyAndPatience":
+                                    _selectedActivities[1],
+                                "abilityEfectiveCommunication":
+                                    _selectedActivities[2],
+                                "abilityOrganizationalSkills":
+                                    _selectedActivities[3],
+                                "abilityFlexibilityAndAdaptability":
+                                    _selectedActivities[4],
+                                "abilityFirstAid": _selectedActivities[5],
+                                "abilityCulturalSensitivity":
+                                    _selectedActivities[6],
+                                "abilityConflictsResolution":
+                                    _selectedActivities[7],
+                                "abilityCreativity": _selectedActivities[8],
+                                "abilitySpecialNeeds": _selectedActivities[9],
+                                "abilityCrefulObservation":
+                                    _selectedActivities[10],
+                                "abilityTasteForTeaching":
+                                    _selectedActivities[11],
+                                "abilityNone": _selectedActivities[12]
+                              };
+                              context.read<HabilityCubit>().updateHability(
+                                  'http://10.0.2.2:8080/api/v1/babysitterAbility/',
+                                  widget.babysitterId,
                                   requestBody);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -183,22 +256,4 @@ class HexColor extends Color {
   }
 
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}
-
-void navigateToHomeB(BuildContext context) {
-  if (_selectedActivities.isNotEmpty && _selectedActivities.contains(true)) {
-    print(_selectedActivities);
-    // verifica que al menos una actividad ha sido seleccionada
-    // Si todos los campos están completos, navega a HomeB
-    /*
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainScreenBs()),
-    );*/
-  } else {
-    // Si no, muestra un snackbar indicando que todos los campos deben ser completados
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Por favor, llena todos los campos')),
-    );
-  }
 }

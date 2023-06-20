@@ -3,6 +3,7 @@ import 'package:front/cubit/booking_cubit.dart';
 import 'package:front/ui/tutor/booking_reviews.dart';
 import 'package:front/ui/tutor/component/img_top2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/ui/tutor/habilidadesBs.dart';
 import 'package:front/ui/tutor/mainT.dart';
 import '../../models/modelo_babysitter.dart';
 import '../babysitter/perfil_bs.dart';
@@ -151,6 +152,31 @@ class InfoBs extends StatelessWidget {
                           ),
                           Text('${babysitter.babysitterDescription}'),
                           SizedBox(height: 16.0),
+                          Text(
+                            'Habilidades de la niñer@:',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HabFormBs(
+                                              babysitterId:
+                                                  babysitter.babysitterId,
+                                              userId: userId,
+                                            )),
+                                  );
+                                },
+                                icon: Icon(Icons.accessibility),
+                              ),
+                            ],
+                          ),
                           Text(
                             'Reseñas:',
                             style: TextStyle(

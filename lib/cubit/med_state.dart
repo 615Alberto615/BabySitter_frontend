@@ -4,7 +4,7 @@ abstract class MedState extends Equatable {
   const MedState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class MedInitial extends MedState {}
@@ -12,12 +12,12 @@ class MedInitial extends MedState {}
 class MedLoading extends MedState {}
 
 class MedLoaded extends MedState {
-  final List<MedicalForm> telefonos;
+  final MedicalForm medForm;
 
-  const MedLoaded(this.telefonos);
+  const MedLoaded(this.medForm);
 
   @override
-  List<Object> get props => [telefonos];
+  List<Object?> get props => [medForm];
 }
 
 class MedError extends MedState {
@@ -26,5 +26,5 @@ class MedError extends MedState {
   const MedError(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

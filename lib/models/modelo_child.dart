@@ -31,21 +31,22 @@ class Child {
 }
 
 class MedicalForm {
-  String allergieType;
-  String medication;
-  String medicationUbication;
+  String medicalAllergieType;
+  String medicalMedication;
+  String medicalMedicationUbication;
 
   MedicalForm({
-    required this.allergieType,
-    required this.medication,
-    required this.medicationUbication,
+    required this.medicalAllergieType,
+    required this.medicalMedication,
+    required this.medicalMedicationUbication,
   });
 
   factory MedicalForm.fromJson(Map<String, dynamic> json) {
     return MedicalForm(
-      allergieType: json['allergieType'],
-      medication: json['medication'],
-      medicationUbication: json['medicationUbication'],
+      medicalAllergieType: json['medicalAllergieType'] as String? ?? '',
+      medicalMedication: json['medicalMedication'] as String? ?? '',
+      medicalMedicationUbication:
+          json['medicalMedicationUbication'] as String? ?? '',
     );
   }
 }

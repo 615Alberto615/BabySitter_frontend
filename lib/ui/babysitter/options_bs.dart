@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/login_cubit.dart';
 import 'package:front/ui/babysitter/ReviewsBs.dart';
+import 'package:front/ui/babysitter/habilidades.dart';
 import 'package:front/ui/babysitter/history_bs.dart';
 import 'package:front/ui/babysitter/perfil_bs.dart';
 import 'package:front/ui/babysitter/verify_bs.dart';
@@ -93,7 +94,7 @@ class _OptionsTState extends State<OptionsBs> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PerfilScreenB(
+                                    builder: (context) => HabilityForm(
                                           userId: widget.userId,
                                           babysitterId: widget.babysitterId,
                                         )),
