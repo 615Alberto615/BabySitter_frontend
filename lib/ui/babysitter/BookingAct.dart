@@ -138,11 +138,24 @@ class _RegisterBBState extends State<ActivFormBs> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          "Recomendaciones de Cuidado:\n          Actividades",
+                          "Recomendaciones de Cuidado:",
                           style: TextStyle(
                             color: Color.fromRGBO(49, 39, 79, 1),
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Text(
+                          "  Actividades Permitidas/Sugeridas:",
+                          style: TextStyle(
+                            color: Color.fromRGBO(49, 39, 79, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
                       ),
