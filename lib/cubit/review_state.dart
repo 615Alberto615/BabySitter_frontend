@@ -32,3 +32,10 @@ class ReviewError extends ReviewState {
   @override
   List<Object> get props => [message];
 }
+
+// review_state.dart
+class ReviewAverageLoaded extends ReviewState {
+  final double averageReview;
+
+  ReviewAverageLoaded(this.averageReview);
+}

@@ -55,4 +55,39 @@ class ReviewService {
       return [];
     }
   }
+
+  // Clase ReviewService
+  Future<double> fetchAverageReview(String apiUrl, int babysitterId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$apiUrl$babysitterId/average'),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Si el servidor devuelve una respuesta OK, entonces parseamos el JSON.
+        var data = json.decode(response.body);
+        double jsonResponse = data['data'];
+        if (jsonResponse != null) {
+          return jsonResponse;
+        } else {
+          // manejar la situación cuando 'data' es null
+          print('Error: el campo "data" es null');
+          return 0.0;
+        }
+      } else {
+        // Si la respuesta no es OK, lanzamos un error.
+        print(
+            'Error: la respuesta del servidor no es 200 OK, es ${response.statusCode}');
+        return 0.0;
+      }
+    } catch (e) {
+      // manejar cualquier excepción lanzada durante la solicitud de red
+      print('Error: se produjo una excepción durante la solicitud de red: $e');
+      return 0.0;
+    }
+  }
 }

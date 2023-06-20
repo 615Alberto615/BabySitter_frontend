@@ -42,4 +42,16 @@ class ReviewCubit extends Cubit<ReviewState> {
       return false;
     }
   }
+
+  // Clase ReviewCubit
+  Future<void> fetchAverageReview(String apiUrl, int babysitterId) async {
+    emit(ReviewLoading());
+    try {
+      double averageReview =
+          await _reviewservice.fetchAverageReview(apiUrl, babysitterId);
+      emit(ReviewAverageLoaded(averageReview));
+    } catch (e) {
+      emit(ReviewError('Error loading average review: $e'));
+    }
+  }
 }

@@ -153,6 +153,15 @@ class _PerfilScreenState extends State<reviewsScreen> {
                     icon: Icons.save,
                   ),
                   SizedBox(height: 20),
+                  Text(
+                    'Reseñas de la niñera',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: HexColor('#20262E'),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   if (state is ReviewLoaded)
                     ListView.builder(
                       shrinkWrap: true,

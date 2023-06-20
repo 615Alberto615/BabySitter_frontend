@@ -279,3 +279,31 @@ class re2 extends StatelessWidget {
     );
   }
 }
+
+class re3 extends StatelessWidget {
+  const re3({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 0),
+        Row(
+          children: [
+            const Spacer(),
+            Expanded(
+                flex: 8,
+                child: Image.asset(
+                  "assets/ussu.png",
+                  height: 100,
+                )),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+}

@@ -169,6 +169,7 @@ class InfoBs extends StatelessWidget {
                                               babysitterId:
                                                   babysitter.babysitterId,
                                               userId: userId,
+                                              babysitter: babysitter,
                                             )),
                                   );
                                 },
