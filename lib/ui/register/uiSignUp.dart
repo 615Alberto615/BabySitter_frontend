@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:front/ui/register/uiregister_babysiter.dart';
 
@@ -220,79 +222,135 @@ void registerButtonFunction(BuildContext context) async {
               'Por favor, introduce un número de teléfono válido en Bolivia')));
       return;
     }
-    try {
-      var userData = {
-        "userName": _nameController.text,
-        "userLastname": _lastnameController.text,
-        "userPhone": _phonecontroller.text,
-        "userAddres": _addresscontroller.text,
-        "userEmail": _emailController.text,
-        "userSecret": _passwordController.text,
-        "seLocationId": _selectedCityId,
-        "CI": _ciController.text,
-        "extension": _extController.text,
-        "phoneContact": _contactNumberController.text,
-        "description": _descriptionController.text,
-      };
+    String codigo = generateRandomCode();
+    print(codigo);
+    Map<String, dynamic> respuesta =
+        await ApiService().sendRegistrationCode(_emailController.text, codigo);
 
-      Map<String, dynamic> response =
-          await ApiService().registerUser(userData, _selectedRole == 1);
+    bool? isCodeMatched = await showDialog<bool>(
+      context: context,
+      barrierDismissible:
+          false, // Evita que el diálogo se cierre haciendo clic fuera de él
+      builder: (BuildContext context) {
+        TextEditingController codeController = TextEditingController();
 
-      if (response["code"] == 200) {
-        // Mostrar un mensaje de éxito
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registrado satisfactoriamente')));
+        return AlertDialog(
+          title: Text('Ingresa el código'),
+          content: TextField(
+            controller: codeController,
+            decoration: InputDecoration(
+              hintText: 'Ingresa el código',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Compara el código ingresado con el código aleatorio
+                bool isMatched = (codeController.text == codigo);
+                Navigator.of(context).pop(isMatched);
+              },
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
 
-        // Limpiar todos los campos del formulario
-
-        if (_selectedRole == 1) {
-          // Navigating to RegisterB() if user selected the 'Niñer@' role
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Login()));
-          _nameController.clear();
-          _lastnameController.clear();
-          _passwordController.clear();
-          _phonecontroller.clear();
-          _addresscontroller.clear();
-          _emailController.clear();
-          _conpasswordcontroller.clear();
-          _ciController.clear();
-          _descriptionController.clear();
-          // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
-          _selectedRole = -1;
-          _selectedCityId = 4;
-        } else {
-          // Navigating to HomeT() if user selected the 'Tutor' role
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Login()));
-          _nameController.clear();
-          _lastnameController.clear();
-          _passwordController.clear();
-          _phonecontroller.clear();
-          _addresscontroller.clear();
-          _emailController.clear();
-          _conpasswordcontroller.clear();
-          _ciController.clear();
-          _contactNumberController.clear();
-          _descriptionController.clear();
-          // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
-          _selectedRole = -1;
-          _selectedCityId = 4;
-        }
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(response["message"])));
-      }
-    } catch (e) {
-      print(e);
+    /*if (isCodeMatched == null || !isCodeMatched) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Hubo un error al registrarse')));
+        SnackBar(
+          content: Text(
+              'Código incorrecto, por favor, intente registrarse nuevamente'),
+        ),
+      );
+      return;
+    }*/
+    print(isCodeMatched);
+
+    if (isCodeMatched == true) {
+      try {
+        var userData = {
+          "userName": _nameController.text,
+          "userLastname": _lastnameController.text,
+          "userPhone": _phonecontroller.text,
+          "userAddres": _addresscontroller.text,
+          "userEmail": _emailController.text,
+          "userSecret": _passwordController.text,
+          "seLocationId": _selectedCityId,
+          "CI": _ciController.text,
+          "extension": _extController.text,
+          "phoneContact": _contactNumberController.text,
+          "description": _descriptionController.text,
+        };
+
+        Map<String, dynamic> response =
+            await ApiService().registerUser(userData, _selectedRole == 1);
+
+        if (response["code"] == 200) {
+          // Mostrar un mensaje de éxito
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Registrado satisfactoriamente')));
+
+          // Limpiar todos los campos del formulario
+
+          if (_selectedRole == 1) {
+            // Navigating to RegisterB() if user selected the 'Niñer@' role
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Login()));
+            _nameController.clear();
+            _lastnameController.clear();
+            _passwordController.clear();
+            _phonecontroller.clear();
+            _addresscontroller.clear();
+            _emailController.clear();
+            _conpasswordcontroller.clear();
+            _ciController.clear();
+            _descriptionController.clear();
+            // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
+            _selectedRole = -1;
+            _selectedCityId = 4;
+          } else {
+            // Navigating to HomeT() if user selected the 'Tutor' role
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Login()));
+            _nameController.clear();
+            _lastnameController.clear();
+            _passwordController.clear();
+            _phonecontroller.clear();
+            _addresscontroller.clear();
+            _emailController.clear();
+            _conpasswordcontroller.clear();
+            _ciController.clear();
+            _contactNumberController.clear();
+            _descriptionController.clear();
+            // Restablecer la ciudad y el rol seleccionado a sus valores predeterminados
+            _selectedRole = -1;
+            _selectedCityId = 4;
+          }
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(response["message"])));
+        }
+      } catch (e) {
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Hubo un error al registrarse')));
+      }
     }
   } else {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
             Text('Por favor, llena todos los campos y selecciona un rol')));
   }
+}
+
+String generateRandomCode() {
+  var random = Random();
+  var code = '';
+  for (var i = 0; i < 4; i++) {
+    code += random.nextInt(10).toString();
+  }
+  return code;
 }
 
 class RegisterButton extends StatelessWidget {
