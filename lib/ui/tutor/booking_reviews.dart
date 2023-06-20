@@ -110,10 +110,12 @@ class _PerfilScreenState extends State<reviewsScreenBs> {
                             fontWeight: FontWeight.bold,
                             color: HexColor('#20262E'))),
                   ),
+                  SizedBox(height: 10),
                   CircleAvatar(
-                    radius: 100,
-                    backgroundImage: AssetImage(
-                        'assets/xddd.png'), // Suponiendo que tienes una imagen de perfil en tus assets
+                    radius: 120,
+                    backgroundImage: AssetImage('assets/xddd.png'),
+                    /*radius: 100,
+                    backgroundImage: AssetImage('assets/user5.png'),*/
                   ),
                   SizedBox(height: 10),
                   Center(
@@ -137,7 +139,7 @@ class _PerfilScreenState extends State<reviewsScreenBs> {
                     ),
                   ),
                   Container(
-                    height: 180,
+                    height: 120,
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
@@ -146,7 +148,7 @@ class _PerfilScreenState extends State<reviewsScreenBs> {
                           _reviewController.text,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 40,
+                            fontSize: 30,
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
                           ),

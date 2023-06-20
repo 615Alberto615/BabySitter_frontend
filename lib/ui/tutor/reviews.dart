@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:front/cubit/review_cubit.dart';
 
 import 'package:front/models/modelo_booking.dart';
@@ -8,6 +9,7 @@ import '../../component/bottoms.dart';
 import '../../component/filds_forms.dart';
 import 'component/img_top2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class reviewsScreen extends StatefulWidget {
   final int tutorId;
@@ -108,11 +110,25 @@ class _PerfilScreenState extends State<reviewsScreen> {
                     icon: Icons.reviews,
                   ),
                   SizedBox(height: 10),
-                  fildform(
-                    controller: _calificaciontelController,
-                    hint: 'Ingresa una calificacion del 1 al 5',
-                    label: 'Calificacion',
-                    icon: Icons.star,
+                  Text('Calificación', style: TextStyle(color: Colors.grey)),
+                  Center(
+                    child: RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                        _calificaciontelController.text =
+                            rating.toInt().toString();
+                      },
+                    ),
                   ),
                   SizedBox(height: 20),
                   CustomButton(
@@ -171,6 +187,10 @@ class _PerfilScreenState extends State<reviewsScreen> {
                         final rev = state.review[index];
                         return Card(
                           elevation: 5.0,
+                          color: index % 2 == 0
+                              ? Colors.grey[200]
+                              : Colors
+                                  .white, // Alternando los colores de las tarjetas
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
@@ -180,10 +200,16 @@ class _PerfilScreenState extends State<reviewsScreen> {
                             title: Text(rev.review,
                                 style: TextStyle(
                                     fontSize: 15, color: HexColor('#20262E'))),
-                            subtitle: Text(
-                                'Calificacion: ' + rev.stars.toString(),
-                                style: TextStyle(
-                                    fontSize: 15, color: HexColor('#20262E'))),
+                            subtitle: RatingBarIndicator(
+                              rating: rev.stars.toDouble(),
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
+                            ),
                           ),
                         );
                       },
