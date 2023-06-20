@@ -10,7 +10,8 @@ class hability {
 class ActivitiesForm extends StatefulWidget {
   final ValueChanged<List<bool>> onFieldChanged;
 
-  ActivitiesForm({required this.onFieldChanged});
+  ActivitiesForm(
+      {required this.onFieldChanged, required List initialActivities});
 
   @override
   _ActivitiesFormState createState() => _ActivitiesFormState();
@@ -47,7 +48,7 @@ class _ActivitiesFormState extends State<ActivitiesForm> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            'Actividades a realizar',
+            'Habilidades:',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

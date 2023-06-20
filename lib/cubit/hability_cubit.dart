@@ -20,9 +20,9 @@ class HabilityCubit extends Cubit<HabilityState> {
     try {
       hability habilidades =
           await _activityService.fetchHabilityById(apiUrl, id);
-      emit(ActivityLoaded(habilidades));
+      emit(HabilityLoaded(habilidades));
     } catch (e) {
-      emit(ActivityError('Error loading activity: $e'));
+      emit(HabilityError('Error loading activity: $e'));
     }
   }
 
@@ -31,9 +31,9 @@ class HabilityCubit extends Cubit<HabilityState> {
     try {
       hability activity =
           await _activityService.fetchHabilityByTutorId(apiUrl, id);
-      emit(ActivityLoaded(activity));
+      emit(HabilityLoaded(activity));
     } catch (e) {
-      emit(ActivityError('Error loading activity: $e'));
+      emit(HabilityError('Error loading activity: $e'));
     }
   }
 
@@ -48,11 +48,11 @@ class HabilityCubit extends Cubit<HabilityState> {
         emit(HabilityUpdated());
         return true;
       } else {
-        emit(ActivityError('Error updating activity'));
+        emit(HabilityError('Error updating activity'));
         return false;
       }
     } catch (_) {
-      emit(ActivityError('Error updating activity'));
+      emit(HabilityError('Error updating activity'));
       return false;
     }
   }

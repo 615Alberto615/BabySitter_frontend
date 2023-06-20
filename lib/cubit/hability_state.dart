@@ -13,19 +13,19 @@ class HabilityLoading extends HabilityState {}
 
 class HabilityUpdated extends HabilityState {}
 
-class ActivityLoaded extends HabilityState {
+class HabilityLoaded extends HabilityState {
   final hability activity;
 
-  const ActivityLoaded(this.activity);
+  const HabilityLoaded(this.activity);
 
   @override
   List<Object> get props => [activity];
 }
 
-class ActivityError extends HabilityState {
+class HabilityError extends HabilityState {
   final String message;
 
-  const ActivityError(this.message);
+  const HabilityError(this.message);
 
   @override
   List<Object> get props => [message];

@@ -69,19 +69,29 @@ class _TelefonosScreenState extends State<ChildMed> {
             },
             builder: (context, state) {
               return ListView(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
                 children: [
-                  tles(),
-                  Center(
-                    child: Text('Teléfonos de emergencia',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: HexColor('#20262E'))),
+                  tles2(),
+                  Text(
+                    "Información Médica del niño/a:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color.fromRGBO(49, 39, 79, 1),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
+                  ),
+                  Text(
+                    "${widget.child.childName}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color.fromRGBO(49, 39, 79, 1),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Teléfonos en caso de emergencia para la reserva.',
+                    'INFORMACIÓN MÉDICA',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -90,29 +100,69 @@ class _TelefonosScreenState extends State<ChildMed> {
                   ),
                   SizedBox(height: 20),
                   if (state is MedLoaded)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: state.telefonos.length,
-                      itemBuilder: (context, index) {
-                        final tele = state.telefonos[index];
-                        return Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                    Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            '¿El niño tiene alguna enfermedad y/o alergia?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: HexColor('#20262E'),
+                            ),
                           ),
-                          child: ListTile(
-                            leading:
-                                Icon(Icons.phone, color: HexColor('#20262E')),
-                            title: Text(tele.allergieType,
+                          SizedBox(height: 5),
+                          ListTile(
+                            leading: Icon(Icons.medical_information_outlined,
+                                color: HexColor('#20262E')),
+                            title: Text(state.medForm.medicalAllergieType,
                                 style: TextStyle(
                                     fontSize: 15, color: HexColor('#20262E'))),
-                            subtitle: Text(tele.medication,
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            '¿El niño necesita algún medicamento?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: HexColor('#20262E'),
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          ListTile(
+                            leading: Icon(Icons.medication_outlined,
+                                color: HexColor('#20262E')),
+                            title: Text(state.medForm.medicalMedication,
                                 style: TextStyle(
                                     fontSize: 15, color: HexColor('#20262E'))),
                           ),
-                        );
-                      },
+                          SizedBox(height: 5),
+                          Text(
+                            'En caso de emergencia: ¿Donde se encuentra el botiquin/medicamentos?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: HexColor('#20262E'),
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          ListTile(
+                            leading: Icon(Icons.location_history,
+                                color: HexColor('#20262E')),
+                            title: Text(
+                                state.medForm.medicalMedicationUbication,
+                                style: TextStyle(
+                                    fontSize: 15, color: HexColor('#20262E'))),
+                          ),
+                        ],
+                      ),
                     ),
                   if (state is MedLoading) CircularProgressIndicator(),
                   SizedBox(height: 10),
