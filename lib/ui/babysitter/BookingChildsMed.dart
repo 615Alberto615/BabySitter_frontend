@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/cubit/med_cubit.dart';
 import 'package:front/cubit/telefonos_cubit.dart';
 import 'package:front/models/modelo_child.dart';
 import 'package:front/ui/babysitter/component/img_topBs.dart';
@@ -29,13 +30,13 @@ class _TelefonosScreenState extends State<ChildMed> {
     super.initState();
 
     try {
-      context.read<TelefonoCubit>().fetchTelefono(
-          'http://10.0.2.2:8080/api/v1/tutorEmergencyContact/tutor/',
-          widget.tutorId.toString());
+      context.read<MedCubit>().fetchMed(
+          'http://10.0.2.2:8080/api/v1/childMedicalForm/',
+          widget.child.childId.toString() + "/");
     } catch (e) {
       print(e);
     }
-    print(widget.tutorId);
+    print(widget.child.childId.toString());
     print(widget.userId);
   }
 
@@ -58,28 +59,12 @@ class _TelefonosScreenState extends State<ChildMed> {
               onPressed: () => Navigator.pop(context),
             ),
           ),
-          body: BlocConsumer<TelefonoCubit, TelefonoState>(
+          body: BlocConsumer<MedCubit, MedState>(
             listener: (context, state) {
-              if (state is TelefonoError) {
+              if (state is MedError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Error: ${state.message}')),
                 );
-              } else if (state is TelefonoDeleted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Registro eliminado correctamente')),
-                );
-                context.read<TelefonoCubit>().fetchTelefono(
-                    'http://10.0.2.2:8080/api/v1/tutorEmergencyContact/tutor/',
-                    widget.tutorId.toString());
-              } else if (state is TelefonoCreated) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Registro creado correctamente')),
-                );
-                _nombretelController.clear();
-                _phoneController.clear();
-                context.read<TelefonoCubit>().fetchTelefono(
-                    'http://10.0.2.2:8080/api/v1/tutorEmergencyContact/tutor/',
-                    widget.tutorId.toString());
               }
             },
             builder: (context, state) {
@@ -104,7 +89,7 @@ class _TelefonosScreenState extends State<ChildMed> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  if (state is TelefonoLoaded)
+                  if (state is MedLoaded)
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -119,17 +104,17 @@ class _TelefonosScreenState extends State<ChildMed> {
                           child: ListTile(
                             leading:
                                 Icon(Icons.phone, color: HexColor('#20262E')),
-                            title: Text(tele.nameContact,
+                            title: Text(tele.allergieType,
                                 style: TextStyle(
                                     fontSize: 15, color: HexColor('#20262E'))),
-                            subtitle: Text(tele.phoneContact,
+                            subtitle: Text(tele.medication,
                                 style: TextStyle(
                                     fontSize: 15, color: HexColor('#20262E'))),
                           ),
                         );
                       },
                     ),
-                  if (state is TelefonoLoading) CircularProgressIndicator(),
+                  if (state is MedLoading) CircularProgressIndicator(),
                   SizedBox(height: 10),
                 ],
               );

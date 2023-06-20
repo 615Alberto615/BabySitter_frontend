@@ -1,13 +1,14 @@
 import 'dart:convert';
 
+import 'package:front/models/modelo_child.dart';
 import 'package:front/models/modelo_telfono.dart';
 import 'package:front/models/modelo_token.dart';
 import 'package:http/http.dart' as http;
 
-class TelefonoService {
+class MedService {
   String? token = ModeloToken.token;
 
-  Future<List<telfono>> fetchTelefono(String apiUrl, String parentId) async {
+  Future<List<MedicalForm>> fetchMed(String apiUrl, String parentId) async {
     try {
       final response = await http.get(
         Uri.parse('$apiUrl$parentId'),
@@ -23,7 +24,9 @@ class TelefonoService {
         List<dynamic> jsonResponse =
             data['data']; // 'data' es la clave de la lista en la respuesta
         if (jsonResponse != null) {
-          return jsonResponse.map((item) => telfono.fromJson(item)).toList();
+          return jsonResponse
+              .map((item) => MedicalForm.fromJson(item))
+              .toList();
         } else {
           // manejar la situación cuando 'data' es null
           print('Error: el campo "data" es null');

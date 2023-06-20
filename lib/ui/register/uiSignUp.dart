@@ -235,11 +235,40 @@ void registerButtonFunction(BuildContext context) async {
         TextEditingController codeController = TextEditingController();
 
         return AlertDialog(
-          title: Text('Ingresa el código'),
-          content: TextField(
-            controller: codeController,
-            decoration: InputDecoration(
-              hintText: 'Ingresa el código',
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Codigo de Verificación',
+                textAlign: TextAlign.center,
+              ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Por favor, ingrese el código de verificación que se le ha enviado a su correo electrónico',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: codeController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Código de verificación',
+                  ),
+                ),
+              ],
             ),
           ),
           actions: [
