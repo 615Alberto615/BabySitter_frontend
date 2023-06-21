@@ -18,16 +18,26 @@ class BottomBarViewV2 extends StatefulWidget {
 
 class _BottomBarViewState extends State<BottomBarViewV2>
     with TickerProviderStateMixin {
-  AnimationController? animationController;
+  AnimationController? _animationController;
 
   @override
   void initState() {
-    animationController = AnimationController(
+    _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
-    animationController?.forward();
+    _animationController?.forward();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Dispose AnimationController
+    _animationController?.dispose();
+
+    // Dispose other resources or controllers if needed
+
+    super.dispose();
   }
 
   @override
@@ -36,7 +46,7 @@ class _BottomBarViewState extends State<BottomBarViewV2>
       alignment: AlignmentDirectional.bottomCenter,
       children: <Widget>[
         AnimatedBuilder(
-          animation: animationController!,
+          animation: _animationController!,
           builder: (BuildContext context, Widget? child) {
             return Transform(
               transform: Matrix4.translationValues(0.0, 0.0, 0.0),
@@ -46,7 +56,7 @@ class _BottomBarViewState extends State<BottomBarViewV2>
                 clipper: TabClipper(
                     radius: Tween<double>(begin: 0.0, end: 1.0)
                             .animate(CurvedAnimation(
-                                parent: animationController!,
+                                parent: _animationController!,
                                 curve: Curves.fastOutSlowIn))
                             .value *
                         38.0),
@@ -71,7 +81,7 @@ class _BottomBarViewState extends State<BottomBarViewV2>
                             SizedBox(
                               width: Tween<double>(begin: 0.0, end: 1.0)
                                       .animate(CurvedAnimation(
-                                          parent: animationController!,
+                                          parent: _animationController!,
                                           curve: Curves.fastOutSlowIn))
                                       .value *
                                   64.0,
