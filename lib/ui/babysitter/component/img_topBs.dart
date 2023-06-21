@@ -167,3 +167,31 @@ class tles2 extends StatelessWidget {
     );
   }
 }
+
+class tles3 extends StatelessWidget {
+  const tles3({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 0),
+        Row(
+          children: [
+            const Spacer(),
+            Expanded(
+                flex: 8,
+                child: Image.asset(
+                  "assets/re2.png",
+                  height: 206,
+                )),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+}

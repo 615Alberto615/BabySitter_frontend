@@ -97,7 +97,7 @@ class _PerfilScreenState extends State<reviewsScreen> {
                   Text(
                     'Ingresa una reseña y un calificacion para la niñera que te atendió',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: HexColor('#20262E'),
                     ),
@@ -110,7 +110,14 @@ class _PerfilScreenState extends State<reviewsScreen> {
                     icon: Icons.reviews,
                   ),
                   SizedBox(height: 10),
-                  Text('Calificación', style: TextStyle(color: Colors.grey)),
+                  Text(
+                    'calificacion para la niñera',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: HexColor('#20262E'),
+                    ),
+                  ),
                   Center(
                     child: RatingBar.builder(
                       initialRating: 3,

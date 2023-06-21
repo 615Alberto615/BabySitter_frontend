@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/cubit/booking_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:front/ui/babysitter/report.dart';
 import 'package:front/ui/tutor/component/Bottom_Tutor.dart' as bottomTutor;
 import 'package:front/ui/tutor/component/ColoresTutor.dart';
 import 'package:front/ui/tutor/component/icons.dart';
@@ -172,13 +173,73 @@ class _HistoryTState extends State<HistoryBs> {
                                       Text(
                                           'Estado: ${getBookingStatus(booking.bookingCompleted)}'),
                                     ],
-                                  ), /*
+                                  ),
                                   trailing: IconButton(
-                                    icon: Icon(Icons.reviews),
+                                    icon: Icon(Icons.report),
                                     onPressed: () {
-                                      // Acción que se ejecutará al presionar el botón de campana
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Opciones Reporte',
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.close),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
+                                            content: Text(
+                                              '¿Desea hacer una reporte por el servicio a ${booking.userName} ${booking.userLastName}?',
+                                              textAlign: TextAlign.justify,
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text(
+                                                  'Hacer reporte',
+                                                  style: TextStyle(
+                                                      color:
+                                                          HexColor('#ff6b6b')),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ReportScreen(
+                                                        booking: booking,
+                                                        tutorId:
+                                                            booking.tutorId,
+                                                        babysitterId: booking
+                                                            .babysitterId,
+                                                        userId: widget.userId,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
-                                  ),*/
+                                  ),
                                 ),
                               );
                             },

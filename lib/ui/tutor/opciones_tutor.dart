@@ -3,6 +3,7 @@ import 'package:front/cubit/login_cubit.dart';
 import 'package:front/ui/login/uiLogin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/ui/tutor/ayuda.dart';
+import 'package:front/ui/tutor/reportesTutor.dart';
 
 import '../../component/bottoms.dart';
 
@@ -10,7 +11,10 @@ import 'component/ColoresTutor.dart';
 import 'component/icons.dart';
 
 class OptionsT extends StatefulWidget {
-  const OptionsT({Key? key}) : super(key: key);
+  final userId;
+  final tutorId;
+  const OptionsT({Key? key, required this.userId, required this.tutorId})
+      : super(key: key);
   _OptionsTState createState() => _OptionsTState();
 }
 
@@ -77,6 +81,21 @@ class _OptionsTState extends State<OptionsT> {
                             },
                             text: 'Ayuda',
                             icon: Icons.help,
+                          ),
+                          SizedBox(height: 5),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ReportHis(
+                                          userId: widget.userId,
+                                          babysitterId: widget.tutorId,
+                                        )),
+                              );
+                            },
+                            text: 'Reportes de servicios',
+                            icon: Icons.report_gmailerrorred,
                           ),
                           SizedBox(height: 5),
                           CustomButton(
@@ -149,4 +168,16 @@ class _OptionsTState extends State<OptionsT> {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
